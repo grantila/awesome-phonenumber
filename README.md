@@ -2,6 +2,25 @@
 
 This library is a pre-compiled version of Google's `libphonenumber`, with a slightly simpler interface.
 
+## Comparison with other libraries
+
+Since this library is pre-compiled, it doesn't depend on the closure compiler, and needs not load it on start. This makes the library faster and saves you a lot of space. It also means this library is trivial to use in any `browserify` project (or using any other means to run in the browser).
+
+Among all the phone number libraries using Google's `libphonenumber`, only this one, `google-libphonenumber` (0.2.2) and `node-phonenumber` (0.2.1) had decent README's with examples. Other libraries embedding the closure compiler should get comparable figures.
+
+`google-libphonenumber` and `node-phonenumber` naturally become faster once loaded and after first parsing, but for many applications, the first time matters a lot. Loading the closure compiler also adds to the application memory usage (RSS is measured here). The library footprints are also bigger, making `npm install` slower and increasing deploy times.
+
+A test program loading a library, then parsing a phone number is called 5 times for each library, the mean values are:
+
+Action                   | awesome-phonenumber | google-libphonenumber | node-phonenumber
+------------------------ | ------------------- | --------------------- | ----------------
+Load library first time  | 21 ms               | 101 ms                | 83 ms
+Parse first phone number | 5 ms                | 11 ms                 | 8 ms
+Increased memory usage   | 9.8 M               | 19.1 M                | 19.5 M
+node_modules size        | 296 K               | 16 M                  | 53 M
+node_modules files       | 15                  | 967                   | 4340
+time npm install         | 0.7 s               | 2.4 s                 | 5.9 s
+
 ## Basic usage
 ```js
 var PhoneNumber = require( 'awesome-phonenumber' );

@@ -102,7 +102,7 @@ var PhoneNumber = require( 'awesome-phonenumber' );
 
 ### Country codes
 
-There are conversion functions between the 2-digit ISO 3166-1 region codes (e.g. 'SE' for Sweden) and the corresponding country calling codes.
+There are conversion functions between the 2-character ISO 3166-1 region codes (e.g. 'SE' for Sweden) and the corresponding country calling codes.
 
 ```js
 PhoneNumber.getCountryCodeForRegionCode( regionCode );  // -> countryCode

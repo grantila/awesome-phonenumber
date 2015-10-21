@@ -28,14 +28,14 @@
     "awesome"
   ],
   "devDependencies": {
-    "bluebird": "^2.9.30",
-    "chai": "^3.0.0",
-    "gulp": "^3.9.0",
+    "bluebird": "^2.10",
+    "chai": "^3.4",
+    "gulp": "^3.9",
     "mkdirp": "^0.5.1",
-    "mocha": "^2.2.5",
-    "pre-commit": "^1.0.10",
-    "rimraf-promise": "^1.0.0",
-    "run-sequence": "^1.1.1",
-    "svn-interface": "^0.4.5"
+    "mocha": "^2.3",
+    "pre-commit": "^1.1",
+    "rimraf-promise": "^2.0",
+    "run-sequence": "^1.1",
+    "svn-interface": "^0.4"
   }
 }

@@ -11,9 +11,13 @@ var libs = {
 		PhoneNumber( '0707123456', 'SE' ).getNumber( );
 
 		var time3 = Date.now( );
+
+		PhoneNumber( '0707123457', 'SE' ).getNumber( );
+
+		var time4 = Date.now( );
 		var mem2 = process.memoryUsage( );
 
-		return [ time2 - time1, time3 - time2, mem2.rss - mem1.rss ];
+		return [ time2 - time1, time3 - time2, time4 - time3, mem2.rss - mem1.rss ];
 	},
 	'google-libphonenumber': function( ) {
 		var mem1 = process.memoryUsage( );
@@ -28,9 +32,14 @@ var libs = {
 		phoneUtil.format(phoneNumber, PNF.INTERNATIONAL);
 
 		var time3 = Date.now( );
+
+		var phoneNumber = phoneUtil.parse('0707123457', 'SE');
+		phoneUtil.format(phoneNumber, PNF.INTERNATIONAL);
+
+		var time4 = Date.now( );
 		var mem2 = process.memoryUsage( );
 
-		return [ time2 - time1, time3 - time2, mem2.rss - mem1.rss ];
+		return [ time2 - time1, time3 - time2, time4 - time3, mem2.rss - mem1.rss ];
 	},
 	'node-phonenumber': function( ) {
 		var mem1 = process.memoryUsage( );
@@ -45,9 +54,14 @@ var libs = {
 		var toNumber = phoneUtil.format(phoneNumber, phone.PhoneNumberFormat.INTERNATIONAL);
 
 		var time3 = Date.now( );
+
+		var phoneNumber = phoneUtil.parse('0707123457','SE');
+		var toNumber = phoneUtil.format(phoneNumber, phone.PhoneNumberFormat.INTERNATIONAL);
+
+		var time4 = Date.now( );
 		var mem2 = process.memoryUsage( );
 
-		return [ time2 - time1, time3 - time2, mem2.rss - mem1.rss ];
+		return [ time2 - time1, time3 - time2, time4 - time3, mem2.rss - mem1.rss ];
 	}
 };
 

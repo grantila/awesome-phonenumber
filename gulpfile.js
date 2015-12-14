@@ -21,34 +21,35 @@ var closureLibraryUrl = 'https://github.com/google/closure-library/';
 var closureLinterUrl = 'http://closure-linter.googlecode.com/svn/trunk/';
 var pythonGflagsUrl = 'http://python-gflags.googlecode.com/svn/trunk/';
 
+var isDebug = process.env.DEBUG && process.env.DEBUG !== '0';
 
-gulp.task( 'clean', function( ) {
-	return rimraf( buildRoot );
-} );
+gulp.task( 'clean', ( ) =>
+	rimraf( buildRoot )
+);
 
-gulp.task( 'make-build-dir', function( ) {
-	return mkdirp( buildRoot );
-} );
+gulp.task( 'make-build-dir', ( ) =>
+	mkdirp( buildRoot )
+);
 
-gulp.task( 'clone-libphonenumber', [ 'make-build-dir' ], function( ) {
-	return gitClone( libphonenumberUrl, 'libphonenumber' );
-} );
+gulp.task( 'clone-libphonenumber', [ 'make-build-dir' ], ( ) =>
+	gitClone( libphonenumberUrl, 'libphonenumber' )
+);
 
-gulp.task( 'clone-closure-compiler', [ 'make-build-dir' ], function( ) {
-	return gitClone( closureCompilerUrl, 'closure-compiler' );
-} );
+gulp.task( 'clone-closure-compiler', [ 'make-build-dir' ], ( ) =>
+	gitClone( closureCompilerUrl, 'closure-compiler' )
+);
 
-gulp.task( 'clone-closure-library', [ 'make-build-dir' ], function( ) {
-	return gitClone( closureLibraryUrl, 'closure-library' );
-} );
+gulp.task( 'clone-closure-library', [ 'make-build-dir' ], ( ) =>
+	gitClone( closureLibraryUrl, 'closure-library' )
+);
 
-gulp.task( 'checkout-closure-linter', [ 'make-build-dir' ], function( ) {
-	return svnCheckout( closureLinterUrl, 'closure-linter' );
-} );
+gulp.task( 'checkout-closure-linter', [ 'make-build-dir' ], ( ) =>
+	svnCheckout( closureLinterUrl, 'closure-linter' )
+);
 
-gulp.task( 'checkout-python-gflags', [ 'make-build-dir' ], function( ) {
-	return svnCheckout( pythonGflagsUrl, 'python-gflags' );
-} );
+gulp.task( 'checkout-python-gflags', [ 'make-build-dir' ], ( ) =>
+	svnCheckout( pythonGflagsUrl, 'python-gflags' )
+);
 
 gulp.task( 'download-deps', [
 	'clone-libphonenumber',
@@ -58,28 +59,28 @@ gulp.task( 'download-deps', [
 	'checkout-python-gflags'
 ] );
 
-gulp.task( 'build-closure-compiler', [ 'download-deps' ], function( ) {
-	return runCommand( 'ant', [ '-f', 'closure-compiler/build.xml' ] );
-} );
+gulp.task( 'build-closure-compiler', [ 'download-deps' ], ( ) =>
+	runCommand( 'ant', [ '-f', 'closure-compiler/build.xml' ] )
+);
 
 gulp.task( 'build-deps', [ 'build-closure-compiler' ] );
 
-gulp.task( 'build-libphonenumber', function( ) {
+gulp.task( 'build-libphonenumber', ( ) => {
 	var args = [ '-f', 'build.xml', 'compile-exports' ];
 	return runCommand( 'ant', args, { cwd: '.' } );
 } );
 
-gulp.task( 'build', function( cb ) {
+gulp.task( 'build', cb =>
 	runSequence(
 		'build-deps',
 		'build-libphonenumber',
 		cb
-	);
-} );
+	)
+);
 
-gulp.task( 'default', [ 'clean' ], function( ) {
-	return gulp.start( 'build' );
-} );
+gulp.task( 'default', [ 'clean' ], ( ) =>
+	gulp.start( 'build' )
+);
 
 function gitClone( url, name )
 {
@@ -93,14 +94,22 @@ function svnCheckout( url, name )
 
 function runCommand( cmd, args, opts )
 {
-	opts = opts || { cwd: './build' };
+	opts = opts || {
+		cwd   : './build',
+		stdio : [ null, null, isDebug ? process.stderr : null ]
+	};
 
 	return new Promise( function( resolve, reject ) {
 		var cp = child.spawn( cmd, args, opts );
-		cp.on( 'close', function( code ) {
+		cp.stdout.on( 'data', data => {
+			if ( isDebug )
+				console.log( data.toString( ) );
+		} );
+		cp.on( 'close', code => {
 			if ( code === 0 )
 				return resolve( );
 			reject( new Error( cmd + " exited with exitcode " + code ) );
 		} );
+		cp.on( 'error', err => reject( err ) );
 	} );
 }

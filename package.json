@@ -2,7 +2,7 @@
   "name": "awesome-phonenumber",
   "description": "Google's libphonenumber pre-compiled with the closure compiler",
   "license": "MIT",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "author": "Gustaf Räntilä <g.rantila@gmail.com>",
   "repository": {
     "type": "git",

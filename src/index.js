@@ -303,7 +303,7 @@ AsYouType.prototype.getPhoneNumber = function( )
 }
 
 
-goog.global = exports;
+goog.global = (typeof exports !== 'undefined')? exports : window;
 
 goog.exportSymbol( 'PhoneNumber', PhoneNumber );
 

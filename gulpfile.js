@@ -6,20 +6,18 @@ var child   = require( 'child_process' );
 var path    = require( 'path' );
 var Promise = require( 'bluebird' );
 var rimraf  = require( 'rimraf-promise' );
-var svn     = require( 'svn-interface' );
 var mkdirp  = require( 'mkdirp' );
 
 
 mkdirp = Promise.promisify( mkdirp );
-svn    = Promise.promisifyAll( svn );
 
 
 var buildRoot = './build';
 var libphonenumberUrl = 'https://github.com/googlei18n/libphonenumber/';
 var closureCompilerUrl = 'https://github.com/google/closure-compiler.git';
 var closureLibraryUrl = 'https://github.com/google/closure-library/';
-var closureLinterUrl = 'http://closure-linter.googlecode.com/svn/trunk/';
-var pythonGflagsUrl = 'http://python-gflags.googlecode.com/svn/trunk/';
+var closureLinterUrl = 'https://github.com/google/closure-linter';
+var pythonGflagsUrl = 'https://github.com/google/python-gflags.git';
 
 var isDebug = process.env.DEBUG && process.env.DEBUG !== '0';
 
@@ -44,11 +42,11 @@ gulp.task( 'clone-closure-library', [ 'make-build-dir' ], ( ) =>
 );
 
 gulp.task( 'checkout-closure-linter', [ 'make-build-dir' ], ( ) =>
-	svnCheckout( closureLinterUrl, 'closure-linter' )
+	gitClone( closureLinterUrl, 'closure-linter' )
 );
 
 gulp.task( 'checkout-python-gflags', [ 'make-build-dir' ], ( ) =>
-	svnCheckout( pythonGflagsUrl, 'python-gflags' )
+	gitClone( pythonGflagsUrl, 'python-gflags' )
 );
 
 gulp.task( 'download-deps', [
@@ -85,11 +83,6 @@ gulp.task( 'default', [ 'clean' ], ( ) =>
 function gitClone( url, name )
 {
 	return runCommand( 'git', [ 'clone', '--depth=1', url, name ] );
-}
-
-function svnCheckout( url, name )
-{
-	return svn.checkoutAsync( url, path.join( buildRoot, name ) );
 }
 
 function runCommand( cmd, args, opts )

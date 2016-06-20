@@ -34,7 +34,6 @@
     "mocha": "^2.3",
     "pre-commit": "^1.1",
     "rimraf-promise": "^2.0",
-    "run-sequence": "^1.1",
-    "svn-interface": "^0.4"
+    "run-sequence": "^1.1"
   }
 }

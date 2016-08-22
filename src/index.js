@@ -255,6 +255,10 @@ PhoneNumber.prototype.getNumberFrom = function( regionCode )
 	return phoneUtil.formatOutOfCountryCallingNumber( this._number, regionCode );
 }
 
+PhoneNumber.prototype.getRegionCode = function( )
+{
+	return this._json[ 'regionCode' ];
+}
 
 
 /**
@@ -332,6 +336,8 @@ goog.exportSymbol( 'PhoneNumber.prototype.getNumber',
 	PhoneNumber.prototype.getNumber );
 goog.exportSymbol( 'PhoneNumber.prototype.getNumberFrom',
 	PhoneNumber.prototype.getNumberFrom );
+goog.exportSymbol( 'PhoneNumber.prototype.getRegionCode',
+	PhoneNumber.prototype.getRegionCode );
 
 goog.exportSymbol( 'AsYouType', AsYouType );
 

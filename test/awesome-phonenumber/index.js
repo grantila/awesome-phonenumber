@@ -55,4 +55,9 @@ describe( 'general', function( ) {
 		expect( PhoneNumber.getCountryCodeForRegionCode( 'SE' ) ).to.equal( 46 );
 		expect( PhoneNumber.getRegionCodeForCountryCode( 46 ) ).to.equal( 'SE' );
 	} );
+
+	it( 'should be possible to get region code', function( ) {
+		var pn = new PhoneNumber( '0707123456', 'SE' );
+		expect( pn.getRegionCode( ) ).to.equal( 'SE' );
+	} );
 } );

@@ -37,6 +37,7 @@ pn.getNumber( 'international' ); // -> '+46 70 712 34 56'
 pn.getNumber( 'national' );      // -> '070-712 34 56'
 pn.getNumber( 'rfc3966' );       // -> 'tel:+46-70-712-34-56'
 pn.getNumber( 'significant' );   // -> '707123456'
+pn.getRegionCode( );             // -> 'SE'
 
 pn.toJSON( );                  // -> json blob, so that:
 JSON.stringify( pn, null, 4 ); // -> This:

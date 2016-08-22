@@ -14,7 +14,6 @@ mkdirp = Promise.promisify( mkdirp );
 
 var buildRoot = './build';
 var libphonenumberUrl = 'https://github.com/googlei18n/libphonenumber/';
-var closureCompilerUrl = 'https://github.com/google/closure-compiler.git';
 var closureLibraryUrl = 'https://github.com/google/closure-library/';
 var closureLinterUrl = 'https://github.com/google/closure-linter';
 var pythonGflagsUrl = 'https://github.com/google/python-gflags.git';
@@ -33,10 +32,6 @@ gulp.task( 'clone-libphonenumber', [ 'make-build-dir' ], ( ) =>
 	gitClone( libphonenumberUrl, 'libphonenumber' )
 );
 
-gulp.task( 'clone-closure-compiler', [ 'make-build-dir' ], ( ) =>
-	gitClone( closureCompilerUrl, 'closure-compiler' )
-);
-
 gulp.task( 'clone-closure-library', [ 'make-build-dir' ], ( ) =>
 	gitClone( closureLibraryUrl, 'closure-library' )
 );
@@ -51,17 +46,12 @@ gulp.task( 'checkout-python-gflags', [ 'make-build-dir' ], ( ) =>
 
 gulp.task( 'download-deps', [
 	'clone-libphonenumber',
-	'clone-closure-compiler',
 	'clone-closure-library',
 	'checkout-closure-linter',
 	'checkout-python-gflags'
 ] );
 
-gulp.task( 'build-closure-compiler', [ 'download-deps' ], ( ) =>
-	runCommand( 'ant', [ '-f', 'closure-compiler/build.xml' ] )
-);
-
-gulp.task( 'build-deps', [ 'build-closure-compiler' ] );
+gulp.task( 'build-deps', [ 'download-deps' ] );
 
 gulp.task( 'build-libphonenumber', ( ) => {
 	var args = [ '-f', 'build.xml', 'compile-exports' ];

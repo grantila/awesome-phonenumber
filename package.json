@@ -27,13 +27,14 @@
     "awesome"
   ],
   "devDependencies": {
-    "bluebird": "^2.10",
-    "chai": "^3.4",
+    "bluebird": "^3",
+    "chai": "^3.5",
+    "google-closure-compiler": "^20160713.2.0",
     "gulp": "^3.9",
     "mkdirp": "^0.5.1",
-    "mocha": "^2.3",
+    "mocha": "^3",
     "pre-commit": "^1.1",
     "rimraf-promise": "^2.0",
-    "run-sequence": "^1.1"
+    "run-sequence": "^1.2"
   }
 }

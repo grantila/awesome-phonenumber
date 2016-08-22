@@ -2,9 +2,9 @@
 
 <project name="libphonenumber-javascript" default="compile">
   <property name="closure-compiler.dir"
-            value="${basedir}/build/closure-compiler" />
+            value="${basedir}/node_modules/google-closure-compiler" />
   <property name="closure-compiler.jar"
-            value="${closure-compiler.dir}/build/compiler.jar" /> 
+            value="${closure-compiler.dir}/compiler.jar" />
   <property name="closure-library.dir"
             value="${basedir}/build/closure-library" />
   <property name="closure-linter.dir"

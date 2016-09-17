@@ -5,7 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "awesome-phonenumber": "^1.0",
-    "google-libphonenumber": "^1.0",
+    "google-libphonenumber": "^2.0",
     "node-phonenumber": "^0.2",
     "rimraf-promise": "^2.0"
   },

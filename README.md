@@ -2,7 +2,7 @@
 
 This library is a pre-compiled version of Google's `libphonenumber`, with a slightly simpler interface. It has a minimal footprint - is by far the smallest libphonenumber-based library available on npmjs (other libraries are orders of magnitude larger!), and has no dependencies.
 
-Uses libphonenumber 7.5.2
+Uses libphonenumber 7.7.0
 
 ## Comparison with other libraries
 

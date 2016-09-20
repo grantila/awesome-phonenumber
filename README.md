@@ -8,21 +8,21 @@ Uses libphonenumber 7.5.2
 
 Since this library is pre-compiled, it doesn't depend on the closure compiler, and needs not load it on start. This makes the library faster and saves you a lot of space. It also means this library is trivial to use in any `browserify` project (or using any other means to run in the browser).
 
-Among all the phone number libraries using Google's `libphonenumber`, only this one, `google-libphonenumber` (1.0.7) and `node-phonenumber` (0.2.2) had decent README's with examples. Other libraries embedding the closure compiler should get comparable figures.
+Among all the phone number libraries using Google's `libphonenumber`, only this one, `google-libphonenumber` (2.0.0) and `node-phonenumber` (0.2.2) had decent README's with examples. Other libraries embedding the closure compiler should get comparable figures.
 
 Loading the closure compiler also adds to the application memory usage (RSS is measured here). The library footprints are also bigger, making `npm install` slower and increasing deploy times.
 
 A test program loading a library, then parsing a phone number is called 100 times for each library, the mean values are:
 
-Action                    | awesome-phonenumber | google-libphonenumber | node-phonenumber
+Action                    | awesome-phonenumber (7.5.2) | google-libphonenumber (7.6.1) | node-phonenumber (7.5.2)
 ------------------------- | ------------------- | --------------------- | ----------------
-Load library first time   | 18.51 ms            | 32.8 ms               | 82.4 ms
-Parse first phone number  | 5.62 ms             | 6.55 ms               | 8.13 ms
-Parse second phone number | 0.22 ms             | 0.7 ms                | 0.89 ms
-Increased memory usage    | 6.3 M               | 13.1 M                | 16.6 M
-node_modules size         | 244 K               | 2.3 M                 | 53 M
-node_modules files        | 7                   | 32                    | 4355
-time npm install          | 0.7 s               | 0.8 s                 | 5.8 s
+Load library first time   | 20.84 ms            | 60.99ms               | 99.27 ms
+Parse first phone number  | 5.79 ms             | 6.51 ms               | 8.15 ms
+Parse second phone number | 0.33 ms             | 0.67 ms               | 0.80 ms
+Increased memory usage    | 7.3 M               | 13.8 M                | 22.5 M
+node_modules size         | 248 K               | 436 K                 | 57 M
+node_modules files        | 7                   | 7                     | 4525
+time npm install          | 667 ms              | 700 ms                | 4077 ms
 
 ## Basic usage
 ```js

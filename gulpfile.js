@@ -1,24 +1,26 @@
 
-var gulp        = require( 'gulp' );
-var runSequence = require( 'run-sequence' );
+const gulp        = require( 'gulp' );
+const runSequence = require( 'run-sequence' );
 
-var child   = require( 'child_process' );
-var path    = require( 'path' );
-var Promise = require( 'bluebird' );
-var rimraf  = require( 'rimraf-promise' );
-var mkdirp  = require( 'mkdirp' );
+const child   = require( 'child_process' );
+const path    = require( 'path' );
+const fs      = require( 'fs' );
+const Promise = require( 'bluebird' );
+const rimraf  = require( 'rimraf-promise' );
+const mkdirp  = Promise.promisify( require( 'mkdirp' ) );
+const replace = require( 'replace' );
 
 
-mkdirp = Promise.promisify( mkdirp );
+const libphonenumberVersion =
+	fs.readFileSync( 'libphonenumber.version', 'utf8' ).toString( ).trim( );
 
+const buildRoot = './build';
+const libphonenumberUrl = 'https://github.com/googlei18n/libphonenumber/';
+const closureLibraryUrl = 'https://github.com/google/closure-library/';
+const closureLinterUrl = 'https://github.com/google/closure-linter';
+const pythonGflagsUrl = 'https://github.com/google/python-gflags.git';
 
-var buildRoot = './build';
-var libphonenumberUrl = 'https://github.com/googlei18n/libphonenumber/';
-var closureLibraryUrl = 'https://github.com/google/closure-library/';
-var closureLinterUrl = 'https://github.com/google/closure-linter';
-var pythonGflagsUrl = 'https://github.com/google/python-gflags.git';
-
-var isDebug = process.env.DEBUG && process.env.DEBUG !== '0';
+const isDebug = process.env.DEBUG && process.env.DEBUG !== '0';
 
 gulp.task( 'clean', ( ) =>
 	rimraf( buildRoot )
@@ -29,7 +31,7 @@ gulp.task( 'make-build-dir', ( ) =>
 );
 
 gulp.task( 'clone-libphonenumber', [ 'make-build-dir' ], ( ) =>
-	gitClone( libphonenumberUrl, 'libphonenumber' )
+	gitClone( libphonenumberUrl, 'libphonenumber', libphonenumberVersion )
 );
 
 gulp.task( 'clone-closure-library', [ 'make-build-dir' ], ( ) =>
@@ -66,13 +68,35 @@ gulp.task( 'build', cb =>
 	)
 );
 
-gulp.task( 'default', [ 'clean' ], ( ) =>
-	gulp.start( 'build' )
+gulp.task( 'update-readme', ( ) =>
+	updateReadme( )
 );
 
-function gitClone( url, name )
+gulp.task( 'default', [ 'clean' ], cb =>
+	runSequence(
+		'build',
+		'update-readme',
+		cb
+	)
+);
+
+function updateReadme( )
 {
-	return runCommand( 'git', [ 'clone', '--depth=1', url, name ] );
+	replace( {
+		regex: 'Uses libphonenumber ([A-Za-z.0-9]+)',
+		replacement: `Uses libphonenumber ${libphonenumberVersion}`,
+		paths: [ 'README.md' ],
+		silent: true,
+	} );
+}
+
+function gitClone( url, name, branch )
+{
+	const args = [ '--depth=1' ];
+	if ( branch )
+		args.push( '--branch=v8.4.1' );
+
+	return runCommand( 'git', [ 'clone', ...args, url, name ] );
 }
 
 function runCommand( cmd, args, opts )

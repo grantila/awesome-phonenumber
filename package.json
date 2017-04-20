@@ -34,6 +34,7 @@
     "mkdirp": "^0.5.1",
     "mocha": "^3",
     "pre-commit": "^1.1",
+    "replace": "^0.3",
     "rimraf-promise": "^2.0",
     "run-sequence": "^1.2"
   }

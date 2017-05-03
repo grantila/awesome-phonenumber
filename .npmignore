@@ -5,4 +5,4 @@ gulp*
 .npmignore
 benchmark
 libphonenumber.version
-
+.travis.yml

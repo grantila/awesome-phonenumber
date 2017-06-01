@@ -169,6 +169,9 @@ function PhoneNumber( phoneNumber, regionCode )
 	this._json[ 'number' ][ 'significant' ] =
 		phoneUtil.getNationalSignificantNumber( this._number );
 
+	this._json[ 'canBeInternationallyDialled' ] =
+		phoneUtil.canBeInternationallyDialled( this._number );
+
 	this._json[ 'possible' ] = phoneUtil.isPossibleNumber( this._number );
 	this._json[ 'valid' ] = phoneUtil.isValidNumber( this._number );
 
@@ -210,6 +213,11 @@ PhoneNumber.getAsYouType = function( regionCode )
 PhoneNumber.prototype.toJSON = function( )
 {
 	return this._json;
+}
+
+PhoneNumber.prototype.canBeInternationallyDialled = function( )
+{
+	return this._json[ 'canBeInternationallyDialled' ];
 }
 
 PhoneNumber.prototype.isValid = function( )
@@ -322,6 +330,8 @@ goog.exportSymbol( 'PhoneNumber.getAsYouType',
 
 goog.exportSymbol( 'PhoneNumber.prototype.toJSON',
 	PhoneNumber.prototype.toJSON );
+goog.exportSymbol( 'PhoneNumber.prototype.canBeInternationallyDialled',
+	PhoneNumber.prototype.canBeInternationallyDialled );
 goog.exportSymbol( 'PhoneNumber.prototype.isValid',
 	PhoneNumber.prototype.isValid );
 goog.exportSymbol( 'PhoneNumber.prototype.isPossible',

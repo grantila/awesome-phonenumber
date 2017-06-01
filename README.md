@@ -4,7 +4,7 @@
 
 This library is a pre-compiled version of Google's `libphonenumber`, with a slightly simpler interface. It has a minimal footprint - is by far the smallest libphonenumber-based library available on npmjs, and has no dependencies.
 
-Uses libphonenumber v8.4.1
+Uses libphonenumber v8.5.0
 
 [![build status][travis-image]][travis-url]
 
@@ -35,17 +35,19 @@ var PhoneNumber = require( 'awesome-phonenumber' );
 var pn = new PhoneNumber( '0707123456', 'SE' );
 pn.isValid( );  // -> true
 pn.isMobile( ); // -> true
-pn.getNumber( );                 // -> '+46707123456'
-pn.getNumber( 'e164' );          // -> '+46707123456' (default)
-pn.getNumber( 'international' ); // -> '+46 70 712 34 56'
-pn.getNumber( 'national' );      // -> '070-712 34 56'
-pn.getNumber( 'rfc3966' );       // -> 'tel:+46-70-712-34-56'
-pn.getNumber( 'significant' );   // -> '707123456'
-pn.getRegionCode( );             // -> 'SE'
+pn.canBeInternationallyDialled( ); // -> true
+pn.getNumber( );                   // -> '+46707123456'
+pn.getNumber( 'e164' );            // -> '+46707123456' (default)
+pn.getNumber( 'international' );   // -> '+46 70 712 34 56'
+pn.getNumber( 'national' );        // -> '070-712 34 56'
+pn.getNumber( 'rfc3966' );         // -> 'tel:+46-70-712-34-56'
+pn.getNumber( 'significant' );     // -> '707123456'
+pn.getRegionCode( );               // -> 'SE'
 
 pn.toJSON( );                  // -> json blob, so that:
 JSON.stringify( pn, null, 4 ); // -> This:
 // {
+//     "canBeInternationallyDialled": true,
 //     "number": {
 //         "input": "0707123456",
 //         "international": "+46 70 712 34 56",

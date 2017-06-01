@@ -9,6 +9,8 @@ describe( 'general', function( ) {
 		expect( pn.isPossible( ) ).to.be.true;
 		expect( pn.isMobile( ) ).to.be.true;
 		expect( pn.getNumber( 'significant' ) ).to.equal( '707123456' );
+		expect( pn.canBeInternationallyDialled( ) ).to.equal( true );
+		expect( pn.toJSON( ).canBeInternationallyDialled ).to.equal( true );
 	} );
 
 	it( 'should be able to create an example phone number', function( ) {

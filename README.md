@@ -64,6 +64,14 @@ JSON.stringify( pn, null, 4 ); // -> This:
 // }
 ```
 
+### Detect country
+
+When constructed with a phone number on `e164` format (i.e. prefixed with a `+`), awesome-phonenumber will auto-detect the country:
+
+```js
+PhoneNumber( '+46707123456' ).getRegionCode( ); // -> 'SE'
+```
+
 ## API types
 
 The API consists of the `PhoneNumber` class which sometimes uses *enums*. These are:
@@ -108,7 +116,7 @@ The API consists of the `PhoneNumber` class which sometimes uses *enums*. These 
 ### Library
 ```js
 var PhoneNumber = require( 'awesome-phonenumber' );
-````
+```
 
 ### Country codes
 
@@ -117,14 +125,14 @@ There are conversion functions between the 2-character ISO 3166-1 region codes (
 ```js
 PhoneNumber.getCountryCodeForRegionCode( regionCode );  // -> countryCode
 PhoneNumber.getRegionCodeForCountryCode( countryCode ); // -> regionCode
-````
+```
 
 #### Example
 
 ```js
 PhoneNumber.getCountryCodeForRegionCode( 'SE' ); // -> 46
 PhoneNumber.getRegionCodeForCountryCode( 46 );   // -> 'SE'
-````
+```
 
 ### Phone numbers
 

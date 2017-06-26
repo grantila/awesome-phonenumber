@@ -315,7 +315,12 @@ AsYouType.prototype.getPhoneNumber = function( )
 }
 
 
-goog.global = ( typeof exports !== 'undefined' ) ? exports : window;
+goog.global =
+	( typeof exports !== 'undefined' )
+	? exports
+	: ( typeof self !== 'undefined' )
+	? self
+	: window;
 
 goog.exportSymbol( 'PhoneNumber', PhoneNumber );
 

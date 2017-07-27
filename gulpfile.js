@@ -94,7 +94,7 @@ function gitClone( url, name, branch )
 {
 	const args = [ '--depth=1' ];
 	if ( branch )
-		args.push( '--branch=v8.4.1' );
+		args.push( '--branch=' + branch );
 
 	return runCommand( 'git', [ 'clone', ...args, url, name ] );
 }

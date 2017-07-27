@@ -4,7 +4,7 @@
 
 This library is a pre-compiled version of Google's `libphonenumber`, with a slightly simpler interface. It has a minimal footprint - is by far the smallest libphonenumber-based library available on npmjs, and has no dependencies.
 
-Uses libphonenumber v8.5.2
+Uses libphonenumber v8.7.0
 
 [![build status][travis-image]][travis-url]
 
@@ -132,6 +132,12 @@ PhoneNumber.getRegionCodeForCountryCode( countryCode ); // -> regionCode
 ```js
 PhoneNumber.getCountryCodeForRegionCode( 'SE' ); // -> 46
 PhoneNumber.getRegionCodeForCountryCode( 46 );   // -> 'SE'
+```
+
+### Supported calling codes
+
+```js
+PhoneNumber.getSupportedCallingCodes( ); // -> [ calling codes... ]
 ```
 
 ### Phone numbers

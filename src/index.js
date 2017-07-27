@@ -193,6 +193,11 @@ PhoneNumber.getRegionCodeForCountryCode = function( countryCode )
 	return regionCode;
 }
 
+PhoneNumber.getSupportedCallingCodes = function( )
+{
+	return phoneUtil.getSupportedCallingCodes( );
+}
+
 PhoneNumber.getExample = function( regionCode, type /* = null */ )
 {
 	var example;
@@ -328,6 +333,8 @@ goog.exportSymbol( 'PhoneNumber.getCountryCodeForRegionCode',
 	PhoneNumber.getCountryCodeForRegionCode );
 goog.exportSymbol( 'PhoneNumber.getRegionCodeForCountryCode',
 	PhoneNumber.getRegionCodeForCountryCode );
+goog.exportSymbol( 'PhoneNumber.getSupportedCallingCodes',
+	PhoneNumber.getSupportedCallingCodes );
 goog.exportSymbol( 'PhoneNumber.getExample',
 	PhoneNumber.getExample );
 goog.exportSymbol( 'PhoneNumber.getAsYouType',

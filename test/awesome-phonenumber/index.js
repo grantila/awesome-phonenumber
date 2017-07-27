@@ -62,4 +62,9 @@ describe( 'general', function( ) {
 		var pn = new PhoneNumber( '0707123456', 'SE' );
 		expect( pn.getRegionCode( ) ).to.equal( 'SE' );
 	} );
+
+	it( 'should have supported calling codes', function( ) {
+		const codes = PhoneNumber.getSupportedCallingCodes( );
+		expect( codes.length ).to.be.above( 100 );
+	} );
 } );

@@ -1,8 +1,11 @@
 build*
 src
 test
+test.in
+scripts
 gulp*
 .npmignore
 benchmark
 libphonenumber.version
 .travis.yml
+tsconfig.json

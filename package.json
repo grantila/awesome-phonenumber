@@ -10,7 +10,7 @@
   },
   "scripts": {
     "build": "node_modules/.bin/gulp",
-    "test": "node_modules/.bin/mocha"
+    "test": "scripts/test.sh"
   },
   "pre-commit": [
     "test"
@@ -27,6 +27,7 @@
     "awesome"
   ],
   "devDependencies": {
+    "@types/mocha": "^2.2.42",
     "bluebird": "^3",
     "chai": "^3.5",
     "google-closure-compiler": "^20160713.2.0",
@@ -36,6 +37,8 @@
     "pre-commit": "^1.1",
     "replace": "^0.3",
     "rimraf-promise": "^2.0",
-    "run-sequence": "^1.2"
-  }
+    "run-sequence": "^1.2",
+    "typescript": "^2.5.2"
+  },
+  "types": "./index.d.ts"
 }

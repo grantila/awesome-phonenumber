@@ -1,0 +1,15 @@
+{
+	"compilerOptions": {
+		"declaration": true,
+		"lib": [ "es2015", "es2017", "dom" ],
+		"moduleResolution": "node",
+		"outDir": "test/awesome-phonenumber",
+		"pretty": true,
+		"sourceMap": true,
+		"target": "es5",
+		"allowSyntheticDefaultImports": true
+	},
+	"include": [
+		"test.in/awesome-phonenumber"
+	]
+}

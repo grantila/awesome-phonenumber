@@ -34,7 +34,7 @@ declare namespace AwesomePhonenumber
 		isFixedLine( ): boolean;
 		getNumber( type?: PhoneNumberFormat ): string;
 		getNumberFrom( regionCode: string ): string;
-		getRegionCode( ): boolean;
+		getRegionCode( ): string;
 		toJSON( ): any;
 
 		static getCountryCodeForRegionCode( regionCode: string ): number;

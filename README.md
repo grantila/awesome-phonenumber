@@ -4,7 +4,7 @@
 
 This library is a pre-compiled version of Google's `libphonenumber`, with a slightly simpler interface. It has a minimal footprint - is by far the smallest libphonenumber-based library available on npmjs, and has no dependencies.
 
-Uses libphonenumber v8.8.2
+Uses libphonenumber v8.8.4
 
 [![build status][travis-image]][travis-url]
 

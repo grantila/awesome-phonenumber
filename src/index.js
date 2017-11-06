@@ -122,7 +122,7 @@ function PhoneNumber( phoneNumber, regionCode )
 		{
 			// Ensure region code is valid
 			var cc = PhoneNumber.getCountryCodeForRegionCode( regionCode );
-			if ( phoneNumber.substr( 1, cc.length ) !== cc )
+			if ( phoneNumber.substr( 1, ( '' + cc ).length ) !== '' + cc )
 				// Wrong region code, let's fix it
 				regionCode = null;
 		}

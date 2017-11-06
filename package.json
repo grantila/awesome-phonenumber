@@ -30,7 +30,7 @@
     "@types/mocha": "^2.2.42",
     "bluebird": "^3",
     "chai": "^3.5",
-    "google-closure-compiler": "^20160713.2.0",
+    "google-closure-compiler": "^20171023.0.1",
     "gulp": "^3.9",
     "mkdirp": "^0.5.1",
     "mocha": "^3",

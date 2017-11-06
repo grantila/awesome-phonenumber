@@ -115,7 +115,8 @@ function runCommand( cmd, args, opts )
 		cp.on( 'close', code => {
 			if ( code === 0 )
 				return resolve( );
-			reject( new Error( cmd + " exited with exitcode " + code ) );
+			reject( new Error(
+				`${cmd} exited with exitcode ${code}. Args: ${args}` ) );
 		} );
 		cp.on( 'error', err => reject( err ) );
 	} );

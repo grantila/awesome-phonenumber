@@ -70,4 +70,14 @@ describe( 'general', function( ) {
 		const codes = PhoneNumber.getSupportedCallingCodes( );
 		expect( codes.length ).to.be.above( 100 );
 	} );
+
+	it( 'should not guess US for invalid region code numbers', function( ) {
+		const pn = new PhoneNumber( '+80012345678' );
+		expect( pn.getRegionCode( ) ).to.not.equal( 'US' );
+	} );
+
+	it( 'should not guess US for known CA numbers', function( ) {
+		const pn = new PhoneNumber( '+1613 734.6759', 'CA' );
+		expect( pn.getRegionCode( ) ).to.equal( 'CA' );
+	} );
 } );

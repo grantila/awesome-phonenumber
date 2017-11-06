@@ -188,8 +188,6 @@ PhoneNumber.getCountryCodeForRegionCode = function( regionCode )
 PhoneNumber.getRegionCodeForCountryCode = function( countryCode )
 {
 	var regionCode = phoneUtil.getRegionCodeForCountryCode( countryCode );
-	if ( regionCode.substr( 0, 2 ) === '00' )
-		return PhoneNumber.getRegionCodeForCountryCode( regionCode.substr( 2 ) );
 	return regionCode;
 }
 

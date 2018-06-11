@@ -5,9 +5,9 @@ const runSequence = require( 'run-sequence' );
 const child   = require( 'child_process' );
 const path    = require( 'path' );
 const fs      = require( 'fs' );
-const Promise = require( 'bluebird' );
+const util    = require( 'util' );
 const rimraf  = require( 'rimraf-promise' );
-const mkdirp  = Promise.promisify( require( 'mkdirp' ) );
+const mkdirp  = util.promisify( require( 'mkdirp' ) );
 const replace = require( 'replace' );
 
 
@@ -35,7 +35,7 @@ gulp.task( 'clone-libphonenumber', [ 'make-build-dir' ], ( ) =>
 );
 
 gulp.task( 'clone-closure-library', [ 'make-build-dir' ], ( ) =>
-	gitClone( closureLibraryUrl, 'closure-library' )
+	gitClone( closureLibraryUrl, 'closure-library', 'v20171112' )
 );
 
 gulp.task( 'checkout-closure-linter', [ 'make-build-dir' ], ( ) =>

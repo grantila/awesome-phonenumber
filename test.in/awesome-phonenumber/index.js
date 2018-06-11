@@ -1,6 +1,8 @@
 'use strict';
 
-var PhoneNumber = require( '../../' );
+const { expect } = require( 'chai' );
+
+const PhoneNumber = require( '../../' );
 
 describe( 'general', function( ) {
 	it( 'should be able to parse a phone number', function( ) {

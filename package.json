@@ -12,6 +12,7 @@
     "build": "node_modules/.bin/gulp",
     "test": "scripts/test.sh",
     "semantic-release": "semantic-release",
+    "travis-deploy-once": "travis-deploy-once",
     "cz": "git-cz"
   },
   "pre-commit": [
@@ -46,7 +47,8 @@
     "replace": "1.x",
     "rimraf-promise": "2.x",
     "semantic-release": "15.x",
-    "typescript": "3.x"
+    "typescript": "3.x",
+    "travis-deploy-once": "5.x"
   },
   "config": {
     "commitizen": {

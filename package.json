@@ -17,6 +17,12 @@
   "pre-commit": [
     "test"
   ],
+  "files": [
+    "lib",
+    "index.js",
+    "index.d.ts"
+  ],
+  "types": "./index.d.ts",
   "keywords": [
     "libphonenumber",
     "phonenumber",
@@ -43,7 +49,6 @@
     "semantic-release": "^15.12.4",
     "typescript": "2.8.x"
   },
-  "types": "./index.d.ts",
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"

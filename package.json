@@ -2,7 +2,7 @@
   "name": "awesome-phonenumber",
   "description": "Google's libphonenumber pre-compiled with the closure compiler",
   "license": "MIT",
-  "version": "2.2.6",
+  "version": "0.0.0-development",
   "author": "Gustaf Räntilä <g.rantila@gmail.com>",
   "repository": {
     "type": "git",
@@ -10,7 +10,9 @@
   },
   "scripts": {
     "build": "node_modules/.bin/gulp",
-    "test": "scripts/test.sh"
+    "test": "scripts/test.sh",
+    "semantic-release": "semantic-release",
+    "cz": "git-cz"
   },
   "pre-commit": [
     "test"
@@ -29,6 +31,7 @@
   "devDependencies": {
     "@types/mocha": "5.x",
     "chai": "4.x",
+    "cz-conventional-changelog": "^2.1.0",
     "google-closure-compiler": "20171023.0.1",
     "gulp": "3.x",
     "mkdirp": "0.x",
@@ -37,7 +40,13 @@
     "replace": "1.x",
     "rimraf-promise": "2.x",
     "run-sequence": "2.x",
+    "semantic-release": "^15.12.4",
     "typescript": "2.8.x"
   },
-  "types": "./index.d.ts"
+  "types": "./index.d.ts",
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
 }

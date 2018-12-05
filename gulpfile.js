@@ -1,6 +1,5 @@
 
-const gulp        = require( 'gulp' );
-const runSequence = require( 'run-sequence' );
+const gulp = require( 'gulp' );
 
 const child   = require( 'child_process' );
 const path    = require( 'path' );
@@ -30,57 +29,45 @@ gulp.task( 'make-build-dir', ( ) =>
 	mkdirp( buildRoot )
 );
 
-gulp.task( 'clone-libphonenumber', [ 'make-build-dir' ], ( ) =>
+gulp.task( 'clone-libphonenumber', gulp.series( 'make-build-dir', ( ) =>
 	gitClone( libphonenumberUrl, 'libphonenumber', libphonenumberVersion )
-);
+) );
 
-gulp.task( 'clone-closure-library', [ 'make-build-dir' ], ( ) =>
+gulp.task( 'clone-closure-library', gulp.series( 'make-build-dir', ( ) =>
 	gitClone( closureLibraryUrl, 'closure-library', 'v20171112' )
-);
+) );
 
-gulp.task( 'checkout-closure-linter', [ 'make-build-dir' ], ( ) =>
+gulp.task( 'checkout-closure-linter', gulp.series( 'make-build-dir', ( ) =>
 	gitClone( closureLinterUrl, 'closure-linter' )
-);
+) );
 
-gulp.task( 'checkout-python-gflags', [ 'make-build-dir' ], ( ) =>
+gulp.task( 'checkout-python-gflags', gulp.series( 'make-build-dir', ( ) =>
 	gitClone( pythonGflagsUrl, 'python-gflags' )
-);
+) );
 
-gulp.task( 'download-deps', [
+gulp.task( 'download-deps', gulp.parallel(
 	'clone-libphonenumber',
 	'clone-closure-library',
 	'checkout-closure-linter',
 	'checkout-python-gflags'
-] );
+) );
 
-gulp.task( 'build-deps', [ 'download-deps' ] );
+gulp.task( 'build-deps', gulp.series( 'download-deps' ) );
 
 gulp.task( 'build-libphonenumber', ( ) => {
 	var args = [ '-f', 'build.xml', 'compile-exports' ];
 	return runCommand( 'ant', args, { cwd: '.' } );
 } );
 
-gulp.task( 'build', cb =>
-	runSequence(
-		'build-deps',
-		'build-libphonenumber',
-		cb
-	)
-);
+gulp.task( 'build', gulp.series( 'build-deps', 'build-libphonenumber' ) );
 
 gulp.task( 'update-readme', ( ) =>
 	updateReadme( )
 );
 
-gulp.task( 'default', [ 'clean' ], cb =>
-	runSequence(
-		'build',
-		'update-readme',
-		cb
-	)
-);
+gulp.task( 'default', gulp.series( 'clean', 'build', 'update-readme' ) );
 
-function updateReadme( )
+async function updateReadme( )
 {
 	replace( {
 		regex: 'Uses libphonenumber ([A-Za-z.0-9]+)',

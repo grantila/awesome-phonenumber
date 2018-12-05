@@ -37,17 +37,16 @@
   "devDependencies": {
     "@types/mocha": "5.x",
     "chai": "4.x",
-    "cz-conventional-changelog": "^2.1.0",
+    "cz-conventional-changelog": "2.x",
     "google-closure-compiler": "20171023.0.1",
-    "gulp": "3.x",
+    "gulp": "4.x",
     "mkdirp": "0.x",
     "mocha": "5.x",
     "pre-commit": "1.x",
     "replace": "1.x",
     "rimraf-promise": "2.x",
-    "run-sequence": "2.x",
-    "semantic-release": "^15.12.4",
-    "typescript": "2.8.x"
+    "semantic-release": "15.x",
+    "typescript": "3.x"
   },
   "config": {
     "commitizen": {

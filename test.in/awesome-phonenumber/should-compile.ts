@@ -39,17 +39,17 @@ describe( 'general', function( ) {
 		expect( ayt.addChar( '0' ) ).to.equal( '0' );
 		expect( ayt.addChar( '7' ) ).to.equal( '07' );
 		expect( ayt.addChar( '0' ) ).to.equal( '070' );
-		expect( ayt.addChar( '7' ) ).to.equal( '070 7' );
-		expect( ayt.addChar( '1' ) ).to.equal( '070 71' );
-		expect( ayt.addChar( '2' ) ).to.equal( '070 712' );
+		expect( ayt.addChar( '7' ) ).to.equal( '070-7' );
+		expect( ayt.addChar( '1' ) ).to.equal( '070-71' );
+		expect( ayt.addChar( '2' ) ).to.equal( '070-712' );
 
 		var pn1 = ayt.getPhoneNumber( );
 		expect( pn1.isValid( ) ).to.be.false;
 
-		expect( ayt.addChar( '3' ) ).to.equal( '070 712 3' );
-		expect( ayt.addChar( '4' ) ).to.equal( '070 712 34' );
-		expect( ayt.addChar( '5' ) ).to.equal( '070 712 34 5' );
-		expect( ayt.addChar( '6' ) ).to.equal( '070 712 34 56' );
+		expect( ayt.addChar( '3' ) ).to.equal( '070-712 3' );
+		expect( ayt.addChar( '4' ) ).to.equal( '070-712 34' );
+		expect( ayt.addChar( '5' ) ).to.equal( '070-712 34 5' );
+		expect( ayt.addChar( '6' ) ).to.equal( '070-712 34 56' );
 
 		var pn2 = ayt.getPhoneNumber( );
 		expect( pn2.isValid( ) ).to.be.true;

@@ -38,6 +38,7 @@
   "devDependencies": {
     "@types/mocha": "5.x",
     "chai": "4.x",
+    "commitizen": "3.x",
     "cz-conventional-changelog": "2.x",
     "google-closure-compiler": "20171023.0.1",
     "gulp": "4.x",
@@ -47,8 +48,8 @@
     "replace": "1.x",
     "rimraf-promise": "2.x",
     "semantic-release": "15.x",
-    "typescript": "3.x",
-    "travis-deploy-once": "5.x"
+    "travis-deploy-once": "5.x",
+    "typescript": "3.x"
   },
   "config": {
     "commitizen": {

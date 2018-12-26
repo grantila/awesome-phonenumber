@@ -2,7 +2,6 @@
 const gulp = require( 'gulp' );
 
 const child   = require( 'child_process' );
-const path    = require( 'path' );
 const fs      = require( 'fs' );
 const util    = require( 'util' );
 const rimraf  = require( 'rimraf-promise' );
@@ -18,6 +17,9 @@ const libphonenumberUrl = 'https://github.com/googlei18n/libphonenumber/';
 const closureLibraryUrl = 'https://github.com/google/closure-library/';
 const closureLinterUrl = 'https://github.com/google/closure-linter';
 const pythonGflagsUrl = 'https://github.com/google/python-gflags.git';
+const antName = 'apache-ant-1.10.5'
+const antTar = `${antName}.tar.gz`
+const antUrl = `http://apache.mirrors.spacedump.net/ant/binaries/${antName}-bin.tar.gz`;
 
 const isDebug = process.env.DEBUG && process.env.DEBUG !== '0';
 
@@ -45,18 +47,35 @@ gulp.task( 'checkout-python-gflags', gulp.series( 'make-build-dir', ( ) =>
 	gitClone( pythonGflagsUrl, 'python-gflags' )
 ) );
 
+gulp.task( 'download-ant', gulp.series(
+	'make-build-dir',
+	( ) =>
+		runCommand(
+			'curl',
+			[ '-L', '-o', antTar, antUrl ],
+			{ cwd: buildRoot }
+		),
+	( ) =>
+		runCommand(
+			'tar',
+			[ 'zxf', antTar ],
+			{ cwd: buildRoot }
+		)
+) );
+
 gulp.task( 'download-deps', gulp.parallel(
 	'clone-libphonenumber',
 	'clone-closure-library',
 	'checkout-closure-linter',
-	'checkout-python-gflags'
+	'checkout-python-gflags',
+	'download-ant'
 ) );
 
 gulp.task( 'build-deps', gulp.series( 'download-deps' ) );
 
 gulp.task( 'build-libphonenumber', ( ) => {
 	var args = [ '-f', 'build.xml', 'compile-exports' ];
-	return runCommand( 'ant', args, { cwd: '.' } );
+	return runCommand( `${buildRoot}/${antName}/bin/ant`, args, { cwd: '.' } );
 } );
 
 gulp.task( 'build', gulp.series( 'build-deps', 'build-libphonenumber' ) );

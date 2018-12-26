@@ -1,10 +1,13 @@
 [![npm version][npm-image]][npm-url]
 [![downloads][downloads-image]][npm-url]
 [![build status][travis-image]][travis-url]
+[![Language grade: JavaScript][lgtm-image]][lgtm-url]
 
 # Awesome phonenumber parser
 
 This library is a pre-compiled version of Google's `libphonenumber`, with a slightly simpler interface. It has a minimal footprint - is by far the smallest libphonenumber-based library available on npmjs, and has no dependencies.
+
+TypeScript typings are provided within the package.
 
 Uses libphonenumber v8.10.2
 
@@ -236,3 +239,5 @@ ayt.addChar( '7' ); // -> '070 712 34 57'
 [downloads-image]: https://img.shields.io/npm/dm/awesome-phonenumber.svg
 [travis-image]: https://img.shields.io/travis/grantila/awesome-phonenumber.svg
 [travis-url]: https://travis-ci.org/grantila/awesome-phonenumber
+[lgtm-image]: https://img.shields.io/lgtm/grade/javascript/g/grantila/awesome-phonenumber.svg?logo=lgtm&logoWidth=18
+[lgtm-url]: https://lgtm.com/projects/g/grantila/awesome-phonenumber/context:javascript

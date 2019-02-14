@@ -81,3 +81,40 @@ describe( 'general', function( ) {
 		expect( pn.getRegionCode( ) ).to.equal( 'CA' );
 	} );
 } );
+
+describe( 'errors', function( ) {
+	it( 'should handle invalid country code', function( ) {
+		var pn = new PhoneNumber( '+0123' );
+		expect( pn.isValid( ) ).to.be.false;
+		expect( pn.isPossible( ) ).to.be.false;
+		expect( pn.toJSON( ).possibility ).to.equal( 'invalid-country-code' );
+	} );
+
+	it( 'should handle invalid country code (and valid region code)', function( ) {
+		var pn = new PhoneNumber( '+0123', 'SE' );
+		expect( pn.isValid( ) ).to.be.false;
+		expect( pn.isPossible( ) ).to.be.false;
+		expect( pn.toJSON( ).possibility ).to.equal( 'invalid-country-code' );
+	} );
+
+	it( 'should handle invalid country code and region code', function( ) {
+		var pn = new PhoneNumber( '0123', 'XX' );
+		expect( pn.isValid( ) ).to.be.false;
+		expect( pn.isPossible( ) ).to.be.false;
+		expect( pn.toJSON( ).possibility ).to.equal( 'invalid-country-code' );
+	} );
+
+	it( 'should handle missing country code', function( ) {
+		var pn = new PhoneNumber( '0123' );
+		expect( pn.isValid( ) ).to.be.false;
+		expect( pn.isPossible( ) ).to.be.false;
+		expect( pn.toJSON( ).possibility ).to.equal( 'invalid-country-code' );
+	} );
+
+	it( 'should handle TOO_SHORT', function( ) {
+		var pn = new PhoneNumber( '0123', 'SE' );
+		expect( pn.isValid( ) ).to.be.false;
+		expect( pn.isPossible( ) ).to.be.false;
+		expect( pn.toJSON( ).possibility ).to.equal( 'too-short' );
+	} );
+} );

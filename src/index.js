@@ -52,16 +52,20 @@ function toNumberType( exportedName )
 
 function getValidationResult( number )
 {
-	switch( phoneUtil.isPossibleNumberWithReason( number ) )
+	try
 	{
-		case ValidationResult.IS_POSSIBLE:          return 'is-possible';
-		case ValidationResult.INVALID_COUNTRY_CODE: return 'invalid-country-code';
-		case ValidationResult.TOO_LONG:             return 'too-long';
-		case ValidationResult.TOO_SHORT:            return 'too-short';
-	}
+		switch( phoneUtil.isPossibleNumberWithReason( number ) )
+		{
+			case ValidationResult.IS_POSSIBLE:          return 'is-possible';
+			case ValidationResult.INVALID_COUNTRY_CODE: return 'invalid-country-code';
+			case ValidationResult.TOO_LONG:             return 'too-long';
+			case ValidationResult.TOO_SHORT:            return 'too-short';
+		}
 
-	if ( phoneUtil.isPossibleNumber( number ) )
-		return 'is-possible';
+		if ( phoneUtil.isPossibleNumber( number ) )
+			return 'is-possible';
+	} catch ( err ) { }
+
 	return 'unknown';
 }
 
@@ -87,6 +91,8 @@ function extractRegionCode( phoneNumber )
 	regionCode = PhoneNumber.getRegionCodeForCountryCode( firstThree );
 	if ( regionCode !== 'ZZ' )
 		return regionCode;
+
+	return null;
 }
 
 /**
@@ -148,12 +154,28 @@ function PhoneNumber( phoneNumber, regionCode )
 		this._number = null;
 		this._json[ 'number' ][ 'input' ] = phoneNumber;
 
+		if ( !regionCode )
+		{
+			this._json[ 'possibility' ] = 'invalid-country-code';
+			return;
+		}
+		else
+		{
+			var cc = PhoneNumber.getCountryCodeForRegionCode( regionCode );
+			if ( cc === 0 )
+			{
+				this._json[ 'possibility' ] = 'invalid-country-code';
+				return;
+			}
+		}
+
 		try
 		{
 			this._number = phoneUtil.parse( phoneNumber, regionCode );
 		}
 		catch ( e )
 		{
+			this._json[ 'possibility' ] = getValidationResult( phoneNumber );
 			return;
 		}
 	}

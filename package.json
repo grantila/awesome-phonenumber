@@ -43,7 +43,7 @@
     "google-closure-compiler": "20171023.0.1",
     "gulp": "4.x",
     "mkdirp": "0.x",
-    "mocha": "5.x",
+    "mocha": "6.x",
     "pre-commit": "1.x",
     "replace": "1.x",
     "rimraf-promise": "2.x",

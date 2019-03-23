@@ -17,8 +17,8 @@ const libphonenumberUrl = 'https://github.com/googlei18n/libphonenumber/';
 const closureLibraryUrl = 'https://github.com/google/closure-library/';
 const closureLinterUrl = 'https://github.com/google/closure-linter';
 const pythonGflagsUrl = 'https://github.com/google/python-gflags.git';
-const antName = 'apache-ant-1.10.5'
-const antTar = `${antName}.tar.gz`
+const antName = 'apache-ant-1.10.5';
+const antTar = `${antName}.tar.gz`;
 const antUrl = `http://apache.mirrors.spacedump.net/ant/binaries/${antName}-bin.tar.gz`;
 
 const isDebug = process.env.DEBUG && process.env.DEBUG !== '0';

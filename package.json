@@ -10,7 +10,7 @@
   },
   "scripts": {
     "build": "node_modules/.bin/gulp",
-    //"test": "scripts/test.sh",
+    "test": "scripts/test.sh",
     "semantic-release": "semantic-release",
     "travis-deploy-once": "travis-deploy-once",
     "cz": "git-cz"

@@ -69,32 +69,6 @@ function getValidationResult( number )
 	return 'unknown';
 }
 
-function extractRegionCode( phoneNumber )
-{
-	if ( phoneNumber.charAt( 0 ) !== '+' || phoneNumber.length < 5 )
-		return null;
-
-	var firstOne   = phoneNumber.substr( 1, 1 );
-	var firstTwo   = phoneNumber.substr( 1, 2 );
-	var firstThree = phoneNumber.substr( 1, 3 );
-
-	var regionCode;
-
-	regionCode = PhoneNumber.getRegionCodeForCountryCode( firstOne );
-	if ( regionCode !== 'ZZ' )
-		return regionCode;
-
-	regionCode = PhoneNumber.getRegionCodeForCountryCode( firstTwo );
-	if ( regionCode !== 'ZZ' )
-		return regionCode;
-
-	regionCode = PhoneNumber.getRegionCodeForCountryCode( firstThree );
-	if ( regionCode !== 'ZZ' )
-		return regionCode;
-
-	return null;
-}
-
 /**
  * The PhoneNumber class.
  * @constructor
@@ -135,7 +109,7 @@ function PhoneNumber( phoneNumber, regionCode )
 
 		if ( !regionCode )
 			// Guess region code
-			regionCode = extractRegionCode( phoneNumber );
+			regionCode = phoneUtil.getRegionCodeForNumber( phoneNumber );
 	}
 
 	this._json = {

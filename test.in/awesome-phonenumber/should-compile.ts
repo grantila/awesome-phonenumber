@@ -80,9 +80,33 @@ describe( 'general', function( ) {
 		const pn = new PhoneNumber( '+1613 734.6759', 'CA' );
 		expect( pn.getRegionCode( ) ).to.equal( 'CA' );
 	} );
+
+	it( 'should extract region by prefix as early as possible', function( ) {
+		const pn1 = new PhoneNumber( '+1' );
+		const pn1x = new PhoneNumber( '+12' );
+		expect( pn1.getRegionCode( ) ).to.equal( 'US' );
+		expect( pn1x.getRegionCode( ) ).to.equal( 'US' );
+
+		const pn2 = new PhoneNumber( '+46' );
+		const pn2x = new PhoneNumber( '+467' );
+		expect( pn2.getRegionCode( ) ).to.equal( 'SE' );
+		expect( pn2x.getRegionCode( ) ).to.equal( 'SE' );
+
+		const pn3 = new PhoneNumber( '+358' );
+		const pn3x = new PhoneNumber( '+3587' );
+		expect( pn3.getRegionCode( ) ).to.equal( 'FI' );
+		expect( pn3x.getRegionCode( ) ).to.equal( 'FI' );
+	} );
 } );
 
+
 describe( 'errors', function( ) {
+	it( 'should not allow too short numbers', function( ) {
+		var pn = new PhoneNumber( '+12' );
+		expect( pn.isValid( ) ).to.be.false;
+		expect( pn.isPossible( ) ).to.be.false;
+	} );
+
 	it( 'should handle invalid country code', function( ) {
 		var pn = new PhoneNumber( '+0123' );
 		expect( pn.isValid( ) ).to.be.false;

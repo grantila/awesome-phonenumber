@@ -71,26 +71,23 @@ function getValidationResult( number )
 
 function extractRegionCode( phoneNumber )
 {
-	if ( phoneNumber.charAt( 0 ) !== '+' || phoneNumber.length < 5 )
+	if ( phoneNumber.charAt( 0 ) !== '+' )
 		return null;
-
-	var firstOne   = phoneNumber.substr( 1, 1 );
-	var firstTwo   = phoneNumber.substr( 1, 2 );
-	var firstThree = phoneNumber.substr( 1, 3 );
 
 	var regionCode;
 
-	regionCode = PhoneNumber.getRegionCodeForCountryCode( firstOne );
-	if ( regionCode !== 'ZZ' )
-		return regionCode;
+	for ( var len = 1; len < 4; ++len )
+	{
+		if ( phoneNumber.length < len + 1 )
+			return null;
 
-	regionCode = PhoneNumber.getRegionCodeForCountryCode( firstTwo );
-	if ( regionCode !== 'ZZ' )
-		return regionCode;
+		regionCode = PhoneNumber.getRegionCodeForCountryCode(
+			phoneNumber.substring( 1, len + 1 )
+		);
 
-	regionCode = PhoneNumber.getRegionCodeForCountryCode( firstThree );
-	if ( regionCode !== 'ZZ' )
-		return regionCode;
+		if ( regionCode !== 'ZZ' )
+			return regionCode;
+	}
 
 	return null;
 }

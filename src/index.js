@@ -69,6 +69,16 @@ function getValidationResult( number )
 	return 'unknown';
 }
 
+function extractRegionCode( phoneNumber )
+{
+	if ( phoneNumber.charAt( 0 ) !== '+' || phoneNumber.length < 5 )
+		return null;
+
+    console.log(phoneNumber)
+    console.log("omer", phoneNumber, phoneUtil.getRegionCodeForNumber( phoneNumber ), "omer")
+	return phoneUtil.getRegionCodeForNumber( phoneNumber )
+}
+
 /**
  * The PhoneNumber class.
  * @constructor
@@ -107,9 +117,9 @@ function PhoneNumber( phoneNumber, regionCode )
 				regionCode = null;
 		}
 
-		if ( !regionCode )
-			// Guess region code
-			regionCode = phoneUtil.getRegionCodeForNumber( phoneNumber );
+        if ( !regionCode )
+            // Guess region code
+            regionCode = extractRegionCode( phoneNumber );
 	}
 
 	this._json = {

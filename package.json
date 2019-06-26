@@ -16,7 +16,7 @@
     "cz": "git-cz"
   },
   "pre-commit": [
-    "test"
+    //"test"
   ],
   "files": [
     "lib",

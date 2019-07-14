@@ -71,25 +71,40 @@ function getValidationResult( number )
 
 function extractRegionCode( phoneNumber )
 {
-	if ( phoneNumber.charAt( 0 ) !== '+' )
-		return null;
+	var parsed, regionCode;
 
-	var regionCode;
+	if ( phoneNumber.charAt( 0 ) !== '+' )
+		return { parsed, regionCode };
+
+	try
+	{
+		parsed = phoneUtil.parse( phoneNumber );
+	} catch ( err ) { }
+
+	if ( parsed )
+	{
+		regionCode = phoneUtil.getRegionCodeForNumber( parsed );
+
+		if ( regionCode != null && regionCode !== 'ZZ' )
+			return { parsed, regionCode };
+	}
 
 	for ( var len = 1; len < 4; ++len )
 	{
+		regionCode = void 0;
+
 		if ( phoneNumber.length < len + 1 )
-			return null;
+			return { parsed, regionCode };
 
 		regionCode = PhoneNumber.getRegionCodeForCountryCode(
 			phoneNumber.substring( 1, len + 1 )
 		);
 
 		if ( regionCode !== 'ZZ' )
-			return regionCode;
+			return { regionCode };
 	}
 
-	return null;
+	return { parsed, regionCode: void 0 };
 }
 
 /**
@@ -119,6 +134,8 @@ function PhoneNumber( phoneNumber, regionCode )
 			}
 		}( );
 
+	let parsed;
+
 	if ( !isInternal )
 	{
 		if ( regionCode && ( phoneNumber.charAt( 0 ) === '+' ) )
@@ -132,7 +149,7 @@ function PhoneNumber( phoneNumber, regionCode )
 
 		if ( !regionCode )
 			// Guess region code
-			regionCode = extractRegionCode( phoneNumber );
+			( { regionCode = null, parsed } = extractRegionCode( phoneNumber ) );
 	}
 
 	this._json = {
@@ -168,7 +185,10 @@ function PhoneNumber( phoneNumber, regionCode )
 
 		try
 		{
-			this._number = phoneUtil.parse( phoneNumber, regionCode );
+			if ( parsed )
+				this._number = parsed;
+			else
+				this._number = phoneUtil.parse( phoneNumber, regionCode );
 		}
 		catch ( e )
 		{

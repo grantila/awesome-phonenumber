@@ -81,6 +81,11 @@ describe( 'general', function( ) {
 		expect( pn.getRegionCode( ) ).to.equal( 'CA' );
 	} );
 
+	it( 'should not guess US for known CA numbers w/o "CA" specified', function( ) {
+		const pn = new PhoneNumber( '+16137346759' );
+		expect( pn.getRegionCode( ) ).to.equal( 'CA' );
+	} );
+
 	it( 'should extract region by prefix as early as possible', function( ) {
 		const pn1 = new PhoneNumber( '+1' );
 		const pn1x = new PhoneNumber( '+12' );

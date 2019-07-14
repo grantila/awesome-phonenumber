@@ -71,12 +71,35 @@ function getValidationResult( number )
 
 function extractRegionCode( phoneNumber )
 {
-	if ( phoneNumber.charAt( 0 ) !== '+' || phoneNumber.length < 5 )
+	if ( phoneNumber.charAt( 0 ) !== '+' )
 		return null;
 
-    console.log(phoneNumber)
-    console.log("omer", phoneNumber, phoneUtil.getRegionCodeForNumber( phoneNumber ), "omer")
-	return phoneUtil.getRegionCodeForNumber( phoneNumber )
+	// First let libPhoneNumber try to get the region, as the fallback code
+	// will fail for country codes that are shared such as 1 for USA & Canada,
+	// which will always return US for Candian numbers
+	try
+	{
+		const parsedNumber = phoneUtil.parse( phoneNumber );
+
+		return phoneUtil.getRegionCodeForNumber( parsedNumber )
+	}
+	catch ( e )
+	{
+		var regionCode;
+
+		for ( var len = 1; len < 4; ++len )
+		{
+			if ( phoneNumber.length < len + 1 )
+				return null;
+
+			regionCode = PhoneNumber.getRegionCodeForCountryCode(
+				phoneNumber.substring( 1, len + 1 )
+			);
+
+			if ( regionCode !== 'ZZ' )
+				return regionCode;
+		}
+	}
 }
 
 /**

@@ -319,27 +319,32 @@ function AsYouType( regionCode )
 {
 	this._regionCode = regionCode;
 	this._aytf = new i18n.phonenumbers.AsYouTypeFormatter( regionCode );
-	this._number = '';
+	this._chars = [];
 }
 
 AsYouType.prototype.addChar = function( nextChar )
 {
-	this._number = this._aytf.inputDigit( nextChar );
-	return this._number;
+	this._aytf.inputDigit( nextChar );
+	this._chars.push( nextChar );
+	
+	return this.number();
 }
 
 AsYouType.prototype.number = function( )
 {
-	return this._number;
+	return this._aytf.currentOutput_;
 }
 
 AsYouType.prototype.removeChar = function( )
 {
-	var number = this._number;
-	if ( number.length > 0 )
-		this.reset( number.substr( 0, number.length - 1 ) );
-
-	return this._number;
+	this._chars.pop();
+	this._aytf.clear();
+	
+	for (var i = 0; i < this._chars.length; i++) {
+		this._aytf.inputDigit( this._chars[i] );
+	}
+	
+	return this.number();
 }
 
 AsYouType.prototype.reset = function( number /* = '' */ )
@@ -348,7 +353,8 @@ AsYouType.prototype.reset = function( number /* = '' */ )
 	if ( number )
 		for ( var i = 0, n = number.length; i < n; ++i )
 			this.addChar( number.charAt( i ) );
-	return this._number;
+	
+	return this.number();
 }
 
 AsYouType.prototype.getPhoneNumber = function( )

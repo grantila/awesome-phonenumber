@@ -230,6 +230,11 @@ PhoneNumber.getRegionCodeForCountryCode = function( countryCode )
 	return regionCode;
 }
 
+PhoneNumber.getSupportedRegionCodes = function( )
+{
+	return phoneUtil.getSupportedRegions( );
+}
+
 PhoneNumber.getSupportedCallingCodes = function( )
 {
 	return phoneUtil.getSupportedCallingCodes( );

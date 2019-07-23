@@ -40,6 +40,7 @@ declare namespace AwesomePhonenumber
 		static getCountryCodeForRegionCode( regionCode: string ): number;
 		static getRegionCodeForCountryCode( countryCode: number ): string;
 		static getSupportedCallingCodes( ): string[ ];
+		static getSupportedRegionCodes( ): string[ ];
 		static getExample( regionCode: string, type?: PhoneNumberTypes ): PhoneNumber;
 		static getAsYouType( regionCode: string ): AsYouType;
 	}

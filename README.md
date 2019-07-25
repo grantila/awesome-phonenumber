@@ -143,6 +143,12 @@ PhoneNumber.getRegionCodeForCountryCode( 46 );   // -> 'SE'
 PhoneNumber.getSupportedCallingCodes( ); // -> [ calling codes... ]
 ```
 
+### Supported region codes
+
+```js
+PhoneNumber.getSupportedRegionCodes( ); // -> [ region codes... ]
+```
+
 ### Phone numbers
 
 An instance of the `PhoneNumber` class will be created even if `PhoneNumber` is called as a function.

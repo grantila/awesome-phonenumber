@@ -69,4 +69,9 @@ describe( 'general', function( ) {
 		const codes = PhoneNumber.getSupportedCallingCodes( );
 		expect( codes.length ).to.be.above( 100 );
 	} );
+
+	it( 'should have supported calling regions', function( ) {
+		const regions = PhoneNumber.getSupportedRegionCodes( );
+		expect( regions.length ).to.be.above( 100 );
+	} );
 } );

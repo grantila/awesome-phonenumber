@@ -375,6 +375,8 @@ goog.exportSymbol( 'PhoneNumber.getCountryCodeForRegionCode',
 	PhoneNumber.getCountryCodeForRegionCode );
 goog.exportSymbol( 'PhoneNumber.getRegionCodeForCountryCode',
 	PhoneNumber.getRegionCodeForCountryCode );
+goog.exportSymbol( 'PhoneNumber.getSupportedRegionCodes',
+	PhoneNumber.getSupportedRegionCodes );
 goog.exportSymbol( 'PhoneNumber.getSupportedCallingCodes',
 	PhoneNumber.getSupportedCallingCodes );
 goog.exportSymbol( 'PhoneNumber.getExample',

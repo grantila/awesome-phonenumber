@@ -136,6 +136,11 @@ function PhoneNumber( phoneNumber, regionCode )
 
 	let parsed;
 
+	if ( !isInternal && typeof phoneNumber !== 'string' )
+		throw new Error( "Invalid phone number, expected a string" );
+	if ( !isInternal && regionCode != null && typeof regionCode !== 'string' )
+		throw new Error( "Invalid region code, expected a string" );
+
 	if ( !isInternal )
 	{
 		if ( regionCode && ( phoneNumber.charAt( 0 ) === '+' ) )

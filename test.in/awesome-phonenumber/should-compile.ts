@@ -146,4 +146,23 @@ describe( 'errors', function( ) {
 		expect( pn.isPossible( ) ).to.be.false;
 		expect( pn.toJSON( ).possibility ).to.equal( 'too-short' );
 	} );
+
+	it( 'should handle invalid phone number', function( ) {
+		const failure = ( arg: any ) => ( ) => new PhoneNumber( arg );
+
+		expect( failure( null ) ).to.throw( "Invalid phone number" );
+		expect( failure( { } ) ).to.throw( "Invalid phone number" );
+		expect( failure( [ ] ) ).to.throw( "Invalid phone number" );
+		expect( failure( 5 ) ).to.throw( "Invalid phone number" );
+		expect( failure( true ) ).to.throw( "Invalid phone number" );
+	} );
+
+	it( 'should handle invalid phone number', function( ) {
+		const failure = ( arg: any ) => ( ) => new PhoneNumber( '987654321', arg );
+
+		expect( failure( { } ) ).to.throw( "Invalid region code" );
+		expect( failure( [ ] ) ).to.throw( "Invalid region code" );
+		expect( failure( 5 ) ).to.throw( "Invalid region code" );
+		expect( failure( true ) ).to.throw( "Invalid region code" );
+	} );
 } );

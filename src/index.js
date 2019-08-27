@@ -320,6 +320,12 @@ PhoneNumber.prototype.getRegionCode = function( )
 	return this._json[ 'regionCode' ];
 }
 
+PhoneNumber.prototype.getCountryCode = function( )
+{
+	const regionCode = this._json[ 'regionCode' ];
+	return PhoneNumber.getCountryCodeForRegionCode( regionCode );
+}
+
 
 /**
  * The AsYouType class.
@@ -409,6 +415,8 @@ goog.exportSymbol( 'PhoneNumber.prototype.getNumberFrom',
 	PhoneNumber.prototype.getNumberFrom );
 goog.exportSymbol( 'PhoneNumber.prototype.getRegionCode',
 	PhoneNumber.prototype.getRegionCode );
+goog.exportSymbol( 'PhoneNumber.prototype.getCountryCode',
+	PhoneNumber.prototype.getCountryCode );
 
 goog.exportSymbol( 'AsYouType', AsYouType );
 

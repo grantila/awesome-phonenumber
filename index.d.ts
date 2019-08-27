@@ -35,6 +35,7 @@ declare namespace AwesomePhonenumber
 		getNumber( type?: PhoneNumberFormat ): string;
 		getNumberFrom( regionCode: string ): string;
 		getRegionCode( ): string;
+		getCountryCode( ): string;
 		toJSON( ): any;
 
 		static getCountryCodeForRegionCode( regionCode: string ): number;

@@ -66,6 +66,11 @@ describe( 'general', function( ) {
 		expect( pn.getRegionCode( ) ).to.equal( 'SE' );
 	} );
 
+	it( 'should be possible to get country code', function( ) {
+		var pn = new PhoneNumber( '0707123456', 'SE' );
+		expect( pn.getCountryCode( ) ).to.equal( 46 );
+	} );
+
 	it( 'should have supported calling codes', function( ) {
 		const codes = PhoneNumber.getSupportedCallingCodes( );
 		expect( codes.length ).to.be.above( 100 );

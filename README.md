@@ -9,7 +9,7 @@ This library is a pre-compiled version of Google's `libphonenumber`, with a slig
 
 TypeScript typings are provided within the package.
 
-Uses libphonenumber v8.10.17
+Uses libphonenumber v8.10.18
 
 ## Comparison with other libraries
 

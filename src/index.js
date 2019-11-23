@@ -239,38 +239,96 @@ function parse( phoneNumber, regionCode )
 		&&
 		possibility === 'is-possible';
 
-	const ret = {
-		[ 'number' ]: {
-			[ 'input' ]:
-				phoneNumber,
-			[ 'international' ]:
-				phoneUtil.format( parsed, PhoneNumberFormat.INTERNATIONAL ),
-			[ 'national' ]:
-				phoneUtil.format( parsed, PhoneNumberFormat.NATIONAL ),
-			[ 'e164' ]:
-				phoneUtil.format( parsed, PhoneNumberFormat.E164 ),
-			[ 'rfc3966' ]:
-				phoneUtil.format( parsed, PhoneNumberFormat.RFC3966 ),
-			[ 'significant' ]:
-				phoneUtil.getNationalSignificantNumber( parsed ),
+	if ( typeof Proxy === 'undefined' )
+		return {
+			[ 'number' ]: {
+				[ 'input' ]:
+					phoneNumber,
+				[ 'international' ]:
+					phoneUtil.format( parsed, PhoneNumberFormat.INTERNATIONAL ),
+				[ 'national' ]:
+					phoneUtil.format( parsed, PhoneNumberFormat.NATIONAL ),
+				[ 'e164' ]:
+					phoneUtil.format( parsed, PhoneNumberFormat.E164 ),
+				[ 'rfc3966' ]:
+					phoneUtil.format( parsed, PhoneNumberFormat.RFC3966 ),
+				[ 'significant' ]:
+					phoneUtil.getNationalSignificantNumber( parsed ),
+			},
+
+			[ 'numberFrom' ]: regionCode =>
+				phoneUtil.formatOutOfCountryCallingNumber( parsed, regionCode ),
+
+			[ 'canBeInternationallyDialled' ]: canBeInternationallyDialled,
+			[ 'possible' ]: possible,
+			[ 'valid' ]: valid,
+			[ 'type' ]: type,
+			[ 'mobile' ]: mobile,
+			[ 'fixedLine' ]: fixedLine,
+			[ 'possibility' ]: possibility,
+			[ 'regionCode' ]: regionCode,
+			[ 'countryCode' ]: getCountryCodeForRegionCode( regionCode ),
+			[ 'ok' ]: ok,
+		};
+
+	const number = new Proxy(
+		{
+			[ 'input' ]: phoneNumber,
+			[ 'international' ]: undefined,
+			[ 'national' ]: undefined,
+			[ 'e164' ]: undefined,
+			[ 'rfc3966' ]: undefined,
+			[ 'significant' ]: undefined,
+		}, {
+			get( target, key, receiver )
+			{
+				switch ( key )
+				{
+					case 'international':
+						return phoneUtil.format( parsed, PhoneNumberFormat.INTERNATIONAL );
+					case 'national':
+						return phoneUtil.format( parsed, PhoneNumberFormat.NATIONAL );
+					case 'e164':
+						return phoneUtil.format( parsed, PhoneNumberFormat.E164 );
+					case 'rfc3966':
+						return phoneUtil.format( parsed, PhoneNumberFormat.RFC3966 );
+					case 'significant':
+						return phoneUtil.getNationalSignificantNumber( parsed );
+					default:
+						return Reflect.get( target, key, receiver );
+				}
+			}
+		}
+	);
+
+	return new Proxy(
+		{
+			[ 'number' ]: number,
+			[ 'numberFrom' ]: regionCode =>
+				phoneUtil.formatOutOfCountryCallingNumber( parsed, regionCode ),
+
+			[ 'canBeInternationallyDialled' ]: canBeInternationallyDialled,
+			[ 'possible' ]: possible,
+			[ 'valid' ]: valid,
+			[ 'type' ]: type,
+			[ 'mobile' ]: mobile,
+			[ 'fixedLine' ]: fixedLine,
+			[ 'possibility' ]: possibility,
+			[ 'regionCode' ]: regionCode,
+			[ 'countryCode' ]: undefined,
+			[ 'ok' ]: ok,
+		}, {
+		get( target, key, receiver )
+		{
+			switch ( key )
+			{
+				case 'countryCode':
+					return getCountryCodeForRegionCode( regionCode );
+				default:
+					return Reflect.get( target, key, receiver );
+			}
 		},
-
-		[ 'numberFrom' ]: regionCode =>
-			phoneUtil.formatOutOfCountryCallingNumber( parsed, regionCode ),
-
-		[ 'canBeInternationallyDialled' ]: canBeInternationallyDialled,
-		[ 'possible' ]: possible,
-		[ 'valid' ]: valid,
-		[ 'type' ]: type,
-		[ 'mobile' ]: mobile,
-		[ 'fixedLine' ]: fixedLine,
-		[ 'possibility' ]: possibility,
-		[ 'regionCode' ]: regionCode,
-		[ 'countryCode' ]: getCountryCodeForRegionCode( regionCode ),
-		[ 'ok' ]: ok,
-	};
-
-	return ret;
+	} );
 }
 
 function getCountryCodeForRegionCode( regionCode )
@@ -354,7 +412,6 @@ AsYouType.prototype.getPhoneNumber = function( )
 {
 	return parse( this._number, this._regionCode );
 }
-
 
 goog.global =
 	( typeof exports !== 'undefined' )

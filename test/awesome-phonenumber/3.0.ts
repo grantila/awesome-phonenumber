@@ -1,5 +1,8 @@
 'use strict';
 
+import * as fs from 'fs'
+import * as path from 'path'
+
 import {
 	parse,
 	getCountryCodeForRegionCode,
@@ -40,6 +43,35 @@ describe( 'parse', function( ) {
 		expect( parsed.mobile ).toBe( true );
 		expect( parsed.number.significant ).toBe( '707123456' );
 		expect( parsed.canBeInternationallyDialled ).toBe( true );
+	} );
+
+	it( 'should parse into JSON-serializable object', function( ) {
+		const parsed = parse( '0707123456', 'SE' );
+
+		const json = JSON.parse( JSON.stringify( parsed ) );
+
+		const expected = {
+			number: {
+				input: '0707123456',
+				international: '+46 70 712 34 56',
+				national: '070-712 34 56',
+				e164: '+46707123456',
+				rfc3966: 'tel:+46-70-712-34-56',
+				significant: '707123456',
+			},
+			canBeInternationallyDialled: true,
+			possible: true,
+			valid: true,
+			type: 'mobile',
+			mobile: true,
+			fixedLine: false,
+			possibility: 'is-possible',
+			regionCode: 'SE',
+			countryCode: 46,
+			ok: true,
+		};
+
+		expect( json ).toEqual( expected );
 	} );
 
 	it( 'should be able to create an example phone number', function( ) {
@@ -200,5 +232,26 @@ describe( 'errors', function( ) {
 		expect( failure( [ ] ) ).toThrow( "Invalid region code" );
 		expect( failure( 5 ) ).toThrow( "Invalid region code" );
 		expect( failure( true ) ).toThrow( "Invalid region code" );
+	} );
+} );
+
+describe( 'known numbers', ( ) =>
+{
+	it( 'iterate and match known numbers', ( ) =>
+	{
+		const fixtureDir = path.join( __dirname, '..', 'fixtures' );
+		const filename = path.join( fixtureDir, 'random-numbers.json' );
+
+		const numbersByRegion =
+			JSON.parse( fs.readFileSync( filename, 'utf8' ) );
+
+		for ( const [ regionCode, value ] of numbersByRegion )
+		{
+			value.numbers.forEach( expected =>
+			{
+				const parsed = parse( expected.number.input, regionCode );
+				expect( parsed ).toEqual( expected );
+			} );
+		}
 	} );
 } );

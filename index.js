@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = require( './lib' ).PhoneNumber;
+module.exports = require( './lib' );
 
 Object.defineProperty(
 	module.exports,
@@ -10,4 +10,4 @@ Object.defineProperty(
 	}
 );
 
-module.exports.default = module.exports;
+module.exports.default = module.exports.parse;

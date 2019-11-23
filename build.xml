@@ -104,6 +104,7 @@
         <arg line='-e "build/libphonenumber/javascript/i18n/phonenumbers/metadatalite.js"' />
         <arg line='-e "build/libphonenumber/javascript/i18n/phonenumbers/regioncodefortesting.js"' />
         <arg line='-f "--externs=src/externs.js"' />
+        <arg line='-f "--create_source_map=lib/index.js.map"' />
       </extraflags>
     </closure-compile>
   </target>

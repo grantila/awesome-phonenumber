@@ -6,11 +6,11 @@ goog.require('i18n.phonenumbers.PhoneNumberType');
 goog.require('i18n.phonenumbers.PhoneNumberUtil');
 goog.require('i18n.phonenumbers.PhoneNumberUtil.ValidationResult');
 
-var PhoneNumberType = i18n.phonenumbers.PhoneNumberType;
-var PhoneNumberFormat = i18n.phonenumbers.PhoneNumberFormat;
-var ValidationResult = i18n.phonenumbers.PhoneNumberUtil.ValidationResult;
+const PhoneNumberType = i18n.phonenumbers.PhoneNumberType;
+const PhoneNumberFormat = i18n.phonenumbers.PhoneNumberFormat;
+const ValidationResult = i18n.phonenumbers.PhoneNumberUtil.ValidationResult;
 
-var phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance( );
+const phoneUtil = i18n.phonenumbers.PhoneNumberUtil.getInstance( );
 
 function getNumberType( number )
 {
@@ -96,7 +96,7 @@ function extractRegionCode( phoneNumber )
 		if ( phoneNumber.length < len + 1 )
 			return { parsed, regionCode };
 
-		regionCode = PhoneNumber.getRegionCodeForCountryCode(
+		regionCode = getRegionCodeForCountryCode(
 			phoneNumber.substring( 1, len + 1 )
 		);
 
@@ -107,145 +107,193 @@ function extractRegionCode( phoneNumber )
 	return { parsed, regionCode: void 0 };
 }
 
-/**
- * The PhoneNumber class.
- * @constructor
- */
-function PhoneNumber( phoneNumber, regionCode )
+function preParse( phoneNumber, regionCode )
 {
-	if ( !( this instanceof PhoneNumber ) )
-		return new PhoneNumber( phoneNumber, regionCode );
-
-	var self = this;
-
-	var isInternal =
-		typeof phoneNumber === 'string'
-		? false
-		: function( )
-		{
-			try
-			{
-				phoneUtil.isValidNumber( phoneNumber );
-				return true
-			}
-			catch ( e )
-			{
-				return false;
-			}
-		}( );
-
-	let parsed;
-
-	if ( !isInternal && typeof phoneNumber !== 'string' )
-		throw new Error( "Invalid phone number, expected a string" );
-	if ( !isInternal && regionCode != null && typeof regionCode !== 'string' )
-		throw new Error( "Invalid region code, expected a string" );
-
-	if ( !isInternal )
+	if ( regionCode && ( phoneNumber.charAt( 0 ) === '+' ) )
 	{
-		if ( regionCode && ( phoneNumber.charAt( 0 ) === '+' ) )
-		{
-			// Ensure region code is valid
-			var cc = PhoneNumber.getCountryCodeForRegionCode( regionCode );
-			if ( phoneNumber.substr( 1, ( '' + cc ).length ) !== '' + cc )
-				// Wrong region code, let's fix it
-				regionCode = null;
-		}
-
-		if ( !regionCode )
-			// Guess region code
-			( { regionCode = null, parsed } = extractRegionCode( phoneNumber ) );
+		// Ensure region code is valid
+		const cc = getCountryCodeForRegionCode( regionCode );
+		if ( phoneNumber.substr( 1, ( '' + cc ).length ) !== '' + cc )
+			// Wrong region code, let's fix it
+			regionCode = null;
 	}
 
-	this._json = {
-		'number'     : { },
-		'regionCode' : regionCode,
-		'valid'      : false,
-		'possible'   : false
-	};
-
-	if ( isInternal )
+	if ( !regionCode )
 	{
-		this._number = phoneNumber;
+		// Guess region code
+		let parsed;
+		( { regionCode = null, parsed } = extractRegionCode( phoneNumber ) );
+		return { regionCode, parsed };
+	}
+
+	return { regionCode };
+}
+
+function fromNumberUndefined( ) { }
+
+function getParseFailed( phoneNumber, regionCode, possibility )
+{
+	return {
+		[ 'number' ]: {
+			[ 'input' ]: phoneNumber,
+			[ 'international' ]: undefined,
+			[ 'national' ]: undefined,
+			[ 'e164' ]: undefined,
+			[ 'rfc3966' ]: undefined,
+			[ 'significant' ]: undefined,
+		},
+		[ 'numberFrom' ]: fromNumberUndefined,
+
+		[ 'canBeInternationallyDialled' ]: false,
+		[ 'possible' ]: false,
+		[ 'valid' ]: false,
+		[ 'mobile' ]: false,
+		[ 'fixedLine' ]: false,
+		[ 'type' ]: 'unknown',
+		[ 'possibility' ]: possibility,
+		[ 'regionCode' ]: regionCode,
+		[ 'countryCode' ]: getCountryCodeForRegionCode( regionCode ),
+		[ 'ok' ]: false,
+	};
+}
+
+function isParsed( parsed )
+{
+	if ( typeof parsed !== 'object' )
+		return false;
+
+	try
+	{
+		phoneUtil.isValidNumber( parsed );
+		return true;
+	}
+	catch ( e )
+	{
+		return false;
+	}
+}
+
+/**
+ * Parse a phone number (and a region code hint)
+ *
+ * @param {string} phoneNumber The input phone number
+ * @param {string} regionCode Used unless phone number is e164
+ */
+function parse( phoneNumber, regionCode )
+{
+	if ( regionCode != null && typeof regionCode !== 'string' )
+		throw new TypeError( "Invalid region code, expected a string" );
+
+	let parsed;
+	if ( isParsed( phoneNumber ) )
+	{
+		parsed = phoneNumber;
+		regionCode = phoneUtil.getRegionCodeForNumber( parsed );
 	}
 	else
 	{
-		this._number = null;
-		this._json[ 'number' ][ 'input' ] = phoneNumber;
+		if ( typeof phoneNumber !== 'string' )
+			throw new TypeError( "Invalid phone number, expected a string" );
+
+		( { regionCode, parsed } = preParse( phoneNumber, regionCode ) );
 
 		if ( !regionCode )
-		{
-			this._json[ 'possibility' ] = 'invalid-country-code';
-			return;
-		}
+			return getParseFailed(
+				phoneNumber, regionCode, 'invalid-country-code'
+			);
 		else
 		{
-			var cc = PhoneNumber.getCountryCodeForRegionCode( regionCode );
+			const cc = getCountryCodeForRegionCode( regionCode );
 			if ( cc === 0 )
-			{
-				this._json[ 'possibility' ] = 'invalid-country-code';
-				return;
-			}
+				return getParseFailed(
+					phoneNumber, regionCode, 'invalid-country-code'
+				);
 		}
 
 		try
 		{
-			if ( parsed )
-				this._number = parsed;
-			else
-				this._number = phoneUtil.parse( phoneNumber, regionCode );
+			if ( !parsed )
+				parsed = phoneUtil.parse( phoneNumber, regionCode );
 		}
 		catch ( e )
 		{
-			this._json[ 'possibility' ] = getValidationResult( phoneNumber );
-			return;
+			return getParseFailed(
+				phoneNumber, regionCode, getValidationResult( phoneNumber )
+			);
 		}
 	}
 
-	this._json[ 'number' ][ 'international' ] =
-		phoneUtil.format( this._number, PhoneNumberFormat.INTERNATIONAL );
-	this._json[ 'number' ][ 'national' ] =
-		phoneUtil.format( this._number, PhoneNumberFormat.NATIONAL );
-	this._json[ 'number' ][ 'e164' ] =
-		phoneUtil.format( this._number, PhoneNumberFormat.E164 );
-	this._json[ 'number' ][ 'rfc3966' ] =
-		phoneUtil.format( this._number, PhoneNumberFormat.RFC3966 );
-	this._json[ 'number' ][ 'significant' ] =
-		phoneUtil.getNationalSignificantNumber( this._number );
+	const canBeInternationallyDialled =
+		phoneUtil.canBeInternationallyDialled( parsed );
+	const possible = phoneUtil.isPossibleNumber( parsed );
+	const valid = phoneUtil.isValidNumber( parsed );
+	const type = getNumberType( parsed );
+	const mobile = type === 'mobile' || type === 'fixed-line-or-mobile';
+	const fixedLine = type === 'fixed-line' || type === 'fixed-line-or-mobile';
+	const possibility = getValidationResult( parsed );
 
-	this._json[ 'canBeInternationallyDialled' ] =
-		phoneUtil.canBeInternationallyDialled( this._number );
+	const ok =
+		possible
+		&&
+		valid
+		&&
+		possibility === 'is-possible';
 
-	this._json[ 'possible' ] = phoneUtil.isPossibleNumber( this._number );
-	this._json[ 'valid' ] = phoneUtil.isValidNumber( this._number );
+	const ret = {
+		[ 'number' ]: {
+			[ 'input' ]:
+				phoneNumber,
+			[ 'international' ]:
+				phoneUtil.format( parsed, PhoneNumberFormat.INTERNATIONAL ),
+			[ 'national' ]:
+				phoneUtil.format( parsed, PhoneNumberFormat.NATIONAL ),
+			[ 'e164' ]:
+				phoneUtil.format( parsed, PhoneNumberFormat.E164 ),
+			[ 'rfc3966' ]:
+				phoneUtil.format( parsed, PhoneNumberFormat.RFC3966 ),
+			[ 'significant' ]:
+				phoneUtil.getNationalSignificantNumber( parsed ),
+		},
 
-	this._json[ 'type' ] = getNumberType( self._number );
+		[ 'numberFrom' ]: regionCode =>
+			phoneUtil.formatOutOfCountryCallingNumber( parsed, regionCode ),
 
-	this._json[ 'possibility' ] = getValidationResult( self._number );
+		[ 'canBeInternationallyDialled' ]: canBeInternationallyDialled,
+		[ 'possible' ]: possible,
+		[ 'valid' ]: valid,
+		[ 'type' ]: type,
+		[ 'mobile' ]: mobile,
+		[ 'fixedLine' ]: fixedLine,
+		[ 'possibility' ]: possibility,
+		[ 'regionCode' ]: regionCode,
+		[ 'countryCode' ]: getCountryCodeForRegionCode( regionCode ),
+		[ 'ok' ]: ok,
+	};
+
+	return ret;
 }
 
-PhoneNumber.getCountryCodeForRegionCode = function( regionCode )
+function getCountryCodeForRegionCode( regionCode )
 {
 	return phoneUtil.getCountryCodeForRegion( regionCode );
 }
 
-PhoneNumber.getRegionCodeForCountryCode = function( countryCode )
+function getRegionCodeForCountryCode( countryCode )
 {
-	var regionCode = phoneUtil.getRegionCodeForCountryCode( countryCode );
-	return regionCode;
+	return phoneUtil.getRegionCodeForCountryCode( countryCode );
 }
 
-PhoneNumber.getSupportedRegionCodes = function( )
+function getSupportedRegionCodes( )
 {
 	return phoneUtil.getSupportedRegions( );
 }
 
-PhoneNumber.getSupportedCallingCodes = function( )
+function getSupportedCallingCodes( )
 {
 	return phoneUtil.getSupportedCallingCodes( );
 }
 
-PhoneNumber.getExample = function( regionCode, type /* = null */ )
+function getExample( regionCode, type /* = null */ )
 {
 	var example;
 	if ( !type )
@@ -254,78 +302,13 @@ PhoneNumber.getExample = function( regionCode, type /* = null */ )
 		example = phoneUtil.getExampleNumberForType(
 			regionCode, toNumberType( type ) );
 
-	return new PhoneNumber( example, regionCode );
+	return parse( example, regionCode );
 }
 
-PhoneNumber.getAsYouType = function( regionCode )
+function getAsYouType( regionCode )
 {
 	return new AsYouType( regionCode );
 }
-
-PhoneNumber.prototype.toJSON = function( )
-{
-	return this._json;
-}
-
-PhoneNumber.prototype.canBeInternationallyDialled = function( )
-{
-	return this._json[ 'canBeInternationallyDialled' ];
-}
-
-PhoneNumber.prototype.isValid = function( )
-{
-	return this._json[ 'valid' ];
-}
-
-PhoneNumber.prototype.isPossible = function( )
-{
-	return this._json[ 'possible' ];
-}
-
-PhoneNumber.prototype.getType = function( )
-{
-	return this._json[ 'type' ];
-}
-
-PhoneNumber.prototype.isMobile = function( )
-{
-	return this._json[ 'type' ] === 'mobile'
-		|| this._json[ 'type' ] === 'fixed-line-or-mobile';
-}
-
-PhoneNumber.prototype.isFixedLine = function( )
-{
-	return this._json[ 'type' ] === 'fixed-line'
-		|| this._json[ 'type' ] === 'fixed-line-or-mobile';
-}
-
-/**
- * The type can be any of 'international', 'national', 'e164', 'rfc3966',
- * 'significant'.
- */
-PhoneNumber.prototype.getNumber = function( type /* = e164 */ )
-{
-	type = type == null ? 'e164' : type;
-
-	return this._json[ 'number' ][ type ];
-}
-
-PhoneNumber.prototype.getNumberFrom = function( regionCode )
-{
-	return phoneUtil.formatOutOfCountryCallingNumber( this._number, regionCode );
-}
-
-PhoneNumber.prototype.getRegionCode = function( )
-{
-	return this._json[ 'regionCode' ];
-}
-
-PhoneNumber.prototype.getCountryCode = function( )
-{
-	const regionCode = this._json[ 'regionCode' ];
-	return PhoneNumber.getCountryCodeForRegionCode( regionCode );
-}
-
 
 /**
  * The AsYouType class.
@@ -369,7 +352,7 @@ AsYouType.prototype.reset = function( number /* = '' */ )
 
 AsYouType.prototype.getPhoneNumber = function( )
 {
-	return new PhoneNumber( this._number, this._regionCode );
+	return parse( this._number, this._regionCode );
 }
 
 
@@ -380,43 +363,18 @@ goog.global =
 	? self
 	: window;
 
-goog.exportSymbol( 'PhoneNumber', PhoneNumber );
+goog.exportSymbol( 'parse', parse );
 
-goog.exportSymbol( 'PhoneNumber.getCountryCodeForRegionCode',
-	PhoneNumber.getCountryCodeForRegionCode );
-goog.exportSymbol( 'PhoneNumber.getRegionCodeForCountryCode',
-	PhoneNumber.getRegionCodeForCountryCode );
-goog.exportSymbol( 'PhoneNumber.getSupportedRegionCodes',
-	PhoneNumber.getSupportedRegionCodes );
-goog.exportSymbol( 'PhoneNumber.getSupportedCallingCodes',
-	PhoneNumber.getSupportedCallingCodes );
-goog.exportSymbol( 'PhoneNumber.getExample',
-	PhoneNumber.getExample );
-goog.exportSymbol( 'PhoneNumber.getAsYouType',
-	PhoneNumber.getAsYouType );
+goog.exportSymbol( 'getCountryCodeForRegionCode',
+	getCountryCodeForRegionCode );
+goog.exportSymbol( 'getRegionCodeForCountryCode',
+	getRegionCodeForCountryCode );
+goog.exportSymbol( 'getSupportedRegionCodes', getSupportedRegionCodes );
+goog.exportSymbol( 'getSupportedCallingCodes', getSupportedCallingCodes );
 
-goog.exportSymbol( 'PhoneNumber.prototype.toJSON',
-	PhoneNumber.prototype.toJSON );
-goog.exportSymbol( 'PhoneNumber.prototype.canBeInternationallyDialled',
-	PhoneNumber.prototype.canBeInternationallyDialled );
-goog.exportSymbol( 'PhoneNumber.prototype.isValid',
-	PhoneNumber.prototype.isValid );
-goog.exportSymbol( 'PhoneNumber.prototype.isPossible',
-	PhoneNumber.prototype.isPossible );
-goog.exportSymbol( 'PhoneNumber.prototype.getType',
-	PhoneNumber.prototype.getType );
-goog.exportSymbol( 'PhoneNumber.prototype.isMobile',
-	PhoneNumber.prototype.isMobile );
-goog.exportSymbol( 'PhoneNumber.prototype.isFixedLine',
-	PhoneNumber.prototype.isFixedLine );
-goog.exportSymbol( 'PhoneNumber.prototype.getNumber',
-	PhoneNumber.prototype.getNumber );
-goog.exportSymbol( 'PhoneNumber.prototype.getNumberFrom',
-	PhoneNumber.prototype.getNumberFrom );
-goog.exportSymbol( 'PhoneNumber.prototype.getRegionCode',
-	PhoneNumber.prototype.getRegionCode );
-goog.exportSymbol( 'PhoneNumber.prototype.getCountryCode',
-	PhoneNumber.prototype.getCountryCode );
+goog.exportSymbol( 'getExample', getExample );
+
+goog.exportSymbol( 'getAsYouType', getAsYouType );
 
 goog.exportSymbol( 'AsYouType', AsYouType );
 

@@ -9,3 +9,4 @@ benchmark
 libphonenumber.version
 .travis.yml
 tsconfig.json
+*.js.map

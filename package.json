@@ -10,7 +10,8 @@
   },
   "scripts": {
     "build": "node_modules/.bin/gulp",
-    "test": "scripts/test.sh",
+    "prepack": "rm lib/*.map",
+    "test": "jest",
     "semantic-release": "semantic-release",
     "travis-deploy-once": "travis-deploy-once",
     "cz": "git-cz"
@@ -36,19 +37,20 @@
     "awesome"
   ],
   "devDependencies": {
-    "@types/mocha": "5.x",
-    "chai": "4.x",
+    "@types/jest": "^24.0.23",
     "commitizen": "^4.0.3",
     "cz-conventional-changelog": "^3.0.2",
     "google-closure-compiler": "20171023.0.1",
     "gulp": "4.x",
+    "jest": "^24.9.0",
     "mkdirp": "0.x",
-    "mocha": "6.x",
     "pre-commit": "1.x",
     "replace": "1.x",
+    "rimraf": "^3.0.0",
     "rimraf-promise": "2.x",
     "semantic-release": "15.x",
     "travis-deploy-once": "5.x",
+    "ts-jest": "^24.2.0",
     "typescript": "^3.5.3"
   },
   "config": {

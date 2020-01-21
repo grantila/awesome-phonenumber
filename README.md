@@ -2,6 +2,8 @@
 [![downloads][downloads-image]][npm-url]
 [![build status][travis-image]][travis-url]
 [![Language grade: JavaScript][lgtm-image]][lgtm-url]
+[![Install size][packagephobia-image]][packagephobia-url]
+
 
 # Awesome phonenumber parser
 
@@ -248,3 +250,5 @@ ayt.addChar( '7' ); // -> '070 712 34 57'
 [travis-url]: https://travis-ci.org/grantila/awesome-phonenumber
 [lgtm-image]: https://img.shields.io/lgtm/grade/javascript/g/grantila/awesome-phonenumber.svg?logo=lgtm&logoWidth=18
 [lgtm-url]: https://lgtm.com/projects/g/grantila/awesome-phonenumber/context:javascript
+[packagephobia-image]: https://packagephobia.now.sh/badge?p=awesome-phonenumber
+[packagephobia-url]: https://packagephobia.now.sh/result?p=awesome-phonenumber

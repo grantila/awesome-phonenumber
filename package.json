@@ -11,8 +11,6 @@
   "scripts": {
     "build": "node_modules/.bin/gulp",
     "test": "scripts/test.sh",
-    "semantic-release": "semantic-release",
-    "travis-deploy-once": "travis-deploy-once",
     "cz": "git-cz"
   },
   "pre-commit": [
@@ -39,7 +37,7 @@
     "@types/mocha": "5.x",
     "chai": "4.x",
     "commitizen": "^4.0.3",
-    "cz-conventional-changelog": "^3.0.2",
+    "cz-conventional-changelog": "^3.1.0",
     "google-closure-compiler": "20171023.0.1",
     "gulp": "4.x",
     "mkdirp": "0.x",
@@ -47,9 +45,7 @@
     "pre-commit": "1.x",
     "replace": "1.x",
     "rimraf-promise": "2.x",
-    "semantic-release": "15.x",
-    "travis-deploy-once": "5.x",
-    "typescript": "^3.5.3"
+    "typescript": "^3.7.5"
   },
   "config": {
     "commitizen": {

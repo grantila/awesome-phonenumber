@@ -34,16 +34,17 @@
     "awesome"
   ],
   "devDependencies": {
+    "@types/mkdirp": "^1.0.0",
     "@types/mocha": "5.x",
     "chai": "4.x",
     "commitizen": "^4.0.3",
     "cz-conventional-changelog": "^3.1.0",
     "google-closure-compiler": "20171023.0.1",
     "gulp": "4.x",
-    "mkdirp": "0.x",
-    "mocha": "6.x",
+    "mkdirp": "1.0.3",
+    "mocha": "7.0.1",
     "pre-commit": "1.x",
-    "replace": "1.x",
+    "replace": "1.1.5",
     "rimraf-promise": "2.x",
     "typescript": "^3.7.5"
   },

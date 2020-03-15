@@ -26,8 +26,8 @@ gulp.task( 'clean', ( ) =>
 	rimraf( buildRoot )
 );
 
-gulp.task( 'make-build-dir', ( ) =>
-	mkdirp( buildRoot )
+gulp.task( 'make-build-dir', async ( ) =>
+	await mkdirp( buildRoot )
 );
 
 gulp.task( 'clone-libphonenumber', gulp.series( 'make-build-dir', ( ) =>

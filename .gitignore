@@ -1,3 +1,5 @@
+coverage
 build
 node_modules
 test
+yarn.lock

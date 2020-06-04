@@ -37,16 +37,16 @@
     "@types/mkdirp": "^1.0.0",
     "@types/mocha": "7.0.2",
     "chai": "4.x",
-    "commitizen": "^4.0.3",
-    "cz-conventional-changelog": "^3.1.0",
+    "commitizen": "^4.1.2",
+    "cz-conventional-changelog": "^3.2.0",
     "google-closure-compiler": "20171023.0.1",
     "gulp": "4.0.2",
-    "mkdirp": "1.0.3",
-    "mocha": "7.1.0",
+    "mkdirp": "1.0.4",
+    "mocha": "7.2.0",
     "pre-commit": "1.x",
-    "replace": "1.1.5",
+    "replace": "1.2.0",
     "rimraf-promise": "2.x",
-    "typescript": "^3.7.5"
+    "typescript": "^3.9.3"
   },
   "config": {
     "commitizen": {

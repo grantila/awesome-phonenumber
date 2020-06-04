@@ -12,7 +12,7 @@ const libphonenumberVersion =
 	fs.readFileSync( 'libphonenumber.version', 'utf8' ).toString( ).trim( );
 
 const buildRoot = './build';
-const libphonenumberUrl = 'https://github.com/googlei18n/libphonenumber/';
+const libphonenumberUrl = 'https://github.com/google/libphonenumber/';
 const closureLibraryUrl = 'https://github.com/google/closure-library/';
 const closureLinterUrl = 'https://github.com/google/closure-linter';
 const pythonGflagsUrl = 'https://github.com/google/python-gflags.git';

@@ -335,11 +335,13 @@ function AsYouType( regionCode )
 {
 	this._regionCode = regionCode;
 	this._aytf = new i18n.phonenumbers.AsYouTypeFormatter( regionCode );
+	this._rawInput = '';
 	this._number = '';
 }
 
 AsYouType.prototype.addChar = function( nextChar )
 {
+	this._rawInput += nextChar;
 	this._number = this._aytf.inputDigit( nextChar );
 	return this._number;
 }
@@ -351,16 +353,16 @@ AsYouType.prototype.number = function( )
 
 AsYouType.prototype.removeChar = function( )
 {
-	var number = this._number;
-	if ( number.length > 0 )
-		this.reset( number.substr( 0, number.length - 1 ) );
+	if ( this._rawInput === '' )
+		return this._number;
 
-	return this._number;
+	return this.reset( this._rawInput.slice( 0, this._rawInput.length - 1 ) );
 }
 
 AsYouType.prototype.reset = function( number /* = '' */ )
 {
 	this._aytf.clear( );
+	this._rawInput = '';
 	if ( number )
 		for ( var i = 0, n = number.length; i < n; ++i )
 			this.addChar( number.charAt( i ) );

@@ -143,14 +143,12 @@ function PhoneNumber( phoneNumber, regionCode )
 
 	if ( !isInternal )
 	{
+		phoneNumber = phoneNumber.trim( );
+
 		if ( regionCode && ( phoneNumber.charAt( 0 ) === '+' ) )
-		{
-			// Ensure region code is valid
-			var cc = PhoneNumber.getCountryCodeForRegionCode( regionCode );
-			if ( phoneNumber.substr( 1, ( '' + cc ).length ) !== '' + cc )
-				// Wrong region code, let's fix it
-				regionCode = null;
-		}
+			// Ignore region code if we have an international phonenumber,
+			// it'll be extracted properly by libphonenumber.
+			regionCode = null;
 
 		if ( !regionCode )
 			// Guess region code

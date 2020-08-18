@@ -115,6 +115,12 @@ describe( 'general', function( ) {
 		expect( pn.getRegionCode( ) ).to.equal( 'CA' );
 	} );
 
+	it( 'should not use US for known CA numbers', function( ) {
+		// Issue #51
+		const pn = new PhoneNumber( '+1613 734.6759', 'US' );
+		expect( pn.getRegionCode( ) ).to.equal( 'CA' );
+	} );
+
 	it( 'should extract region by prefix as early as possible', function( ) {
 		const pn1 = new PhoneNumber( '+1' );
 		const pn1x = new PhoneNumber( '+12' );

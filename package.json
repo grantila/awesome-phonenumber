@@ -8,6 +8,8 @@
     "type": "git",
     "url": "https://github.com/grantila/awesome-phonenumber.git"
   },
+  "main": "./index.js",
+  "types": "./index.d.ts",
   "scripts": {
     "build": "node_modules/.bin/gulp",
     "test": "scripts/test.sh",
@@ -21,7 +23,6 @@
     "index.js",
     "index.d.ts"
   ],
-  "types": "./index.d.ts",
   "keywords": [
     "libphonenumber",
     "phonenumber",

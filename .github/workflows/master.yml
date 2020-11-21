@@ -25,9 +25,9 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm i
-    - run: npm run build
-    - run: npm run test
+    - run: yarn
+    - run: yarn build
+    - run: yarn test
       env:
         CI: true
 
@@ -41,10 +41,10 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 12
-      - run: npm i
-      - run: npm run build
-      - run: npm run test
+          node-version: 10
+      - run: yarn
+      - run: yarn build
+      - run: yarn test
         env:
           CI: true
       - name: Release

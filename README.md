@@ -1,6 +1,6 @@
 [![npm version][npm-image]][npm-url]
 [![downloads][downloads-image]][npm-url]
-[![build status][travis-image]][travis-url]
+[![build status][build-image]][build-url]
 [![Language grade: JavaScript][lgtm-image]][lgtm-url]
 [![Install size][packagephobia-image]][packagephobia-url]
 
@@ -246,8 +246,8 @@ ayt.addChar( '7' ); // -> '070 712 34 57'
 [npm-image]: https://img.shields.io/npm/v/awesome-phonenumber.svg
 [npm-url]: https://npmjs.org/package/awesome-phonenumber
 [downloads-image]: https://img.shields.io/npm/dm/awesome-phonenumber.svg
-[travis-image]: https://img.shields.io/travis/grantila/awesome-phonenumber.svg
-[travis-url]: https://travis-ci.org/grantila/awesome-phonenumber
+[build-image]: https://img.shields.io/github/workflow/status/grantila/awesome-phonenumber/Master.svg
+[build-url]: https://github.com/grantila/awesome-phonenumber/actions?query=workflow%3AMaster
 [lgtm-image]: https://img.shields.io/lgtm/grade/javascript/g/grantila/awesome-phonenumber.svg?logo=lgtm&logoWidth=18
 [lgtm-url]: https://lgtm.com/projects/g/grantila/awesome-phonenumber/context:javascript
 [packagephobia-image]: https://packagephobia.now.sh/badge?p=awesome-phonenumber

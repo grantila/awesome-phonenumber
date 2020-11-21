@@ -7,5 +7,4 @@ gulp*
 .npmignore
 benchmark
 libphonenumber.version
-.travis.yml
 tsconfig.json

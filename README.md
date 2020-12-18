@@ -11,11 +11,11 @@ This library is a pre-compiled version of Google's `libphonenumber`, with a slig
 
 TypeScript typings are provided within the package.
 
-Uses libphonenumber v8.12.14
+Uses libphonenumber v8.12.15
 
 ## Comparison with other libraries
 
-Since this library is pre-compiled, it doesn't depend on the closure compiler, and needs not load it on start. This makes the library faster and saves you a lot of space. It also means this library is trivial to use in any `browserify` project (or using any other means to run in the browser).
+Since this library is pre-compiled, it doesn't depend on the closure compiler, and needs not load it on start. This makes the library faster and saves you a lot of space. It also means this library is trivial to use in any `webpack` project (or using any other means to run in the browser).
 
 Among all the phone number libraries using Google's `libphonenumber`, only this one, `google-libphonenumber` (2.0.0) and `node-phonenumber` (0.2.2) had decent README's with examples. Other libraries embedding the closure compiler should get comparable figures.
 

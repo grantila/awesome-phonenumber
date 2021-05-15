@@ -235,12 +235,12 @@ PhoneNumber.getRegionCodeForCountryCode = function( countryCode )
 
 PhoneNumber.getSupportedRegionCodes = function( )
 {
-	return phoneUtil.getSupportedRegions( );
+	return [ ...new Set( phoneUtil.getSupportedRegions( ) ) ];
 }
 
 PhoneNumber.getSupportedCallingCodes = function( )
 {
-	return phoneUtil.getSupportedCallingCodes( );
+	return [ ...new Set( phoneUtil.getSupportedCallingCodes( ) ) ];
 }
 
 PhoneNumber.getExample = function( regionCode, type /* = null */ )

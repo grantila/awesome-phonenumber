@@ -137,6 +137,18 @@ describe( 'general', function( ) {
 		expect( pn3.getRegionCode( ) ).to.equal( 'FI' );
 		expect( pn3x.getRegionCode( ) ).to.equal( 'FI' );
 	} );
+
+	it( 'should return unique list of calling codes', function( ) {
+		const callingCodes = PhoneNumber.getSupportedCallingCodes( );
+
+		expect( callingCodes.length ).to.equal( new Set( callingCodes ).size );
+	} );
+
+	it( 'should return unique list of region codes', function( ) {
+		const regionCodes = PhoneNumber.getSupportedRegionCodes( );
+
+		expect( regionCodes.length ).to.equal( new Set( regionCodes ).size );
+	} );
 } );
 
 

@@ -37,18 +37,18 @@
   ],
   "devDependencies": {
     "@types/mkdirp": "^1.0.1",
-    "@types/mocha": "8.0.3",
-    "chai": "4.x",
-    "commitizen": "^4.2.1",
+    "@types/mocha": "8.2.2",
+    "chai": "4.3.4",
+    "commitizen": "^4.2.4",
     "cz-conventional-changelog": "^3.3.0",
     "google-closure-compiler": "20171023.0.1",
     "gulp": "4.0.2",
     "mkdirp": "1.0.4",
-    "mocha": "8.1.3",
+    "mocha": "8.4.0",
     "pre-commit": "1.x",
-    "replace": "1.2.0",
+    "replace": "1.2.1",
     "rimraf-promise": "2.x",
-    "typescript": "^4.0.3"
+    "typescript": "^4.2.4"
   },
   "config": {
     "commitizen": {

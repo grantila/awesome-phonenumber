@@ -233,14 +233,26 @@ PhoneNumber.getRegionCodeForCountryCode = function( countryCode )
 	return regionCode;
 }
 
+function uniq( arr )
+{
+	const lookup = { };
+	return arr.filter( elem =>
+	{
+		if ( lookup.hasOwnProperty( elem ) )
+			return false;
+		lookup[ elem ] = 1;
+		return true;
+	} );
+}
+
 PhoneNumber.getSupportedRegionCodes = function( )
 {
-	return [ ...new Set( phoneUtil.getSupportedRegions( ) ) ];
+	return uniq( phoneUtil.getSupportedRegions( ) );
 }
 
 PhoneNumber.getSupportedCallingCodes = function( )
 {
-	return [ ...new Set( phoneUtil.getSupportedCallingCodes( ) ) ];
+	return uniq( phoneUtil.getSupportedCallingCodes( ) );
 }
 
 PhoneNumber.getExample = function( regionCode, type /* = null */ )

@@ -17,21 +17,23 @@ Uses libphonenumber v8.12.29
 
 Since this library is pre-compiled, it doesn't depend on the closure compiler, and needs not load it on start. This makes the library faster and saves you a lot of space. It also means this library is trivial to use in any `webpack` project (or using any other means to run in the browser).
 
-Among all the phone number libraries using Google's `libphonenumber`, only this one, `google-libphonenumber` (2.0.0) and `node-phonenumber` (0.2.2) had decent README's with examples. Other libraries embedding the closure compiler should get comparable figures.
+Among all the popular phone number using Google's `libphonenumber` (or mimicing it), only this one, `google-libphonenumber` and `libphonenumber-js` have decent README's with examples. *This may have changed since first doing these benchmarks*.
 
-Loading the closure compiler also adds to the application memory usage (RSS is measured here). The library footprints are also bigger, making `npm install` slower and increasing deploy times.
+A library should be quick to load (`require()`), quick to parse first time and all consecutive times. It shouldn't bloat your `node_modules`, and it should have a small memory footprint, if possible.
 
-A test program loading a library, then parsing a phone number is called 100 times for each library, the mean values are:
+The following is the result of a test program which loads the library, then parses a phone number, and then once again. It's called 100 times for each library and the mean values are shown here. Parsing a phone number first time might be slower because of initially compiling/optimizing regular expressions and whatnot. Parsing a phone number a second time will show the speed of likely all future parsing within that process.
 
-Action                    | awesome-phonenumber (7.5.2) | google-libphonenumber (7.6.1) | node-phonenumber (7.5.2)
+Action                    | awesome-phonenumber<br/>2.56.0<br/>(lib 8.12.29) | google-libphonenumber<br/>3.2.22<br/>(lib 8.12.27) | libphonenumber-js<br/>1.9.23<br/>(lib -)
 ------------------------- | ------------------- | --------------------- | ----------------
-Load library first time   | 20.84 ms            | 60.99ms               | 99.27 ms
-Parse first phone number  | 5.79 ms             | 6.51 ms               | 8.15 ms
-Parse second phone number | 0.33 ms             | 0.67 ms               | 0.80 ms
-Increased memory usage    | 7.3 M               | 13.8 M                | 22.5 M
-node_modules size         | 248 K               | 436 K                 | 57 M
-node_modules files        | 7                   | 7                     | 4525
-time npm install          | 667 ms              | 700 ms                | 4077 ms
+Load library first time         | 11.0 ms ✅          | 29.67 ms              | 32.87 ms
+Parse first phone number        | 4.3 ms              | 4.01 ms               | 3.43 ms ✅
+**⇒ Load + parse first number** | 15.3 ms ✅          | 33.68 ms              | 36.3 ms
+Parse second phone number       | 0.78 ms ✅          | 0.97 ms               | 0.92 ms
+Increased memory usage          | 5.12 M ✅           | 9.99 M                | 5.86 M
+node_modules size               | 296 K ✅            | 600 K                 | 7.6 M
+node_modules files              | 8                   | 7¹ ✅                 | 653
+
+*¹ does not bundle the libphonenumber license*
 
 ## Basic usage
 ```js

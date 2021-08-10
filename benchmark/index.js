@@ -4,9 +4,9 @@ var child_process = require( 'child_process' );
 var rimraf        = require( 'rimraf-promise' );
 
 var libs = [
+	'awesome-phonenumber',
 	'google-libphonenumber',
-	'node-phonenumber',
-	'awesome-phonenumber'
+	'libphonenumber-js',
 ];
 
 function runCommand( cmd, args, opts )

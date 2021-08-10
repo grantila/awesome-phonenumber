@@ -31,9 +31,8 @@ Parse first phone number        | 4.3 ms              | 4.01 ms               | 
 Parse second phone number       | 0.78 ms ✅          | 0.97 ms               | 0.92 ms
 Increased memory usage          | 5.12 M ✅           | 9.99 M                | 5.86 M
 node_modules size               | 296 K ✅            | 600 K                 | 7.6 M
-node_modules files              | 8                   | 7¹ ✅                 | 653
+node_modules files              | 8                   | 7 ✅                  | 653
 
-*¹ does not bundle the libphonenumber license*
 
 ## Basic usage
 ```js

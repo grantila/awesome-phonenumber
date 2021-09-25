@@ -11,9 +11,9 @@ const replace = require( 'replace' );
 const libphonenumberVersion =
 	fs.readFileSync( 'libphonenumber.version', 'utf8' ).toString( ).trim( );
 
-const buildRoot = './build';
+const rootDir = '.';
+const buildRoot = `${rootDir}/build`;
 const libphonenumberUrl = 'https://github.com/google/libphonenumber/';
-const closureLibraryUrl = 'https://github.com/google/closure-library/';
 const closureLinterUrl = 'https://github.com/google/closure-linter';
 const pythonGflagsUrl = 'https://github.com/google/python-gflags.git';
 const antName = 'apache-ant-1.10.11';
@@ -32,10 +32,6 @@ gulp.task( 'make-build-dir', async ( ) =>
 
 gulp.task( 'clone-libphonenumber', gulp.series( 'make-build-dir', ( ) =>
 	gitClone( libphonenumberUrl, 'libphonenumber', libphonenumberVersion )
-) );
-
-gulp.task( 'clone-closure-library', gulp.series( 'make-build-dir', ( ) =>
-	gitClone( closureLibraryUrl, 'closure-library', 'v20171112' )
 ) );
 
 gulp.task( 'checkout-closure-linter', gulp.series( 'make-build-dir', ( ) =>
@@ -64,7 +60,6 @@ gulp.task( 'download-ant', gulp.series(
 
 gulp.task( 'download-deps', gulp.parallel(
 	'clone-libphonenumber',
-	'clone-closure-library',
 	'checkout-closure-linter',
 	'checkout-python-gflags',
 	'download-ant'
@@ -72,10 +67,9 @@ gulp.task( 'download-deps', gulp.parallel(
 
 gulp.task( 'build-deps', gulp.series( 'download-deps' ) );
 
-gulp.task( 'build-libphonenumber', ( ) => {
-	var args = [ '-f', 'build.xml', 'compile-exports' ];
-	return runCommand( `${buildRoot}/${antName}/bin/ant`, args, { cwd: '.' } );
-} );
+gulp.task( 'build-libphonenumber', ( ) =>
+	runCommand( `${rootDir}/build.sh`, [ ], { cwd: rootDir } )
+);
 
 gulp.task( 'build', gulp.series( 'build-deps', 'build-libphonenumber' ) );
 

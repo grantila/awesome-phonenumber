@@ -46,6 +46,8 @@ declare namespace AwesomePhonenumber
 		static getAsYouType( regionCode: string ): AsYouType;
 	}
 
+	function PhoneNumber( phoneNumber: string, countryCode?: string ): PhoneNumber;
+
 	class AsYouType
 	{
 		addChar( char: string ): string;

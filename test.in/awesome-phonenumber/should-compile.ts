@@ -152,6 +152,19 @@ describe( 'general', function( ) {
 } );
 
 
+describe( 'instance', function( ) {
+	it( 'constructed should be instanceof PhoneNumber', function( ) {
+		var pn = new PhoneNumber( '+12' );
+		expect( pn instanceof PhoneNumber ).to.be.true;
+	} );
+
+	it( 'called should be instanceof PhoneNumber', function( ) {
+		var pn = PhoneNumber( '+12' );
+		expect( pn instanceof PhoneNumber ).to.be.true;
+	} );
+} );
+
+
 describe( 'errors', function( ) {
 	it( 'should not allow too short numbers', function( ) {
 		var pn = new PhoneNumber( '+12' );

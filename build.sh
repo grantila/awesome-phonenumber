@@ -3,7 +3,7 @@
 BASEDIR=.
 CLOSURE_LIBRARY_DIR=${BASEDIR}/node_modules/google-closure-library
 
-COMPILATION_LEVEL=ADVANCED_OPTIMIZATIONS
+COMPILATION_LEVEL=ADVANCED
 
 node_modules/.bin/google-closure-compiler \
   --compilation_level=${COMPILATION_LEVEL} \
@@ -50,4 +50,5 @@ node_modules/.bin/google-closure-compiler \
   --js="!build/libphonenumber/javascript/i18n/phonenumbers/metadatalite.js" \
   --js="!build/libphonenumber/javascript/i18n/phonenumbers/regioncodefortesting.js" \
   --js=src/index.js \
+  --rewrite_polyfills=no \
   --js_output_file=lib/index.js

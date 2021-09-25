@@ -396,6 +396,7 @@ AsYouType.prototype.reset = function( number /* = '' */ )
 {
 	this._aytf.clear( );
 	this._rawInput = '';
+	this._number = '';
 	if ( number )
 		for ( var i = 0, n = number.length; i < n; ++i )
 			this.addChar( number.charAt( i ) );

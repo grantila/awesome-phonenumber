@@ -34,52 +34,6 @@ describe( 'general', function( ) {
 		expect( pn3.isFixedLine( ) ).to.be.true;
 	} );
 
-	it( 'should be able to format as-you-type', function( ) {
-		var ayt = PhoneNumber.getAsYouType( 'SE' );
-		expect( ayt.addChar( '0' ) ).to.equal( '0' );
-		expect( ayt.addChar( '7' ) ).to.equal( '07' );
-		expect( ayt.addChar( '0' ) ).to.equal( '070' );
-		expect( ayt.addChar( '7' ) ).to.equal( '070-7' );
-		expect( ayt.addChar( '1' ) ).to.equal( '070-71' );
-		expect( ayt.addChar( '2' ) ).to.equal( '070-712' );
-
-		var pn1 = ayt.getPhoneNumber( );
-		expect( pn1.isValid( ) ).to.be.false;
-
-		expect( ayt.addChar( '3' ) ).to.equal( '070-712 3' );
-		expect( ayt.addChar( '4' ) ).to.equal( '070-712 34' );
-		expect( ayt.addChar( '5' ) ).to.equal( '070-712 34 5' );
-		expect( ayt.addChar( '6' ) ).to.equal( '070-712 34 56' );
-
-		var pn2 = ayt.getPhoneNumber( );
-		expect( pn2.isValid( ) ).to.be.true;
-		expect( pn2.isPossible( ) ).to.be.true;
-	} );
-
-	it( 'should be able to format as-you-type with removeChar', function( ) {
-		var ayt = PhoneNumber.getAsYouType( 'SE' );
-		expect( ayt.addChar( '0' ) ).to.equal( '0' );
-		expect( ayt.addChar( '7' ) ).to.equal( '07' );
-		expect( ayt.addChar( '0' ) ).to.equal( '070' );
-		expect( ayt.addChar( '7' ) ).to.equal( '070-7' );
-		expect( ayt.addChar( '1' ) ).to.equal( '070-71' );
-		expect( ayt.addChar( '2' ) ).to.equal( '070-712' );
-		expect( ayt.addChar( '3' ) ).to.equal( '070-712 3' );
-		expect( ayt.removeChar( ) ).to.equal( '070-712' );
-		expect( ayt.addChar( '3' ) ).to.equal( '070-712 3' );
-
-		var pn1 = ayt.getPhoneNumber( );
-		expect( pn1.isValid( ) ).to.be.false;
-
-		expect( ayt.addChar( '4' ) ).to.equal( '070-712 34' );
-		expect( ayt.addChar( '5' ) ).to.equal( '070-712 34 5' );
-		expect( ayt.addChar( '6' ) ).to.equal( '070-712 34 56' );
-
-		var pn2 = ayt.getPhoneNumber( );
-		expect( pn2.isValid( ) ).to.be.true;
-		expect( pn2.isPossible( ) ).to.be.true;
-	} );
-
 	it( 'should be able to convert country code <-> region code', function( ) {
 		expect( PhoneNumber.getCountryCodeForRegionCode( 'SE' ) ).to.equal( 46 );
 		expect( PhoneNumber.getRegionCodeForCountryCode( 46 ) ).to.equal( 'SE' );
@@ -148,6 +102,81 @@ describe( 'general', function( ) {
 		const regionCodes = PhoneNumber.getSupportedRegionCodes( );
 
 		expect( regionCodes.length ).to.equal( new Set( regionCodes ).size );
+	} );
+} );
+
+
+describe( 'as-you-type', function( ) {
+	it( 'should be able to format as-you-type', function( ) {
+		var ayt = PhoneNumber.getAsYouType( 'SE' );
+		expect( ayt.addChar( '0' ) ).to.equal( '0' );
+		expect( ayt.addChar( '7' ) ).to.equal( '07' );
+		expect( ayt.addChar( '0' ) ).to.equal( '070' );
+		expect( ayt.addChar( '7' ) ).to.equal( '070-7' );
+		expect( ayt.addChar( '1' ) ).to.equal( '070-71' );
+		expect( ayt.addChar( '2' ) ).to.equal( '070-712' );
+
+		var pn1 = ayt.getPhoneNumber( );
+		expect( pn1.isValid( ) ).to.be.false;
+
+		expect( ayt.addChar( '3' ) ).to.equal( '070-712 3' );
+		expect( ayt.addChar( '4' ) ).to.equal( '070-712 34' );
+		expect( ayt.addChar( '5' ) ).to.equal( '070-712 34 5' );
+		expect( ayt.addChar( '6' ) ).to.equal( '070-712 34 56' );
+
+		var pn2 = ayt.getPhoneNumber( );
+		expect( pn2.isValid( ) ).to.be.true;
+		expect( pn2.isPossible( ) ).to.be.true;
+	} );
+
+	it( 'should be able to format as-you-type with removeChar', function( ) {
+		var ayt = PhoneNumber.getAsYouType( 'SE' );
+		expect( ayt.addChar( '0' ) ).to.equal( '0' );
+		expect( ayt.addChar( '7' ) ).to.equal( '07' );
+		expect( ayt.addChar( '0' ) ).to.equal( '070' );
+		expect( ayt.addChar( '7' ) ).to.equal( '070-7' );
+		expect( ayt.addChar( '1' ) ).to.equal( '070-71' );
+		expect( ayt.addChar( '2' ) ).to.equal( '070-712' );
+		expect( ayt.addChar( '3' ) ).to.equal( '070-712 3' );
+		expect( ayt.removeChar( ) ).to.equal( '070-712' );
+		expect( ayt.addChar( '3' ) ).to.equal( '070-712 3' );
+
+		var pn1 = ayt.getPhoneNumber( );
+		expect( pn1.isValid( ) ).to.be.false;
+
+		expect( ayt.addChar( '4' ) ).to.equal( '070-712 34' );
+		expect( ayt.addChar( '5' ) ).to.equal( '070-712 34 5' );
+		expect( ayt.addChar( '6' ) ).to.equal( '070-712 34 56' );
+
+		var pn2 = ayt.getPhoneNumber( );
+		expect( pn2.isValid( ) ).to.be.true;
+		expect( pn2.isPossible( ) ).to.be.true;
+	} );
+
+	it( 'should reset properly with new number', function( ) {
+		var ayt = PhoneNumber.getAsYouType( 'SE' );
+		expect( ayt.addChar( '0' ) ).to.equal( '0' );
+		expect( ayt.addChar( '7' ) ).to.equal( '07' );
+		expect( ayt.addChar( '0' ) ).to.equal( '070' );
+		expect( ayt.addChar( '7' ) ).to.equal( '070-7' );
+		expect( ayt.addChar( '1' ) ).to.equal( '070-71' );
+		expect( ayt.addChar( '2' ) ).to.equal( '070-712' );
+
+		ayt.reset( '070' );
+		expect( ayt.number( ) ).to.equal( '070' );
+	} );
+
+	it( 'should reset properly without new number', function( ) {
+		var ayt = PhoneNumber.getAsYouType( 'SE' );
+		expect( ayt.addChar( '0' ) ).to.equal( '0' );
+		expect( ayt.addChar( '7' ) ).to.equal( '07' );
+		expect( ayt.addChar( '0' ) ).to.equal( '070' );
+		expect( ayt.addChar( '7' ) ).to.equal( '070-7' );
+		expect( ayt.addChar( '1' ) ).to.equal( '070-71' );
+		expect( ayt.addChar( '2' ) ).to.equal( '070-712' );
+
+		ayt.reset( );
+		expect( ayt.number( ) ).to.equal( '' );
 	} );
 } );
 

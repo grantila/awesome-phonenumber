@@ -29,6 +29,12 @@ jobs:
     - run: yarn test
       env:
         CI: true
+    - run: yarn
+      working-directory: ./webpack
+    - run: yarn build
+      working-directory: ./webpack
+    - run: yarn test
+      working-directory: ./webpack
 
   release:
     name: Release

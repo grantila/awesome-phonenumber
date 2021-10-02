@@ -1,5 +1,9 @@
 coverage
 build
+dist
 node_modules
 test
+!webpack/test
 yarn.lock
+yarn-*
+

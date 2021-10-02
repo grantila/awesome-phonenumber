@@ -1,0 +1,15 @@
+{
+	"compilerOptions": {
+		"declaration": true,
+		"lib": [ "ES2019", "dom" ],
+		"moduleResolution": "node",
+		"noEmit": true,
+		"pretty": true,
+		"sourceMap": true,
+		"target": "ES2015",
+		"allowSyntheticDefaultImports": true
+	},
+	"include": [
+		"src"
+	]
+}

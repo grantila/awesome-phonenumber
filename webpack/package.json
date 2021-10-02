@@ -1,0 +1,16 @@
+{
+  "name": "awesome-phoneumber-webpack-test",
+  "version": "0.0.0-development",
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "build": "webpack",
+    "test": "node test/browser.js"
+  },
+  "devDependencies": {
+    "html-webpack-plugin": "^5.3.2",
+    "puppeteer": "^10.4.0",
+    "webpack": "^5.56.0",
+    "webpack-cli": "^4.8.0"
+  }
+}

@@ -112,7 +112,7 @@ function extractRegionCode( phoneNumber )
  * @constructor
  * @export
  */
-function PhoneNumber( phoneNumber, regionCode )
+export function PhoneNumber( phoneNumber, regionCode )
 {
 	if ( !( this instanceof PhoneNumber ) )
 		return new PhoneNumber( phoneNumber, regionCode );
@@ -358,7 +358,6 @@ PhoneNumber.prototype.getCountryCode = function( )
 /**
  * The AsYouType class.
  * @constructor
- * @export
  */
 function AsYouType( regionCode )
 {

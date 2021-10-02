@@ -51,4 +51,9 @@ node_modules/.bin/google-closure-compiler \
   --js="!build/libphonenumber/javascript/i18n/phonenumbers/regioncodefortesting.js" \
   --js=src/index.js \
   --rewrite_polyfills=no \
+  --emit_use_strict=no \
+  --language_out=ECMASCRIPT_2015 \
+  --chunk_output_type=GLOBAL_NAMESPACE \
+  --rename_prefix_namespace=exports \
+  --module_resolution=NODE \
   --js_output_file=lib/index.js

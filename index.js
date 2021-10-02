@@ -1,4 +1,4 @@
-module.exports = require( './lib' ).PhoneNumber;
+module.exports = require( './lib' )[ 'PhoneNumber$$module$src$index' ];
 
 Object.defineProperty(
 	module.exports,

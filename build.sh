@@ -52,8 +52,9 @@ node_modules/.bin/google-closure-compiler \
   --js=src/index.js \
   --rewrite_polyfills=no \
   --emit_use_strict=no \
+  --assume_function_wrapper \
+  --output_wrapper_file=src/output-wrapper.js \
   --language_out=ECMASCRIPT_2015 \
   --chunk_output_type=GLOBAL_NAMESPACE \
-  --rename_prefix_namespace=exports \
   --module_resolution=NODE \
   --js_output_file=lib/index.js

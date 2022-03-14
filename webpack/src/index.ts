@@ -1,4 +1,4 @@
-import PhoneNumber from '../../'
+import PhoneNumber from 'awesome-phonenumber'
 
 const div = document.createElement( 'div' );
 div.id = 'rootdiv';

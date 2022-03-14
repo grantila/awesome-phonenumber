@@ -21,3 +21,9 @@ Object.defineProperty(
 module.exports.default = module.exports;
 
 module.exports.parsePhoneNumber = module.exports;
+module.exports.getCountryCodeForRegionCode = module.exports.getCountryCodeForRegionCode;
+module.exports.getRegionCodeForCountryCode = module.exports.getRegionCodeForCountryCode;
+module.exports.getSupportedCallingCodes = module.exports.getSupportedCallingCodes;
+module.exports.getSupportedRegionCodes = module.exports.getSupportedRegionCodes;
+module.exports.getExample = module.exports.getExample;
+module.exports.getAsYouType = module.exports.getAsYouType;

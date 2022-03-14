@@ -16,7 +16,8 @@
   "scripts": {
     "build:libphonenumber": "node_modules/.bin/gulp",
     "build:rewrite": "ts-node scripts/rewrite.ts",
-    "build": "yarn build:libphonenumber && yarn build:rewrite",
+    "build:es": "rollup -c ./rollup.config.js",
+    "build": "yarn build:libphonenumber && yarn build:rewrite && yarn build:es",
     "test": "scripts/test.sh",
     "cz": "git-cz",
     "semantic-release": "semantic-release"
@@ -41,6 +42,7 @@
     "awesome"
   ],
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^21.0.1",
     "@types/mkdirp": "^1.0.1",
     "@types/mocha": "8.2.2",
     "@types/node": "^16.11.12",
@@ -55,12 +57,19 @@
     "pre-commit": "1.x",
     "replace": "1.2.1",
     "rimraf-promise": "2.x",
+    "rollup": "^2.66.0",
     "ts-node": "^10.4.0",
     "typescript": "^4.2.4"
   },
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "exports": {
+    "./": {
+      "require": "./index.js",
+      "default": "./index-esm.mjs"
     }
   }
 }

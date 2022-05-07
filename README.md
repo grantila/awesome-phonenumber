@@ -13,6 +13,14 @@ TypeScript typings are provided within the package.
 
 Uses libphonenumber v8.12.48
 
+
+### Versions
+
+ - v3:
+   - Changed API (although with backwards compatible ABI)
+   - Added ESM export
+
+
 ## Comparison with other libraries
 
 Since this library is pre-compiled, it doesn't depend on the closure compiler, and needs not load it on start. This makes the library faster and saves you a lot of space. It also means this library is trivial to use in any `webpack` project (or using any other means to run in the browser).
@@ -35,10 +43,10 @@ node_modules files              | 8                   | 7 ✅                  |
 
 
 ## Basic usage
-```js
-var PhoneNumber = require( 'awesome-phonenumber' );
+```ts
+import { parsePhoneNumber } from 'awesome-phonenumber'
 
-var pn = new PhoneNumber( '0707123456', 'SE' );
+const pn = parsePhoneNumber( '0707123456', 'SE' );
 pn.isValid( );  // -> true
 pn.isMobile( ); // -> true
 pn.canBeInternationallyDialled( ); // -> true
@@ -73,17 +81,78 @@ JSON.stringify( pn, null, 4 ); // -> This:
 
 ## API
 
-When constructed with a phone number on `e164` format (i.e. prefixed with a `+`), awesome-phonenumber will auto-detect the country:
+```ts
+import {
+	parsePhoneNumber,
+	getCountryCodeForRegionCode,
+	getRegionCodeForCountryCode,
+	getSupportedCallingCodes,
+	getSupportedRegionCodes,
+	getExample,
+	getAsYouType,
+} from 'awesome-phonenumber'
+```
 
-```js
-const pn = PhoneNumber( '+46707123456' );
+
+### parsePhoneNumber
+
+`parsePhoneNumber( phoneNumber, regionCode )` creates a PhoneNumber instance.
+
+The first argument is the phone number to parse, on either _national_ or _international_ (e164, i.e. prefixed with a `+`) form. If _national_ form, the second argument `regionCode` is required, e.g. 'SE' for Sweden, 'CH' for Switzerland, etc.
+
+The return is an instance of the PhoneNumber class, with the methods:
+
+```ts
+class PhoneNumber {
+	isValid( ): boolean;
+
+	canBeInternationallyDialled( ): boolean;
+
+	isPossible( ): boolean;
+
+	// any of the "Phone number types" defined above
+	getType( ): PhoneNumberTypes;
+
+	// true if type is 'mobile' or 'fixed-line-or-mobile'
+	isMobile( ): boolean;
+
+	// true if type is 'fixed-line' or 'fixed-line-or-mobile'
+	isFixedLine( ): boolean;
+
+	getNumber( type?: PhoneNumberFormat ): string;
+
+	// Formatted number when calling from regionCode
+	getNumberFrom( regionCode: string ): string;
+
+	getRegionCode( ): string;
+	getCountryCode( ): number;
+
+	// JSON blob output as seen in "Basic usage" above
+	toJSON( ): any;
+}
+```
+
+#### getNumberFrom
+
+```ts
+// Calling the Swedish number 0707123456 from Japan:
+parsePhoneNumber( '0707123456', 'SE' ).getNumberFrom( 'JP' );
+// -> '010 46 70 712 34 56'
+```
+
+#### Example
+
+```ts
+import { parsePhoneNumber } from 'awesome-phonenumber'
+
+const pn = parsePhoneNumber( '+46707123456' );
 pn.getRegionCode( ); // -> 'SE'
 ```
 
-Otherwise, the constructor takes the phone number in _national_ format as first argument, and the region code as second:
-
 ```ts
-const pn = PhoneNumber( '0707123456', 'SE' );
+import { parsePhoneNumber } from 'awesome-phonenumber'
+
+const pn = parsePhoneNumber( '0707123456', 'SE' );
 ```
 
 ## API types
@@ -91,7 +160,7 @@ const pn = PhoneNumber( '0707123456', 'SE' );
 The API consists of the `PhoneNumber` class which sometimes uses *enums*. These are:
 
 ### <a name="phone-number-types"></a>Phone number types
-```js
+```ts
 'fixed-line'
 'fixed-line-or-mobile'
 'mobile'
@@ -107,7 +176,7 @@ The API consists of the `PhoneNumber` class which sometimes uses *enums*. These 
 
 ### Phone number possibilities
 
-```js
+```ts
 'is-possible'
 'invalid-country-code'
 'too-long'
@@ -117,7 +186,7 @@ The API consists of the `PhoneNumber` class which sometimes uses *enums*. These 
 
 ### Phone number formats
 
-```js
+```ts
 'international'
 'national'
 'e164'
@@ -125,96 +194,79 @@ The API consists of the `PhoneNumber` class which sometimes uses *enums*. These 
 'significant'
 ```
 
-## API functions
 
-### Library
-```js
-var PhoneNumber = require( 'awesome-phonenumber' );
-```
-
-### Country codes
+## Country codes
 
 There are conversion functions between the 2-character ISO 3166-1 region codes (e.g. 'SE' for Sweden) and the corresponding country calling codes.
 
-```js
-PhoneNumber.getCountryCodeForRegionCode( regionCode );  // -> countryCode
-PhoneNumber.getRegionCodeForCountryCode( countryCode ); // -> regionCode
+```ts
+import {
+	getCountryCodeForRegionCode,
+	getRegionCodeForCountryCode,
+	getSupportedCallingCodes,
+	getSupportedRegionCodes,
+} from 'awesome-phonenumber'
+
+getCountryCodeForRegionCode( regionCode );  // -> countryCode
+getRegionCodeForCountryCode( countryCode ); // -> regionCode
 ```
 
-#### Example
+### Example
 
-```js
-PhoneNumber.getCountryCodeForRegionCode( 'SE' ); // -> 46
-PhoneNumber.getRegionCodeForCountryCode( 46 );   // -> 'SE'
+```ts
+getCountryCodeForRegionCode( 'SE' ); // -> 46
+getRegionCodeForCountryCode( 46 );   // -> 'SE'
 ```
 
 ### Supported calling codes
 
-```js
-PhoneNumber.getSupportedCallingCodes( ); // -> [ calling codes... ]
+```ts
+getSupportedCallingCodes( ); // -> [ calling codes... ]
 ```
 
 ### Supported region codes
 
-```js
-PhoneNumber.getSupportedRegionCodes( ); // -> [ region codes... ]
+```ts
+getSupportedRegionCodes( ); // -> [ region codes... ]
 ```
 
-### Phone numbers
 
-An instance of the `PhoneNumber` class will be created even if `PhoneNumber` is called as a function.
-
-```js
-var pn = PhoneNumber( number, regionCode );
-// is the same as
-var pn = new PhoneNumber( number, regionCode );
-```
-
-PhoneNumber objects can also be created using the `getExample( regionCode[, type ] )` function, see section [Example phone numbers for country](#example) below.
-
-```js
-pn.toJSON( );               // -> json blob as seen in "Basic usage" above
-pn.isValid( );              // -> Boolean
-pn.isPossible( );           // -> Boolean
-pn.getType( );              // -> Any of the "Phone number types" defined above
-pn.isMobile( );             // -> true if type is 'mobile' or 'fixed-line-or-mobile'
-pn.isFixedLine( );          // -> true if type is 'fixed-line' or 'fixed-line-or-mobile'
-pn.getNumber( [ format ] ); // -> Formatted number, see "Basic usage" for examples
-
-// Returns the number formatted to how to dial it from another region.
-pn.getNumberFrom( fromRegionCode );
-```
-
-#### Example
-
-```js
-// Calling the Swedish number 0707123456 from Japan:
-PhoneNumber( '0707123456', 'SE' ).getNumberFrom( 'JP' ); // '010 46 70 712 34 56'
-```
-
-### <a name="example"></a>Example phone numbers for country
+## <a name="example"></a>Example phone numbers for country
 
 Sometimes you want to display a formatted example phone number for a certain country (and maybe also a certain type of phone number). The `getExample` function is used for this.
 
-```js
-PhoneNumber.getExample( regionCode[, phoneNumberType] ); // PhoneNumber object
+```ts
+import { getExample } from 'awesome-phonenumber'
+
+getExample( regionCode[, phoneNumberType] ); // PhoneNumber object
 ```
 
 The `phoneNumberType` is any of the [types defined above](#phone-number-types).
 
-#### Example
+### Example
 
-```js
-PhoneNumber.getExample( 'SE' ).getNumber( );                      // '+468123456'
-PhoneNumber.getExample( 'SE', 'mobile' ).getNumber( );            // '+46701234567'
-PhoneNumber.getExample( 'SE', 'mobile' ).getNumber( 'national' ); // '070 123 45 67'
+```ts
+import { getExample } from 'awesome-phonenumber'
+
+// Get an example Swedish phone number
+getExample( 'SE' ).getNumber( );                      // '+468123456'
+getExample( 'SE', 'mobile' ).getNumber( );            // '+46701234567'
+getExample( 'SE', 'mobile' ).getNumber( 'national' ); // '070 123 45 67'
 ```
 
-### As-you-type formatting
+## As-you-type formatting
 
-You can use an `AsYouType` class to format a phone number as it is being typed. An instance of this class is retrieved by `var ayt = PhoneNumber.getAsYouType( regionCode )`, and has the following methods:
+You can create an `AsYouType` class with `getAsYouType()` to format a phone number as it is being typed.
 
-```js
+```ts
+import { getAsYouType } from 'awesome-phonenumber'
+
+const ayt = getAsYouType( 'SE' );
+```
+
+The returned class instance has the following methods
+
+```ts
 // Add a character to the end of the number
 ayt.addChar( nextChar );
 
@@ -231,12 +283,14 @@ ayt.reset( [ number ] );
 ayt.getPhoneNumber( );
 ```
 
-All the functions above except `getPhoneNumber( )` return the current formatted number (as a String of course, as it may include spaces and other characters).
+All the functions above except `getPhoneNumber( )` return the current formatted number as a string.
 
 #### Example
 
-```js
-var ayt = PhoneNumber.getAsYouType( 'SE' );
+```ts
+import { getAsYouType } from 'awesome-phonenumber'
+
+const ayt = getAsYouType( 'SE' );
 ayt.addChar( '0' ); // -> '0'
 ayt.addChar( '7' ); // -> '07'
 ayt.addChar( '0' ); // -> '070'

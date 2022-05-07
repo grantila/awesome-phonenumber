@@ -19,3 +19,5 @@ Object.defineProperty(
 );
 
 module.exports.default = module.exports;
+
+module.exports.parsePhoneNumber = module.exports;

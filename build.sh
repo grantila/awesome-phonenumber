@@ -31,6 +31,9 @@ node_modules/.bin/google-closure-compiler \
   --js=${CLOSURE_LIBRARY_DIR}/closure/goog/i18n/bidi.js \
   --js=${CLOSURE_LIBRARY_DIR}/closure/goog/labs/useragent/browser.js \
   --js=${CLOSURE_LIBRARY_DIR}/closure/goog/labs/useragent/util.js \
+  --js=${CLOSURE_LIBRARY_DIR}/closure/goog/labs/useragent/useragent.js \
+  --js=${CLOSURE_LIBRARY_DIR}/closure/goog/labs/useragent/highentropy/highentropyvalue.js \
+  --js=${CLOSURE_LIBRARY_DIR}/closure/goog/labs/useragent/highentropy/highentropydata.js \
   --js=${CLOSURE_LIBRARY_DIR}/closure/goog/object/object.js \
   --js=${CLOSURE_LIBRARY_DIR}/closure/goog/proto2/descriptor.js \
   --js=${CLOSURE_LIBRARY_DIR}/closure/goog/proto2/fielddescriptor.js \

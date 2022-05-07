@@ -71,12 +71,19 @@ JSON.stringify( pn, null, 4 ); // -> This:
 // }
 ```
 
-### Detect country
+## API
 
 When constructed with a phone number on `e164` format (i.e. prefixed with a `+`), awesome-phonenumber will auto-detect the country:
 
 ```js
-PhoneNumber( '+46707123456' ).getRegionCode( ); // -> 'SE'
+const pn = PhoneNumber( '+46707123456' );
+pn.getRegionCode( ); // -> 'SE'
+```
+
+Otherwise, the constructor takes the phone number in _national_ format as first argument, and the region code as second:
+
+```ts
+const pn = PhoneNumber( '0707123456', 'SE' );
 ```
 
 ## API types

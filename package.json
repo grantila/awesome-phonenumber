@@ -37,7 +37,7 @@
   "files": [
     "lib",
     "index.js",
-    "index-esm.js",
+    "index-esm.mjs",
     "index.d.ts"
   ],
   "keywords": [

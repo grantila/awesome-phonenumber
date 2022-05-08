@@ -1,7 +1,7 @@
 'use strict';
 
 var child_process = require( 'child_process' );
-var rimraf        = require( 'rimraf-promise' );
+var rimraf        = require( 'rmfr' );
 
 var libs = [
 	'awesome-phonenumber',

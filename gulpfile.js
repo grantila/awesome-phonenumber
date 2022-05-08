@@ -3,7 +3,7 @@ const gulp = require( 'gulp' );
 
 const child   = require( 'child_process' );
 const fs      = require( 'fs' );
-const rimraf  = require( 'rimraf-promise' );
+const rimraf  = require( 'rmfr' );
 const mkdirp  = require( 'mkdirp' );
 const replace = require( 'replace' );
 

@@ -1,5 +1,6 @@
 {
 	"compilerOptions": {
+		"baseUrl": ".",
 		"declaration": true,
 		"lib": [ "es2015", "es2017", "dom" ],
 		"moduleResolution": "node",
@@ -7,7 +8,10 @@
 		"pretty": true,
 		"sourceMap": false,
 		"target": "es5",
-		"allowSyntheticDefaultImports": true
+		"allowSyntheticDefaultImports": true,
+		"paths": {
+			"awesome-phonenumber": [ "." ]
+		}
 	},
 	"include": [
 		"test.in/awesome-phonenumber"

@@ -1,4 +1,4 @@
-const PhoneNumber = require( '../../' );
+const PhoneNumber = require( 'awesome-phonenumber' );
 
 describe( 'general', function( ) {
 	it( 'should be able to parse a phone number', function( ) {

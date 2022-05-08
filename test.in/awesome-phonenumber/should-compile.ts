@@ -1,4 +1,4 @@
-import PhoneNumber from '../../';
+import PhoneNumber from 'awesome-phonenumber';
 
 describe( 'general', function( ) {
 	it( 'should be able to parse a phone number', function( ) {

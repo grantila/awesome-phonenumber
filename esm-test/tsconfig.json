@@ -1,0 +1,12 @@
+{
+	"compilerOptions": {
+		"baseUrl": ".",
+		"lib": [ "es2019", "dom" ],
+		"moduleResolution": "node",
+		"target": "ESNext",
+		"allowSyntheticDefaultImports": true
+	},
+	"include": [
+		"test"
+	]
+}

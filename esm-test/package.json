@@ -1,0 +1,27 @@
+{
+  "name": "awesome-phonenumber-test",
+  "license": "MIT",
+  "author": "Gustaf Räntilä <g.rantila@gmail.com>",
+  "engines": {
+    "node": ">=12"
+  },
+  "main": "./index.js",
+  "types": "./index.d.ts",
+  "type": "module",
+  "scripts": {
+    "postinstall:lib": "cd node_modules && ln -s ../.. awesome-phonenumber || true",
+    "postinstall:tests": "cp ../test/awesome-phonenumber/*.ts test",
+    "postinstall": "yarn postinstall:lib && yarn postinstall:tests",
+    "build": "tsc -p .",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.17.10",
+    "@babel/preset-typescript": "^7.16.7",
+    "@types/jest": "^27.5.0",
+    "jest": "^28.1.0",
+    "ts-jest-resolver": "^2.0.0",
+    "ts-node": "^10.7.0",
+    "typescript": "^4.6.4"
+  }
+}

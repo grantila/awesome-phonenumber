@@ -1,0 +1,13 @@
+{
+	"compilerOptions": {
+		"baseUrl": ".",
+		"lib": [ "es2019", "dom" ],
+		"moduleResolution": "node",
+		"module": "CommonJS",
+		"target": "es5",
+		"allowSyntheticDefaultImports": true
+	},
+	"include": [
+		"test"
+	]
+}

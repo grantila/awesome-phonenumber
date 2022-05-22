@@ -1,7 +1,9 @@
 import PhoneNumber from 'awesome-phonenumber';
 
-describe( 'general', function( ) {
-	it( 'should be able to parse a phone number', function( ) {
+describe( 'general', ( ) =>
+{
+	it( 'should be able to parse a phone number', ( ) =>
+	{
 		var pn = new PhoneNumber( '0707123456', 'SE' );
 		expect( pn.isValid( ) ).toBe( true );
 		expect( pn.isPossible( ) ).toBe( true );
@@ -11,7 +13,8 @@ describe( 'general', function( ) {
 		expect( pn.toJSON( ).canBeInternationallyDialled ).toBe( true );
 	} );
 
-	it( 'should be able to create an example phone number', function( ) {
+	it( 'should be able to create an example phone number', ( ) =>
+	{
 		var pn1 = PhoneNumber.getExample( 'SE' );
 		expect( pn1.isValid( ) ).toBe( true );
 		expect( pn1.isPossible( ) ).toBe( true );
@@ -29,48 +32,57 @@ describe( 'general', function( ) {
 		expect( pn3.isFixedLine( ) ).toBe( true );
 	} );
 
-	it( 'should be able to convert country code <-> region code', function( ) {
+	it( 'should be able to convert country code <-> region code', ( ) =>
+	{
 		expect( PhoneNumber.getCountryCodeForRegionCode( 'SE' ) ).toBe( 46 );
 		expect( PhoneNumber.getRegionCodeForCountryCode( 46 ) ).toBe( 'SE' );
 	} );
 
-	it( 'should be possible to get region code', function( ) {
+	it( 'should be possible to get region code', ( ) =>
+	{
 		var pn = new PhoneNumber( '0707123456', 'SE' );
 		expect( pn.getRegionCode( ) ).toBe( 'SE' );
 	} );
 
-	it( 'should be possible to get country code', function( ) {
+	it( 'should be possible to get country code', ( ) =>
+	{
 		var pn = new PhoneNumber( '0707123456', 'SE' );
 		expect( pn.getCountryCode( ) ).toBe( 46 );
 	} );
 
-	it( 'should have supported calling codes', function( ) {
+	it( 'should have supported calling codes', ( ) =>
+	{
 		const codes = PhoneNumber.getSupportedCallingCodes( );
 		expect( codes.length ).toBeGreaterThanOrEqual( 100 );
 	} );
 
-	it( 'should not guess US for invalid region code numbers', function( ) {
+	it( 'should not guess US for invalid region code numbers', ( ) =>
+	{
 		const pn = new PhoneNumber( '+80012345678' );
 		expect( pn.getRegionCode( ) ).not.toBe( 'US' );
 	} );
 
-	it( 'should not guess US for known CA numbers', function( ) {
+	it( 'should not guess US for known CA numbers', ( ) =>
+	{
 		const pn = new PhoneNumber( '+1613 734.6759', 'CA' );
 		expect( pn.getRegionCode( ) ).toBe( 'CA' );
 	} );
 
-	it( 'should not guess US for known CA numbers w/o "CA" specified', function( ) {
+	it( 'should not guess US for known CA numbers w/o "CA" specified', ( ) =>
+	{
 		const pn = new PhoneNumber( '+16137346759' );
 		expect( pn.getRegionCode( ) ).toBe( 'CA' );
 	} );
 
-	it( 'should not use US for known CA numbers', function( ) {
+	it( 'should not use US for known CA numbers', ( ) =>
+	{
 		// Issue #51
 		const pn = new PhoneNumber( '+1613 734.6759', 'US' );
 		expect( pn.getRegionCode( ) ).toBe( 'CA' );
 	} );
 
-	it( 'should extract region by prefix as early as possible', function( ) {
+	it( 'should extract region by prefix as early as possible', ( ) =>
+	{
 		const pn1 = new PhoneNumber( '+1' );
 		const pn1x = new PhoneNumber( '+12' );
 		expect( pn1.getRegionCode( ) ).toBe( 'US' );
@@ -87,13 +99,15 @@ describe( 'general', function( ) {
 		expect( pn3x.getRegionCode( ) ).toBe( 'FI' );
 	} );
 
-	it( 'should return unique list of calling codes', function( ) {
+	it( 'should return unique list of calling codes', ( ) =>
+	{
 		const callingCodes = PhoneNumber.getSupportedCallingCodes( );
 
 		expect( callingCodes.length ).toBe( new Set( callingCodes ).size );
 	} );
 
-	it( 'should return unique list of region codes', function( ) {
+	it( 'should return unique list of region codes', ( ) =>
+	{
 		const regionCodes = PhoneNumber.getSupportedRegionCodes( );
 
 		expect( regionCodes.length ).toBe( new Set( regionCodes ).size );
@@ -101,8 +115,10 @@ describe( 'general', function( ) {
 } );
 
 
-describe( 'as-you-type', function( ) {
-	it( 'should be able to format as-you-type', function( ) {
+describe( 'as-you-type', ( ) =>
+{
+	it( 'should be able to format as-you-type', ( ) =>
+	{
 		var ayt = PhoneNumber.getAsYouType( 'SE' );
 		expect( ayt.addChar( '0' ) ).toBe( '0' );
 		expect( ayt.addChar( '7' ) ).toBe( '07' );
@@ -124,7 +140,8 @@ describe( 'as-you-type', function( ) {
 		expect( pn2.isPossible( ) ).toBe( true );
 	} );
 
-	it( 'should be able to format as-you-type with removeChar', function( ) {
+	it( 'should be able to format as-you-type with removeChar', ( ) =>
+	{
 		var ayt = PhoneNumber.getAsYouType( 'SE' );
 		expect( ayt.addChar( '0' ) ).toBe( '0' );
 		expect( ayt.addChar( '7' ) ).toBe( '07' );
@@ -148,7 +165,8 @@ describe( 'as-you-type', function( ) {
 		expect( pn2.isPossible( ) ).toBe( true );
 	} );
 
-	it( 'should reset properly with new number', function( ) {
+	it( 'should reset properly with new number', ( ) =>
+	{
 		var ayt = PhoneNumber.getAsYouType( 'SE' );
 		expect( ayt.addChar( '0' ) ).toBe( '0' );
 		expect( ayt.addChar( '7' ) ).toBe( '07' );
@@ -161,7 +179,8 @@ describe( 'as-you-type', function( ) {
 		expect( ayt.number( ) ).toBe( '070' );
 	} );
 
-	it( 'should reset properly without new number', function( ) {
+	it( 'should reset properly without new number', ( ) =>
+	{
 		var ayt = PhoneNumber.getAsYouType( 'SE' );
 		expect( ayt.addChar( '0' ) ).toBe( '0' );
 		expect( ayt.addChar( '7' ) ).toBe( '07' );
@@ -176,62 +195,73 @@ describe( 'as-you-type', function( ) {
 } );
 
 
-describe( 'instance', function( ) {
-	it( 'constructed should be instanceof PhoneNumber', function( ) {
+describe( 'instance', ( ) =>
+{
+	it( 'constructed should be instanceof PhoneNumber', ( ) =>
+	{
 		var pn = new PhoneNumber( '+12' );
 		expect( pn instanceof PhoneNumber ).toBe( true );
 	} );
 
-	it( 'called should be instanceof PhoneNumber', function( ) {
+	it( 'called should be instanceof PhoneNumber', ( ) =>
+	{
 		var pn = PhoneNumber( '+12' );
 		expect( pn instanceof PhoneNumber ).toBe( true );
 	} );
 } );
 
 
-describe( 'errors', function( ) {
-	it( 'should not allow too short numbers', function( ) {
+describe( 'errors', ( ) =>
+{
+	it( 'should not allow too short numbers', ( ) =>
+	{
 		var pn = new PhoneNumber( '+12' );
 		expect( pn.isValid( ) ).toBe( false );
 		expect( pn.isPossible( ) ).toBe( false );
 	} );
 
-	it( 'should handle invalid country code', function( ) {
+	it( 'should handle invalid country code', ( ) =>
+	{
 		var pn = new PhoneNumber( '+0123' );
 		expect( pn.isValid( ) ).toBe( false );
 		expect( pn.isPossible( ) ).toBe( false );
 		expect( pn.toJSON( ).possibility ).toBe( 'invalid-country-code' );
 	} );
 
-	it( 'should handle invalid country code (and valid region code)', function( ) {
+	it( 'should handle invalid country code (and valid region code)', ( ) =>
+	{
 		var pn = new PhoneNumber( '+0123', 'SE' );
 		expect( pn.isValid( ) ).toBe( false );
 		expect( pn.isPossible( ) ).toBe( false );
 		expect( pn.toJSON( ).possibility ).toBe( 'invalid-country-code' );
 	} );
 
-	it( 'should handle invalid country code and region code', function( ) {
+	it( 'should handle invalid country code and region code', ( ) =>
+	{
 		var pn = new PhoneNumber( '0123', 'XX' );
 		expect( pn.isValid( ) ).toBe( false );
 		expect( pn.isPossible( ) ).toBe( false );
 		expect( pn.toJSON( ).possibility ).toBe( 'invalid-country-code' );
 	} );
 
-	it( 'should handle missing country code', function( ) {
+	it( 'should handle missing country code', ( ) =>
+	{
 		var pn = new PhoneNumber( '0123' );
 		expect( pn.isValid( ) ).toBe( false );
 		expect( pn.isPossible( ) ).toBe( false );
 		expect( pn.toJSON( ).possibility ).toBe( 'invalid-country-code' );
 	} );
 
-	it( 'should handle TOO_SHORT', function( ) {
+	it( 'should handle TOO_SHORT', ( ) =>
+	{
 		var pn = new PhoneNumber( '0123', 'SE' );
 		expect( pn.isValid( ) ).toBe( false );
 		expect( pn.isPossible( ) ).toBe( false );
 		expect( pn.toJSON( ).possibility ).toBe( 'too-short' );
 	} );
 
-	it( 'should handle invalid phone number', function( ) {
+	it( 'should handle invalid phone number', ( ) =>
+	{
 		const failure = ( arg: any ) => ( ) => new PhoneNumber( arg );
 
 		expect( failure( null ) ).toThrow( "Invalid phone number" );
@@ -241,8 +271,10 @@ describe( 'errors', function( ) {
 		expect( failure( true ) ).toThrow( "Invalid phone number" );
 	} );
 
-	it( 'should handle invalid phone number', function( ) {
-		const failure = ( arg: any ) => ( ) => new PhoneNumber( '987654321', arg );
+	it( 'should handle invalid phone number', ( ) =>
+	{
+		const failure = ( arg: any ) =>
+			( ) => new PhoneNumber( '987654321', arg );
 
 		expect( failure( { } ) ).toThrow( "Invalid region code" );
 		expect( failure( [ ] ) ).toThrow( "Invalid region code" );

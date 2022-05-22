@@ -1,7 +1,9 @@
 const PhoneNumber = require( 'awesome-phonenumber' );
 
-describe( 'general', function( ) {
-	it( 'should be able to parse a phone number', function( ) {
+describe( 'general', ( ) =>
+{
+	it( 'should be able to parse a phone number', ( ) =>
+	{
 		var pn = new PhoneNumber( '0707123456', 'SE' );
 		expect( pn.isValid( ) ).toBe( true );
 		expect( pn.isPossible( ) ).toBe( true );
@@ -11,7 +13,8 @@ describe( 'general', function( ) {
 		expect( pn.toJSON( ).canBeInternationallyDialled ).toBe( true );
 	} );
 
-	it( 'should be able to create an example phone number', function( ) {
+	it( 'should be able to create an example phone number', ( ) =>
+	{
 		var pn1 = PhoneNumber.getExample( 'SE' );
 		expect( pn1.isValid( ) ).toBe( true );
 		expect( pn1.isPossible( ) ).toBe( true );
@@ -29,7 +32,8 @@ describe( 'general', function( ) {
 		expect( pn3.isFixedLine( ) ).toBe( true );
 	} );
 
-	it( 'should be able to format as-you-type', function( ) {
+	it( 'should be able to format as-you-type', ( ) =>
+	{
 		var ayt = PhoneNumber.getAsYouType( 'SE' );
 		expect( ayt.addChar( '0' ) ).toBe( '0' );
 		expect( ayt.addChar( '7' ) ).toBe( '07' );
@@ -51,22 +55,26 @@ describe( 'general', function( ) {
 		expect( pn2.isPossible( ) ).toBe( true );
 	} );
 
-	it( 'should be able to convert country code <-> region code', function( ) {
+	it( 'should be able to convert country code <-> region code', ( ) =>
+	{
 		expect( PhoneNumber.getCountryCodeForRegionCode( 'SE' ) ).toBe( 46 );
 		expect( PhoneNumber.getRegionCodeForCountryCode( 46 ) ).toBe( 'SE' );
 	} );
 
-	it( 'should be possible to get region code', function( ) {
+	it( 'should be possible to get region code', ( ) =>
+	{
 		var pn = new PhoneNumber( '0707123456', 'SE' );
 		expect( pn.getRegionCode( ) ).toBe( 'SE' );
 	} );
 
-	it( 'should have supported calling codes', function( ) {
+	it( 'should have supported calling codes', ( ) =>
+	{
 		const codes = PhoneNumber.getSupportedCallingCodes( );
 		expect( codes.length ).toBeGreaterThan( 100 );
 	} );
 
-	it( 'should have supported calling regions', function( ) {
+	it( 'should have supported calling regions', ( ) =>
+	{
 		const regions = PhoneNumber.getSupportedRegionCodes( );
 		expect( regions.length ).toBeGreaterThan( 100 );
 	} );

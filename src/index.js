@@ -69,16 +69,21 @@ function getValidationResult( number )
 	return 'unknown';
 }
 
-function extractRegionCode( phoneNumber )
+function isInternational( number )
+{
+	return number.charAt( 0 ) === '+' || number.slice( 0, 2 ) === '00';
+}
+
+function extractRegionCode( phoneNumber, regionHint )
 {
 	var parsed, regionCode;
 
-	if ( phoneNumber.charAt( 0 ) !== '+' )
+	if ( !isInternational( phoneNumber ) )
 		return { parsed, regionCode };
 
 	try
 	{
-		parsed = phoneUtil.parse( phoneNumber );
+		parsed = phoneUtil.parse( phoneNumber, regionHint );
 	} catch ( err ) { }
 
 	if ( parsed )
@@ -151,9 +156,12 @@ export function PhoneNumber( phoneNumber, regionCode )
 			// it'll be extracted properly by libphonenumber.
 			regionCode = null;
 
-		if ( !regionCode )
+		if ( !regionCode || isInternational( phoneNumber ) )
 			// Guess region code
-			( { regionCode = null, parsed } = extractRegionCode( phoneNumber ) );
+			(
+				{ regionCode = null, parsed } =
+					extractRegionCode( phoneNumber, regionCode )
+			);
 	}
 
 	this._json = {

@@ -90,6 +90,27 @@ describe( 'general', ( ) =>
 		expect( pn.getRegionCode( ) ).toBe( 'CA' );
 	} );
 
+	it( 'should not use region code for international numbers (+)', ( ) =>
+	{
+		const pn = parsePhoneNumber( '+49040398272', 'ES' );
+		expect( pn.getRegionCode( ) ).toBe( 'DE' );
+		expect( pn.getCountryCode( ) ).toBe( 49 );
+	} );
+
+	it( 'should hint region code for double-zero leading numbers', ( ) =>
+	{
+		const pn = parsePhoneNumber( '0049040398272', 'ES' );
+		expect( pn.getRegionCode( ) ).toBe( 'DE' );
+		expect( pn.getCountryCode( ) ).toBe( 49 );
+	} );
+
+	it( 'should hint region code for double-zero leading numbers', ( ) =>
+	{
+		const pn = parsePhoneNumber( '0049040398272', 'US' );
+		expect( pn.isValid( ) ).toBe( false );
+		expect( pn.getRegionCode( ) ).toBe( null );
+	} );
+
 	it( 'should extract region by prefix as early as possible', ( ) =>
 	{
 		const pn1 = parsePhoneNumber( '+1' );

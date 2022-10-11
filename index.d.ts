@@ -21,7 +21,7 @@ export type PhoneNumberTypes =
 
 export class PhoneNumber
 {
-	/** @deprecated use `getPhoneNumber()` instead */
+	/** @deprecated use `parsePhoneNumber()` instead */
 	constructor( phoneNumber: string, regionCode?: string );
 
 	isValid( ): boolean;

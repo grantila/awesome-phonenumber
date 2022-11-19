@@ -112,17 +112,50 @@ function extractRegionCode( phoneNumber, regionHint )
 	return { parsed, regionCode: void 0 };
 }
 
+function makeWeakMap( )
+{
+	try
+	{
+		return new WeakMap( );
+	}
+	catch ( err )
+	{
+		return undefined;
+	}
+}
+
+const weakMap = makeWeakMap( );
+
+function getWeakInstance( parsedPhoneNumber )
+{
+	if ( weakMap )
+	{
+		const pn = weakMap.get( parsedPhoneNumber );
+
+		if ( pn )
+		{
+			return pn;
+		}
+	}
+
+	return new PhoneNumber( parsedPhoneNumber?.['number']?.['e164'], { } );
+}
+
 /**
  * The PhoneNumber class.
+ *
+ * @param options object
  * @constructor
  * @export
  */
-export function PhoneNumber( phoneNumber, regionCode )
+export function PhoneNumber( phoneNumber, options )
 {
 	if ( !( this instanceof PhoneNumber ) )
-		return new PhoneNumber( phoneNumber, regionCode );
+		return new PhoneNumber( phoneNumber, options );
 
 	var self = this;
+
+	var regionCode = options?.['regionCode'];
 
 	var isInternal =
 		typeof phoneNumber === 'string'
@@ -144,8 +177,20 @@ export function PhoneNumber( phoneNumber, regionCode )
 
 	if ( !isInternal && typeof phoneNumber !== 'string' )
 		throw new Error( "Invalid phone number, expected a string" );
+	if (
+		!isInternal &&
+		typeof options !== 'object' &&
+		typeof options !== 'undefined'
+	)
+		throw new Error(
+			`Invalid options, expected object, got ${typeof options}. ` +
+			"This may be because of not yet upgraded code."
+		);
 	if ( !isInternal && regionCode != null && typeof regionCode !== 'string' )
-		throw new Error( "Invalid region code, expected a string" );
+		throw new Error(
+			'Invalid region code, expected a string, got ' +
+			`${typeof regionCode} ${regionCode}`
+		);
 
 	if ( !isInternal )
 	{
@@ -170,6 +215,11 @@ export function PhoneNumber( phoneNumber, regionCode )
 		'valid'      : false,
 		'possible'   : false
 	};
+
+	if ( weakMap )
+	{
+		weakMap.set( this._json, this );
+	}
 
 	if ( isInternal )
 	{
@@ -229,6 +279,11 @@ export function PhoneNumber( phoneNumber, regionCode )
 	this._json[ 'type' ] = getNumberType( self._number );
 
 	this._json[ 'possibility' ] = getValidationResult( self._number );
+
+	this._json[ 'typeIsMobile' ] = this.isMobile( );
+	this._json[ 'typeIsFixedLine' ] = this.isFixedLine( );
+	this._json[ 'countryCode' ] =
+		phoneUtil.getCountryCodeForRegion( regionCode );
 }
 
 /** @export */
@@ -278,13 +333,37 @@ PhoneNumber.getExample = function( regionCode, type /* = null */ )
 		example = phoneUtil.getExampleNumberForType(
 			regionCode, toNumberType( type ) );
 
-	return new PhoneNumber( example, regionCode );
+	return new PhoneNumber( example, regionCode ).toJSON( );
 }
 
 /** @export */
 PhoneNumber.getAsYouType = function( regionCode )
 {
 	return new AsYouType( regionCode );
+}
+
+/** @export */
+PhoneNumber.getNumberFrom = function( parsedPhoneNumber, regionCode )
+{
+	try
+	{
+		const instance = getWeakInstance( parsedPhoneNumber );
+		const number = phoneUtil.formatOutOfCountryCallingNumber(
+			instance._number,
+			regionCode
+		);
+		return {
+			[ 'valid' ]: true,
+			[ 'number' ]: number,
+		};
+	}
+	catch ( err )
+	{
+		return {
+			[ 'valid' ]: false,
+			[ 'error' ]: err,
+		};
+	}
 }
 
 /** @export */
@@ -341,12 +420,6 @@ PhoneNumber.prototype.getNumber = function( type /* = e164 */ )
 	type = type == null ? 'e164' : type;
 
 	return this._json[ 'number' ][ type ];
-}
-
-/** @export */
-PhoneNumber.prototype.getNumberFrom = function( regionCode )
-{
-	return phoneUtil.formatOutOfCountryCallingNumber( this._number, regionCode );
 }
 
 /** @export */
@@ -413,5 +486,8 @@ AsYouType.prototype.reset = function( number /* = '' */ )
 /** @export */
 AsYouType.prototype.getPhoneNumber = function( )
 {
-	return new PhoneNumber( this._number, this._regionCode );
+	return new PhoneNumber(
+		this._number,
+		{ ['regionCode']: this._regionCode }
+	).toJSON( );
 }

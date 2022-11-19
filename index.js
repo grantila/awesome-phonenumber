@@ -18,12 +18,34 @@ Object.defineProperty(
 	}
 );
 
-module.exports.default = module.exports;
+module.exports.parsePhoneNumber = ( ...args ) =>
+{
+	try
+	{
+		const ret = module.exports( ...args ).toJSON( );
+		if ( !ret.valid && !ret.possible )
+		{
+			ret.possible = false;
+			if ( !ret.possibility )
+				ret.possibility = 'invalid';
+		}
+		return ret;
+	}
+	catch ( error )
+	{
+		return {
+			valid: false,
+			possible: false,
+			possibility: 'invalid',
+			error,
+		};
+	}
+};
 
-module.exports.parsePhoneNumber = module.exports;
 module.exports.getCountryCodeForRegionCode = module.exports.getCountryCodeForRegionCode;
 module.exports.getRegionCodeForCountryCode = module.exports.getRegionCodeForCountryCode;
 module.exports.getSupportedCallingCodes = module.exports.getSupportedCallingCodes;
 module.exports.getSupportedRegionCodes = module.exports.getSupportedRegionCodes;
 module.exports.getExample = module.exports.getExample;
 module.exports.getAsYouType = module.exports.getAsYouType;
+module.exports.getNumberFrom = module.exports.getNumberFrom;

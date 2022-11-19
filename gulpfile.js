@@ -100,7 +100,7 @@ function gitClone( url, name, branch )
 
 function runCommand( cmd, args, opts )
 {
-	opts = opts || {
+	opts = opts || {
 		cwd   : './build',
 		stdio : [ null, null, isDebug ? process.stderr : null ]
 	};

@@ -11,7 +11,7 @@ This library is a pre-compiled version of Google's `libphonenumber`, with a slig
 
 TypeScript typings are provided within the package.
 
-Uses libphonenumber v8.12.56
+Uses libphonenumber v8.13.1
 
 
 ### Versions
@@ -19,6 +19,14 @@ Uses libphonenumber v8.12.56
  - v3:
    - Changed API (although with backwards compatible ABI)
    - Added ESM export
+ - v4:
+   - Changed API to be much cleaner
+     - No constructor
+     - No functions on returned object
+     - No errors being thrown
+   - Not backwards compatible, although like v3 except:
+     - The second argument to `parsePhoneNumber` is an object (e.g. `{ regionCode: 'SE' }`) instead of a region code string
+     - The return value is like `toJSON( )` on v3
 
 
 ## Comparison with other libraries
@@ -46,49 +54,84 @@ node_modules files              | 8                   | 7 ✅                  |
 ```ts
 import { parsePhoneNumber } from 'awesome-phonenumber'
 
-const pn = parsePhoneNumber( '0707123456', 'SE' );
-pn.isValid( );  // -> true
-pn.isMobile( ); // -> true
-pn.canBeInternationallyDialled( ); // -> true
-pn.getNumber( );                   // -> '+46707123456'
-pn.getNumber( 'e164' );            // -> '+46707123456' (default)
-pn.getNumber( 'international' );   // -> '+46 70 712 34 56'
-pn.getNumber( 'national' );        // -> '070-712 34 56'
-pn.getNumber( 'rfc3966' );         // -> 'tel:+46-70-712-34-56'
-pn.getNumber( 'significant' );     // -> '707123456'
-pn.getRegionCode( );               // -> 'SE'
-pn.getCountryCode( );              // -> 46
+const pn = parsePhoneNumber( '0707123456', { regionCode: 'SE' } );
+// or on e164 format:
+const pn = parsePhoneNumber( '+46707123456' );
 
-pn.toJSON( );                  // -> json blob, so that:
-JSON.stringify( pn, null, 4 ); // -> This:
-// {
-//     "canBeInternationallyDialled": true,
-//     "number": {
-//         "input": "0707123456",
-//         "international": "+46 70 712 34 56",
-//         "national": "070-712 34 56",
-//         "e164": "+46707123456",
-//         "rfc3966": "tel:+46-70-712-34-56",
-//         "significant": "707123456"
-//     },
-//     "regionCode": "SE",
-//     "valid": true,
-//     "possible": true,
-//     "type": "mobile",
-//     "possibility": "is-possible"
-// }
+// pn is now the same as:
+const pn = {
+	valid: true,
+
+	number: {
+		input: '0707123456',
+		e164: '+46707123456',
+		international: '+46 70 712 34 56',
+		national: '070-712 34 56',
+		rfc3966: 'tel:+46-70-712-34-56',
+		significant: '707123456',
+	},
+	possibility: 'is-possible',
+	regionCode: 'SE',
+	possible: true,
+	canBeInternationallyDialled: true,
+	type: 'mobile',
+	countryCode: 46,
+	typeIsMobile: true,
+	typeIsFixedLine: false,
+};
 ```
+
+The return type is `ParsedPhoneNumber` which is either a `ParsedPhoneNumberValid` or a `ParsedPhoneNumberInvalid`. The `valid` property identifies whether the parsing was successful or not, hence which type is returned.
+
+The format of a successful parsing is:
+
+```ts
+interface ParsedPhoneNumberValid {
+	valid: true;
+
+	number: {
+		input: string;
+		international: string;
+		national: string;
+		e164: string;
+		rfc3966: string;
+		significant: string;
+	};
+	possibility: PhoneNumberPossibility; // a string union, see below
+	regionCode: string;
+	possible: boolean;
+	canBeInternationallyDialled: boolean;
+	type: PhoneNumberTypes; // a string union, see below
+	countryCode: string;
+	typeIsMobile: boolean;
+	typeIsFixedLine: boolean;
+}
+```
+
+If the number failed to be parsed, or there was another error, the return type is:
+
+```ts
+interface ParsedPhoneNumberInvalid {
+	valid: false;
+
+	possible: false;
+	possibility: 'invalid';
+	error?: unknown;
+};
+```
+
 
 ## API
 
 ```ts
 import {
 	parsePhoneNumber,
+	getNumberFrom,
+	getExample,
 	getCountryCodeForRegionCode,
 	getRegionCodeForCountryCode,
 	getSupportedCallingCodes,
 	getSupportedRegionCodes,
-	getExample,
 	getAsYouType,
 } from 'awesome-phonenumber'
 ```
@@ -96,102 +139,71 @@ import {
 
 ### parsePhoneNumber
 
-`parsePhoneNumber( phoneNumber, regionCode )` creates a PhoneNumber instance.
+`parsePhoneNumber( phoneNumber, { regionCode: string } )` parses a phone number as described above.
 
-The first argument is the phone number to parse, on either _national_ or _international_ (e164, i.e. prefixed with a `+`) form. If _national_ form, the second argument `regionCode` is required, e.g. 'SE' for Sweden, 'CH' for Switzerland, etc.
+The first argument is the phone number to parse, on either _national_ or _international_ (e164, i.e. prefixed with a `+`) form. If _national_ form, the second argument is required to contain a `regionCode` string property, e.g. 'SE' for Sweden, 'CH' for Switzerland, etc.
 
-The return is an instance of the PhoneNumber class, with the methods:
+
+### getNumberFrom
 
 ```ts
-class PhoneNumber {
-	isValid( ): boolean;
+import { parsePhoneNumber, getNumberFrom } from 'awesome-phonenumber'
 
-	canBeInternationallyDialled( ): boolean;
-
-	isPossible( ): boolean;
-
-	// any of the "Phone number types" defined above
-	getType( ): PhoneNumberTypes;
-
-	// true if type is 'mobile' or 'fixed-line-or-mobile'
-	isMobile( ): boolean;
-
-	// true if type is 'fixed-line' or 'fixed-line-or-mobile'
-	isFixedLine( ): boolean;
-
-	getNumber( type?: PhoneNumberFormat ): string;
-
-	// Formatted number when calling from regionCode
-	getNumberFrom( regionCode: string ): string;
-
-	getRegionCode( ): string;
-	getCountryCode( ): number;
-
-	// JSON blob output as seen in "Basic usage" above
-	toJSON( ): any;
+const pn = parsePhoneNumber( '0707654321', { regionCode: 'SE' } );
+if ( pn.valid ) {
+	const fromJp = getNumberFrom( pn, 'JP' );
+	// fromJp is the number to call from Japan:
+	fromJp.number === "010 46 70 765 43 21";
 }
 ```
 
-#### getNumberFrom
+The return value from `getNumberFrom` is a `PhoneNumberFrom` which is either a `PhoneNumberFromValid` or a `PhoneNumberFromInvalid`.
+
+The `PhoneNumberFromValid` is defined as:
 
 ```ts
-// Calling the Swedish number 0707123456 from Japan:
-parsePhoneNumber( '0707123456', 'SE' ).getNumberFrom( 'JP' );
-// -> '010 46 70 712 34 56'
+interface PhoneNumberFromValid
+{
+	valid: true;
+	number: string;
+}
 ```
 
-#### Example
+The `PhoneNumberFromInvalid` is defined as:
 
 ```ts
-import { parsePhoneNumber } from 'awesome-phonenumber'
-
-const pn = parsePhoneNumber( '+46707123456' );
-pn.getRegionCode( ); // -> 'SE'
+interface PhoneNumberFromInvalid
+{
+	valid: false;
+	error?: unknown;
+}
 ```
 
-```ts
-import { parsePhoneNumber } from 'awesome-phonenumber'
 
-const pn = parsePhoneNumber( '0707123456', 'SE' );
+## <a name="example"></a>getExample
+
+Sometimes you want to display a formatted example phone number for a certain country (and maybe also a certain type of phone number). The `getExample` function is used for this.
+
+```ts
+import { getExample } from 'awesome-phonenumber'
+
+getExample( regionCode[, phoneNumberType] ); // Parsed phone number
 ```
 
-## API types
+The `phoneNumberType` is any of the [types defined above](#phone-number-types).
 
-The API consists of the `PhoneNumber` class which sometimes uses *enums*. These are:
-
-### <a name="phone-number-types"></a>Phone number types
-```ts
-'fixed-line'
-'fixed-line-or-mobile'
-'mobile'
-'pager'
-'personal-number'
-'premium-rate'
-'shared-cost'
-'toll-free'
-'uan'
-'voip'
-'unknown'
-```
-
-### Phone number possibilities
+### Example
 
 ```ts
-'is-possible'
-'invalid-country-code'
-'too-long'
-'too-short'
-'unknown'
-```
+import { getExample } from 'awesome-phonenumber'
 
-### Phone number formats
+// Get an example Swedish phone number
+const example = getExample( 'SE' ); // A ParsedPhoneNumberValid
+const exampleMobile = getExample( 'SE', 'mobile' ); // A ParsedPhoneNumberValid
 
-```ts
-'international'
-'national'
-'e164'
-'rfc3966'
-'significant'
+example.number.e164;           // e.g. '+468123456'
+exampleMobile.number.e164;     // e.g. '+46701234567'
+exampleMobile.number.national; // e.g. '070 123 45 67'
 ```
 
 
@@ -231,28 +243,49 @@ getSupportedRegionCodes( ); // -> [ region codes... ]
 ```
 
 
-## <a name="example"></a>Example phone numbers for country
+## API types
 
-Sometimes you want to display a formatted example phone number for a certain country (and maybe also a certain type of phone number). The `getExample` function is used for this.
+The API consists of the `PhoneNumber` class which sometimes uses *enums*. These are:
 
+### <a name="phone-number-types"></a>Phone number types
 ```ts
-import { getExample } from 'awesome-phonenumber'
-
-getExample( regionCode[, phoneNumberType] ); // PhoneNumber object
+type PhoneNumberTypes =
+	| 'fixed-line'
+	| 'fixed-line-or-mobile'
+	| 'mobile'
+	| 'pager'
+	| 'personal-number'
+	| 'premium-rate'
+	| 'shared-cost'
+	| 'toll-free'
+	| 'uan'
+	| 'voip'
+	| 'unknown'
 ```
 
-The `phoneNumberType` is any of the [types defined above](#phone-number-types).
-
-### Example
+### Phone number possibilities
 
 ```ts
-import { getExample } from 'awesome-phonenumber'
-
-// Get an example Swedish phone number
-getExample( 'SE' ).getNumber( );                      // '+468123456'
-getExample( 'SE', 'mobile' ).getNumber( );            // '+46701234567'
-getExample( 'SE', 'mobile' ).getNumber( 'national' ); // '070 123 45 67'
+type PhoneNumberPossibility =
+	| 'is-possible'
+	| 'invalid-country-code'
+	| 'too-long'
+	| 'too-short'
+	| 'unknown'
 ```
+
+### Phone number formats
+
+```ts
+'international'
+'national'
+'e164'
+'rfc3966'
+'significant'
+```
+
+
+
 
 ## As-you-type formatting
 
@@ -268,7 +301,7 @@ The returned class instance has the following methods
 
 ```ts
 // Add a character to the end of the number
-ayt.addChar( nextChar );
+ayt.addChar( nextChar: string );
 
 // Get the current formatted number
 ayt.number( );
@@ -276,10 +309,10 @@ ayt.number( );
 // Remove the last character
 ayt.removeChar( );
 
-// Replace the whole number with a new number (or an empty number if null)
-ayt.reset( [ number ] );
+// Replace the whole number with a new number (or an empty number if undefined)
+ayt.reset( number?: string );
 
-// Get a PhoneNumber object representing the current number
+// Get a ParsedPhoneNumber object representing the current number
 ayt.getPhoneNumber( );
 ```
 

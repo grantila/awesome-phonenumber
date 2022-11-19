@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 BASEDIR=.
 CLOSURE_LIBRARY_DIR=${BASEDIR}/node_modules/google-closure-library

@@ -1,91 +1,104 @@
 export type PhoneNumberFormat =
-	'e164' |
-	'international' |
-	'national' |
-	'rfc3966' |
-	'significant';
+	| 'e164'
+	| 'international'
+	| 'national'
+	| 'rfc3966'
+	| 'significant';
 
 export type PhoneNumberTypes =
-	'fixed-line' |
-	'fixed-line-or-mobile' |
-	'mobile' |
-	'pager' |
-	'personal-number' |
-	'premium-rate' |
-	'shared-cost' |
-	'toll-free' |
-	'uan' |
-	'voip' |
-	'unknown';
+	| 'fixed-line'
+	| 'fixed-line-or-mobile'
+	| 'mobile'
+	| 'pager'
+	| 'personal-number'
+	| 'premium-rate'
+	| 'shared-cost'
+	| 'toll-free'
+	| 'uan'
+	| 'voip'
+	| 'unknown';
 
-
-export class PhoneNumber
-{
-	/** @deprecated use `getPhoneNumber()` instead */
-	constructor( phoneNumber: string, regionCode?: string );
-
-	isValid( ): boolean;
-	canBeInternationallyDialled( ): boolean;
-	isPossible( ): boolean;
-	getType( ): PhoneNumberTypes;
-	isMobile( ): boolean;
-	isFixedLine( ): boolean;
-	getNumber( type?: PhoneNumberFormat ): string;
-	getNumberFrom( regionCode: string ): string;
-	getRegionCode( ): string;
-	getCountryCode( ): number;
-	toJSON( ): any;
-
-	/**
-	 * @deprecated Use the exported {@link getCountryCodeForRegionCode} function instead.
-	 */
-	static getCountryCodeForRegionCode( regionCode: string ): number;
-
-	/**
-	 * @deprecated Use the exported {@link getRegionCodeForCountryCode} function instead.
-	 */
-	static getRegionCodeForCountryCode( countryCode: number ): string;
-
-	/**
-	 * @deprecated Use the exported {@link getSupportedCallingCodes} function instead.
-	 */
-	static getSupportedCallingCodes( ): string[ ];
-
-	/**
-	 * @deprecated Use the exported {@link getSupportedRegionCodes} function instead.
-	 */
-	static getSupportedRegionCodes( ): string[ ];
-
-	/**
-	 * @deprecated Use the exported {@link getExample} function instead.
-	 */
-	static getExample( regionCode: string, type?: PhoneNumberTypes ): PhoneNumber;
-
-	/**
-	 * @deprecated Use the exported {@link getAsYouType} function instead.
-	 */
-	static getAsYouType( regionCode: string ): AsYouType;
-}
-
-/** @deprecated use `parsePhoneNumber()` instead */
-export function PhoneNumber( phoneNumber: string, regionCode?: string ): PhoneNumber;
+export type PhoneNumberPossibility =
+	| 'is-possible'
+	| 'invalid'
+	| 'invalid-country-code'
+	| 'too-long'
+	| 'too-short';
 
 /**
- * Parse a phone number into a PhoneNumber class.
+ * Parse a phone number into an object describing the number.
  *
  * @example
+ *   ```ts
  *   // Using a national phone number format
- *   parsePhoneNumber( '0707123456', 'SE' )
+ *   parsePhoneNumber( '0707123456', { regionCode: 'SE' } )
  *   // Using an international (e164) phone number format
  *   parsePhoneNumber( '+46707123456' )
+ *   ```
+ *
+ * The options object is on the form:
+ *   ```ts
+ *   {
+ *     regionCode?: string;
+ *   }
+ *   ```
  *
  * @param phoneNumber Either an `e164` formatted (international) phone number
  *                    or a _national_ phone number.
- * @param regionCode  Region code for the phone number (only required if
- *                    {@link phoneNumber} is on a _national_ format).
- *                    Example: 'SE' for Sweden, 'CH' for Switzerland, etc.
+ * @param options     Object of type {@link PhoneNumberParseOptions}.
+ * @returns A {@link ParsedPhoneNumber}
  */
-export function parsePhoneNumber( phoneNumber: string, regionCode?: string ): PhoneNumber;
+export function parsePhoneNumber(
+	phoneNumber: string,
+	options?: PhoneNumberParseOptions
+): ParsedPhoneNumber;
+
+export interface PhoneNumberParseOptions
+{
+	/**
+	 * If the phone number is on national form, this region code specifies the
+	 * region of the phone number, e.g. "SE" for Sweden.
+	 */
+	regionCode?: string;
+}
+
+export interface ParsedPhoneNumberFull
+{
+	number: {
+		input: string;
+		international: string;
+		national: string;
+		e164: string;
+		rfc3966: string;
+		significant: string;
+	};
+	possibility: PhoneNumberPossibility;
+	regionCode: string;
+	valid: boolean;
+	possible: boolean;
+	canBeInternationallyDialled: boolean;
+	type: PhoneNumberTypes;
+	countryCode: string;
+	typeIsMobile: boolean;
+	typeIsFixedLine: boolean;
+}
+
+export type ParsedPhoneNumberValid =
+	& Omit< ParsedPhoneNumberFull, 'valid' >
+	& { valid: true; };
+
+export type ParsedPhoneNumberInvalid =
+	& Partial< Omit< ParsedPhoneNumberFull, 'valid' | 'possible' | 'possibility' > >
+	& {
+		valid: false;
+		possible: boolean;
+		possibility: PhoneNumberPossibility;
+		error?: unknown;
+	};
+
+export type ParsedPhoneNumber =
+	| ParsedPhoneNumberValid
+	| ParsedPhoneNumberInvalid;
 
 export function getCountryCodeForRegionCode( regionCode: string ): number;
 export function getRegionCodeForCountryCode( countryCode: number ): string;
@@ -99,7 +112,40 @@ export function getSupportedRegionCodes( ): string[ ];
  * @param regionCode Region code
  * @param type Phone number {@link PhoneNumberTypes type}
  */
-export function getExample( regionCode: string, type?: PhoneNumberTypes ): PhoneNumber;
+export function getExample(
+	regionCode: string,
+	type?: PhoneNumberTypes
+): ParsedPhoneNumber;
+
+
+/**
+ * Get a phonenumber string as it would be called from another country.
+ *
+ * @param parsedPhoneNumber A phone number object as returned from {@link parsePhoneNumber `parsePhoneNumber()`}
+ * @param regionCode Region code of the country to call from
+ */
+export function getNumberFrom(
+	parsedPhoneNumber: ParsedPhoneNumberValid,
+	regionCode?: string
+): PhoneNumberFrom;
+
+export type PhoneNumberFrom =
+	| PhoneNumberFromValid
+	| PhoneNumberFromInvalid;
+
+export interface PhoneNumberFromValid
+{
+	valid: true;
+	number: string;
+}
+
+export interface PhoneNumberFromInvalid
+{
+	valid: false;
+	number?: string;
+	error?: unknown;
+}
+
 
 /**
  * Get an instance of the AsYouType class, based on a region code.
@@ -117,8 +163,8 @@ export class AsYouType
 	number( ): string;
 	removeChar( ): string;
 	reset( number?: string ): string;
-	getPhoneNumber( ): PhoneNumber;
+	getPhoneNumber( ): ParsedPhoneNumber;
 }
 
-/** @deprecated use `parsePhoneNumber()` instead */
-export default PhoneNumber;
+// /** @deprecated use `parsePhoneNumber()` instead */
+// export default PhoneNumber;

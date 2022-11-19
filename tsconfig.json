@@ -6,6 +6,7 @@
 		"moduleResolution": "node",
 		"outDir": "test/awesome-phonenumber",
 		"pretty": true,
+		"strict": true,
 		"sourceMap": false,
 		"target": "es5",
 		"allowSyntheticDefaultImports": true,

@@ -8,11 +8,34 @@ const {
 	getSupportedRegionCodes,
 	getExample,
 	getAsYouType,
+	getNumberFrom,
 } = index;
-const parsePhoneNumber = index;
+
+const parsePhoneNumber = ( ...args ) =>
+{
+	try
+	{
+		const ret = index( ...args ).toJSON( );
+		if ( !ret.valid && !ret.possible )
+		{
+			ret.possible = false;
+			if ( !ret.possibility )
+				ret.possibility = 'invalid';
+		}
+		return ret;
+	}
+	catch ( error )
+	{
+		return {
+			valid: false,
+			possible: false,
+			possibility: 'invalid',
+			error,
+		};
+	}
+};
 
 export {
-	PhoneNumber,
 	AsYouType,
 	parsePhoneNumber,
 	getCountryCodeForRegionCode,
@@ -21,4 +44,5 @@ export {
 	getSupportedRegionCodes,
 	getExample,
 	getAsYouType,
+	getNumberFrom,
 }

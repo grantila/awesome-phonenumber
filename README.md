@@ -75,7 +75,7 @@ const pn = {
 	possible: true,
 	canBeInternationallyDialled: true,
 	type: 'mobile',
-	countryCode: 46,
+	countryCode: '46',
 	typeIsMobile: true,
 	typeIsFixedLine: false,
 };

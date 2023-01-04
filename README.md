@@ -102,7 +102,7 @@ interface ParsedPhoneNumberValid {
 	possible: boolean;
 	canBeInternationallyDialled: boolean;
 	type: PhoneNumberTypes; // a string union, see below
-	countryCode: string;
+	countryCode: number;
 	typeIsMobile: boolean;
 	typeIsFixedLine: boolean;
 }

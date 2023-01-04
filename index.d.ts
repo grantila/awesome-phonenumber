@@ -78,7 +78,7 @@ export interface ParsedPhoneNumberFull
 	possible: boolean;
 	canBeInternationallyDialled: boolean;
 	type: PhoneNumberTypes;
-	countryCode: string;
+	countryCode: number;
 	typeIsMobile: boolean;
 	typeIsFixedLine: boolean;
 }

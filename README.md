@@ -27,6 +27,8 @@ Uses libphonenumber v8.13.5
    - Not backwards compatible, although like v3 except:
      - The second argument to `parsePhoneNumber` is an object (e.g. `{ regionCode: 'SE' }`) instead of a region code string
      - The return value is like `toJSON( )` on v3
+ - v5:
+   - Dropped Node 12 support
 
 
 ## Comparison with other libraries

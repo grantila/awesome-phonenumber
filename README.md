@@ -25,7 +25,8 @@ Uses libphonenumber v8.13.5
      - No functions on returned object
      - No errors being thrown
    - Not backwards compatible, although like v3 except:
-     - The second argument to `parsePhoneNumber` is an object (e.g. `{ regionCode: 'SE' }`) instead of a region code string
+     - The second argument to `parsePhoneNumber` is an object
+       - E.g. `{ regionCode: 'SE' }` instead of a region code string
      - The return value is like `toJSON( )` on v3
  - v5:
    - Dropped Node 12 support
@@ -343,7 +344,7 @@ ayt.addChar( '7' ); // -> '070 712 34 57'
 [npm-image]: https://img.shields.io/npm/v/awesome-phonenumber.svg
 [npm-url]: https://npmjs.org/package/awesome-phonenumber
 [downloads-image]: https://img.shields.io/npm/dm/awesome-phonenumber.svg
-[build-image]: https://img.shields.io/github/workflow/status/grantila/awesome-phonenumber/Master.svg
+[build-image]: https://img.shields.io/github/actions/workflow/status/grantila/awesome-phonenumber/master.yml?branch=master
 [build-url]: https://github.com/grantila/awesome-phonenumber/actions?query=workflow%3AMaster
 [bundlephobia-image]: https://badgen.net/bundlephobia/minzip/awesome-phonenumber
 [bundlephobia-url]: https://bundlephobia.com/package/awesome-phonenumber

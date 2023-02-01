@@ -3,7 +3,7 @@
   "license": "MIT",
   "author": "Gustaf Räntilä <g.rantila@gmail.com>",
   "engines": {
-    "node": ">=12"
+    "node": ">=14"
   },
   "main": "./index.js",
   "types": "./index.d.ts",

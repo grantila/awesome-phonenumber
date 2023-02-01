@@ -31,20 +31,14 @@ jobs:
     - run: yarn test
       env:
         CI: true
-    - run: yarn
-      working-directory: ./webpack
     - run: yarn build
       working-directory: ./webpack
     - run: yarn test
       working-directory: ./webpack
-    - run: yarn
-      working-directory: ./cjs-test
     - run: yarn build
       working-directory: ./cjs-test
     - run: yarn test
       working-directory: ./cjs-test
-    - run: yarn
-      working-directory: ./esm-test
     - run: yarn build
       working-directory: ./esm-test
     - run: yarn test

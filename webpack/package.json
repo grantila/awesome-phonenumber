@@ -4,11 +4,11 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "postinstall": "cd node_modules && ln -s ../.. awesome-phonenumber || true",
     "build": "webpack",
     "test": "node test/browser.js"
   },
   "devDependencies": {
+    "awesome-phonenumber": "workspace:^",
     "html-webpack-plugin": "^5.5.0",
     "puppeteer": "^13.7.0",
     "webpack": "^5.72.0",

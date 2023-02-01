@@ -36,6 +36,11 @@
   "pre-commit": [
     "test"
   ],
+  "workspaces": [
+    "webpack",
+    "cjs-test",
+    "esm-test"
+  ],
   "files": [
     "lib",
     "index.js",
@@ -79,5 +84,6 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
-  }
+  },
+  "packageManager": "yarn@3.2.4"
 }

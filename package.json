@@ -25,7 +25,7 @@
     "build:libphonenumber": "node_modules/.bin/gulp",
     "build:rewrite": "ts-node scripts/rewrite.ts",
     "build:esm:build": "rollup -c ./rollup.config.mjs",
-    "build:esm:rewrite": "cat build/index-esm.js src/esm-outro.js > index-esm.mjs",
+    "build:esm:rewrite": "ts-node scripts/rewrite-esm.ts",
     "build:esm": "yarn build:esm:build && yarn build:esm:rewrite",
     "build": "yarn build:libphonenumber && yarn build:rewrite && yarn build:esm",
     "test:compile": "scripts/test.sh",

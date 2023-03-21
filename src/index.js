@@ -153,8 +153,6 @@ export function PhoneNumber( phoneNumber, options )
 	if ( !( this instanceof PhoneNumber ) )
 		return new PhoneNumber( phoneNumber, options );
 
-	var self = this;
-
 	var regionCode = options?.['regionCode'];
 
 	var isInternal =
@@ -273,12 +271,18 @@ export function PhoneNumber( phoneNumber, options )
 	this._json[ 'canBeInternationallyDialled' ] =
 		phoneUtil.canBeInternationallyDialled( this._number );
 
-	this._json[ 'possible' ] = phoneUtil.isPossibleNumber( this._number );
 	this._json[ 'valid' ] = phoneUtil.isValidNumber( this._number );
+	this._json[ 'possible' ] = phoneUtil.isPossibleNumber( this._number );
+	this._json[ 'possibility' ] = getValidationResult( this._number );
 
-	this._json[ 'type' ] = getNumberType( self._number );
+	if ( !this._json[ 'valid' ] && this._json[ 'possible' ] )
+	{
+		// Sometimes libphonenumber says a number is possible but invalid...
+		this._json[ 'possibility' ] = 'invalid';
+		this._json[ 'possible' ] = false;
+	}
 
-	this._json[ 'possibility' ] = getValidationResult( self._number );
+	this._json[ 'type' ] = getNumberType( this._number );
 
 	this._json[ 'typeIsMobile' ] = this.isMobile( );
 	this._json[ 'typeIsFixedLine' ] = this.isFixedLine( );

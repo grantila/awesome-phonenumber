@@ -311,6 +311,16 @@ describe( 'errors', ( ) =>
 		expect( failure( true ) )
 			.toMatchObject( failureResult( "Invalid options" ) );
 	} );
+
+	// https://github.com/grantila/awesome-phonenumber/issues/98
+	it( 'should handle invalid phone number #98', ( ) =>
+	{
+		const pn = parsePhoneNumber( "0740521234", { regionCode: "US" } );
+
+		expect( pn.valid ).toBe( false );
+		expect( pn.possible ).toBe( false );
+		expect( pn.possibility ).toBe( 'invalid' );
+	} );
 } );
 
 describe( 'getNumberFrom', ( ) =>

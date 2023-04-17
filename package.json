@@ -30,6 +30,10 @@
     "build": "yarn build:libphonenumber && yarn build:rewrite && yarn build:esm",
     "test:compile": "scripts/test.sh",
     "test": "yarn test:compile && NODE_OPTIONS=--experimental-vm-modules jest",
+    "test-dist-webpack": "cd webpack && yarn build && yarn test",
+    "test-dist-esm-test": "cd esm-test && yarn build && yarn test",
+    "test-dist-cjs-test": "cd cjs-test && yarn build && yarn test",
+    "test-dist": "yarn test-dist-webpack && yarn test-dist-esm-test && yarn test-dist-cjs-test",
     "cz": "git-cz",
     "semantic-release": "semantic-release"
   },
@@ -61,7 +65,7 @@
   "devDependencies": {
     "@babel/preset-env": "^7.21.4",
     "@babel/preset-typescript": "^7.21.4",
-    "@rollup/plugin-commonjs": "^21.0.1",
+    "@rollup/plugin-commonjs": "^24.1.0",
     "@types/jest": "^29.5.0",
     "@types/mkdirp": "^2.0.0",
     "@types/node": "^18.15.11",
@@ -75,7 +79,7 @@
     "pre-commit": "^1.2.2",
     "replace": "^1.2.2",
     "rmfr": "^2.0.0",
-    "rollup": "2.66.0",
+    "rollup": "3.20.4",
     "ts-jest-resolver": "^2.0.1",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.4"

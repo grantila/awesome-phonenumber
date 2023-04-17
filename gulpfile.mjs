@@ -1,11 +1,10 @@
+import gulp from 'gulp'
 
-const gulp = require( 'gulp' );
-
-const child   = require( 'child_process' );
-const fs      = require( 'fs' );
-const rimraf  = require( 'rmfr' );
-const mkdirp  = require( 'mkdirp' );
-const replace = require( 'replace' );
+import child from 'child_process'
+import fs from 'fs'
+import rimraf from 'rmfr'
+import { mkdirp } from 'mkdirp'
+import replace from 'replace'
 
 
 const libphonenumberVersion =

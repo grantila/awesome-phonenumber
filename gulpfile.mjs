@@ -15,7 +15,7 @@ const buildRoot = `${rootDir}/build`;
 const libphonenumberUrl = 'https://github.com/google/libphonenumber/';
 const closureLinterUrl = 'https://github.com/google/closure-linter';
 const pythonGflagsUrl = 'https://github.com/google/python-gflags.git';
-const antName = 'apache-ant-1.10.12';
+const antName = 'apache-ant-1.10.14';
 const antTar = `${antName}.tar.gz`;
 const antUrl = `https://downloads.apache.org/ant/binaries/${antName}-bin.tar.gz`;
 

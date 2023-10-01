@@ -9,14 +9,17 @@ node_modules/.bin/google-closure-compiler \
   --compilation_level=${COMPILATION_LEVEL} \
   --js=${CLOSURE_LIBRARY_DIR}/closure/goog/array/array.js \
   --js=${CLOSURE_LIBRARY_DIR}/closure/goog/asserts/asserts.js \
+  --js=${CLOSURE_LIBRARY_DIR}/closure/goog/asserts/dom.js \
   --js=${CLOSURE_LIBRARY_DIR}/closure/goog/base.js \
   --js=${CLOSURE_LIBRARY_DIR}/closure/goog/debug/error.js \
   --js=${CLOSURE_LIBRARY_DIR}/closure/goog/dom/asserts.js \
+  --js=${CLOSURE_LIBRARY_DIR}/closure/goog/dom/element.js \
   --js=${CLOSURE_LIBRARY_DIR}/closure/goog/dom/htmlelement.js \
   --js=${CLOSURE_LIBRARY_DIR}/closure/goog/dom/nodetype.js \
   --js=${CLOSURE_LIBRARY_DIR}/closure/goog/dom/safe.js \
   --js=${CLOSURE_LIBRARY_DIR}/closure/goog/dom/tagname.js \
   --js=${CLOSURE_LIBRARY_DIR}/closure/goog/dom/tags.js \
+  --js=${CLOSURE_LIBRARY_DIR}/closure/goog/flags/flags.js \
   --js=${CLOSURE_LIBRARY_DIR}/closure/goog/fs/blob.js \
   --js=${CLOSURE_LIBRARY_DIR}/closure/goog/fs/url.js \
   --js=${CLOSURE_LIBRARY_DIR}/closure/goog/functions/functions.js \

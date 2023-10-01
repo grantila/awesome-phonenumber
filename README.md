@@ -30,6 +30,8 @@ Uses libphonenumber v8.13.22
      - The return value is like `toJSON( )` on v3
  - v5:
    - Dropped Node 12 support
+ - v6:
+   - Dropped Node 16 support
 
 
 ## Comparison with other libraries

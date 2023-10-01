@@ -9,7 +9,7 @@
     "url": "https://github.com/grantila/awesome-phonenumber.git"
   },
   "engines": {
-    "node": ">=14"
+    "node": ">=18"
   },
   "main": "./index.js",
   "types": "./index.d.ts",

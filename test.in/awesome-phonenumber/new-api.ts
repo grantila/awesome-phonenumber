@@ -262,6 +262,7 @@ describe( 'errors', ( ) =>
 
 	it( 'should handle invalid country code and region code', ( ) =>
 	{
+		//@ts-expect-error
 		var pn = parsePhoneNumber( '0123', { regionCode: 'XX' } );
 		expect( pn.valid ).toBe( false );
 		expect( pn.possible ).toBe( false );

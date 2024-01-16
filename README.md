@@ -103,7 +103,7 @@ interface ParsedPhoneNumberValid {
 		significant: string;
 	};
 	possibility: PhoneNumberPossibility; // a string union, see below
-	regionCode: string;
+	regionCode: Alpha2CountryCode;
 	possible: boolean;
 	canBeInternationallyDialled: boolean;
 	type: PhoneNumberTypes; // a string union, see below
@@ -144,7 +144,7 @@ import {
 
 ### parsePhoneNumber
 
-`parsePhoneNumber( phoneNumber, { regionCode: string } )` parses a phone number as described above.
+`parsePhoneNumber( phoneNumber, { regionCode: Alpha2CountryCode } )` parses a phone number as described above.
 
 The first argument is the phone number to parse, on either _national_ or _international_ (e164, i.e. prefixed with a `+`) form. If _national_ form, the second argument is required to contain a `regionCode` string property, e.g. 'SE' for Sweden, 'CH' for Switzerland, etc.
 

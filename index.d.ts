@@ -23,7 +23,8 @@ export type PhoneNumberPossibility =
 	| 'invalid'
 	| 'invalid-country-code'
 	| 'too-long'
-	| 'too-short';
+	| 'too-short'
+	| 'unknown';
 
 /**
  * Parse a phone number into an object describing the number.

@@ -275,12 +275,12 @@ export function PhoneNumber( phoneNumber, options )
 	this._json[ 'possible' ] = phoneUtil.isPossibleNumber( this._number );
 	this._json[ 'possibility' ] = getValidationResult( this._number );
 
-	if ( !this._json[ 'valid' ] && this._json[ 'possible' ] )
-	{
-		// Sometimes libphonenumber says a number is possible but invalid...
-		this._json[ 'possibility' ] = 'invalid';
-		this._json[ 'possible' ] = false;
-	}
+	// if ( !this._json[ 'valid' ] && this._json[ 'possible' ] )
+	// {
+	// 	// Sometimes libphonenumber says a number is possible but invalid...
+	// 	this._json[ 'possibility' ] = 'invalid';
+	// 	this._json[ 'possible' ] = false;
+	// }
 
 	this._json[ 'type' ] = getNumberType( this._number );
 

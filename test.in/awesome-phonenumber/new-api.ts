@@ -313,13 +313,16 @@ describe( 'errors', ( ) =>
 	} );
 
 	// https://github.com/grantila/awesome-phonenumber/issues/98
+	// This is now reverted to map to libphonenumber more closely
 	it( 'should handle invalid phone number #98', ( ) =>
 	{
 		const pn = parsePhoneNumber( "0740521234", { regionCode: "US" } );
 
 		expect( pn.valid ).toBe( false );
-		expect( pn.possible ).toBe( false );
-		expect( pn.possibility ).toBe( 'invalid' );
+		// expect( pn.possible ).toBe( false );
+		// expect( pn.possibility ).toBe( 'invalid' );
+		expect( pn.possible ).toBe( true );
+		expect( pn.possibility ).toBe( 'is-possible' );
 	} );
 
 
@@ -327,8 +330,17 @@ describe( 'errors', ( ) =>
 		const pn = parsePhoneNumber( "0740521234", { regionCode: "US" } );
 
 		expect( pn.valid ).toBe( false );
-		expect( pn.possible ).toBe( false );
-		expect( pn.possibility ).toBe( 'invalid' );
+		expect( pn.possible ).toBe( true );
+		expect( pn.possibility ).toBe( 'is-possible' );
+		expect( pn.type ).toBe( 'unknown' );
+	} );
+
+	it( 'should separate possible and valid', ( ) => {
+		const pn = parsePhoneNumber( "+11111111111" );
+
+		expect( pn.valid ).toBe( false );
+		expect( pn.possible ).toBe( true );
+		expect( pn.possibility ).toBe( 'is-possible' );
 		expect( pn.type ).toBe( 'unknown' );
 	} );
 } );

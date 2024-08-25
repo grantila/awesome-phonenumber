@@ -321,6 +321,16 @@ describe( 'errors', ( ) =>
 		expect( pn.possible ).toBe( false );
 		expect( pn.possibility ).toBe( 'invalid' );
 	} );
+
+
+	it( 'invalid phone number should still set type', ( ) => {
+		const pn = parsePhoneNumber( "0740521234", { regionCode: "US" } );
+
+		expect( pn.valid ).toBe( false );
+		expect( pn.possible ).toBe( false );
+		expect( pn.possibility ).toBe( 'invalid' );
+		expect( pn.type ).toBe( 'unknown' );
+	} );
 } );
 
 describe( 'getNumberFrom', ( ) =>

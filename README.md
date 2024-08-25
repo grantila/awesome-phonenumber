@@ -78,6 +78,8 @@ const pn = {
 	possibility: 'is-possible',
 	regionCode: 'SE',
 	possible: true,
+	shortPossible: false,
+	shortValid: false,
 	canBeInternationallyDialled: true,
 	type: 'mobile',
 	countryCode: 46,
@@ -105,6 +107,8 @@ interface ParsedPhoneNumberValid {
 	possibility: PhoneNumberPossibility; // a string union, see below
 	regionCode: string;
 	possible: boolean;
+	shortPossible: boolean;
+	shortValid: boolean;
 	canBeInternationallyDialled: boolean;
 	type: PhoneNumberTypes; // a string union, see below
 	countryCode: number;
@@ -121,9 +125,13 @@ interface ParsedPhoneNumberInvalid {
 
 	possible: false;
 	possibility: 'invalid';
+	shortPossible: boolean;
+	shortValid: boolean;
 	error?: unknown;
 };
 ```
+
+Note that an incorrect (invalid) phone number can still be a valid _short number_ for the given region.
 
 
 ## API

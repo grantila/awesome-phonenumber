@@ -76,6 +76,8 @@ export interface ParsedPhoneNumberFull
 	regionCode: string;
 	valid: boolean;
 	possible: boolean;
+	shortValid: boolean;
+	shortPossible: boolean;
 	canBeInternationallyDialled: boolean;
 	type: PhoneNumberTypes;
 	countryCode: number;

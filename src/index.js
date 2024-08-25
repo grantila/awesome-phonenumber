@@ -3,14 +3,17 @@ goog.require('i18n.phonenumbers.PhoneNumberFormat');
 goog.require('i18n.phonenumbers.PhoneNumberType');
 goog.require('i18n.phonenumbers.PhoneNumberUtil');
 goog.require('i18n.phonenumbers.PhoneNumberUtil.ValidationResult');
+goog.require('i18n.phonenumbers.ShortNumberInfo');
 
 const PhoneNumberType = i18n.phonenumbers.PhoneNumberType;
 const PhoneNumberFormat = i18n.phonenumbers.PhoneNumberFormat;
 const ValidationResult = i18n.phonenumbers.PhoneNumberUtil.ValidationResult;
 const AsYouTypeFormatter = i18n.phonenumbers.AsYouTypeFormatter;
 const PhoneNumberUtil = i18n.phonenumbers.PhoneNumberUtil;
+const ShortNumberInfo = i18n.phonenumbers.ShortNumberInfo;
 
 const phoneUtil = PhoneNumberUtil.getInstance( );
+const shortInfo = ShortNumberInfo.getInstance( );
 
 function getNumberType( number )
 {
@@ -163,7 +166,7 @@ export function PhoneNumber( phoneNumber, options )
 			try
 			{
 				phoneUtil.isValidNumber( phoneNumber );
-				return true
+				return true;
 			}
 			catch ( e )
 			{
@@ -208,10 +211,12 @@ export function PhoneNumber( phoneNumber, options )
 	}
 
 	this._json = {
-		'number'     : { },
-		'regionCode' : regionCode,
-		'valid'      : false,
-		'possible'   : false
+		'number'        : { },
+		'regionCode'    : regionCode,
+		'valid'         : false,
+		'possible'      : false,
+		'shortPossible' : false,
+		'shortValid'    : false,
 	};
 
 	if ( weakMap )
@@ -281,6 +286,10 @@ export function PhoneNumber( phoneNumber, options )
 	// 	this._json[ 'possibility' ] = 'invalid';
 	// 	this._json[ 'possible' ] = false;
 	// }
+
+	this._json[ 'shortValid' ] = shortInfo.isValidShortNumber( this._number );
+	this._json[ 'shortPossible' ] =
+		shortInfo.isPossibleShortNumber( this._number );
 
 	this._json[ 'type' ] = getNumberType( this._number );
 

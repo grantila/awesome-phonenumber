@@ -326,7 +326,8 @@ describe( 'errors', ( ) =>
 	} );
 
 
-	it( 'invalid phone number should still set type', ( ) => {
+	it( 'invalid phone number should still set type', ( ) =>
+	{
 		const pn = parsePhoneNumber( "0740521234", { regionCode: "US" } );
 
 		expect( pn.valid ).toBe( false );
@@ -335,13 +336,46 @@ describe( 'errors', ( ) =>
 		expect( pn.type ).toBe( 'unknown' );
 	} );
 
-	it( 'should separate possible and valid', ( ) => {
+	it( 'should separate possible and valid', ( ) =>
+	{
 		const pn = parsePhoneNumber( "+11111111111" );
 
 		expect( pn.valid ).toBe( false );
 		expect( pn.possible ).toBe( true );
 		expect( pn.possibility ).toBe( 'is-possible' );
 		expect( pn.type ).toBe( 'unknown' );
+	} );
+} );
+
+
+describe( 'short numbers', ( ) =>
+{
+	it( 'should handle short numbers that are real numbes', ( ) =>
+	{
+		var pn = parsePhoneNumber( '0707123456', { regionCode: 'SE' } );
+		expect( pn.valid ).toBe( true );
+		expect( pn.possible ).toBe( true );
+		expect( pn.shortValid ).toBe( false );
+		expect( pn.shortPossible ).toBe( false );
+	} );
+
+
+	it( 'should handle short numbers that are invalid', ( ) =>
+	{
+		var pn = parsePhoneNumber( '12', { regionCode: 'NO' } );
+		expect( pn.valid ).toBe( false );
+		expect( pn.possible ).toBe( false );
+		expect( pn.shortValid ).toBe( false );
+		expect( pn.shortPossible ).toBe( false );
+	} );
+
+	it( 'should handle short numbers that are valid', ( ) =>
+	{
+		var pn = parsePhoneNumber( '116117', { regionCode: 'NO' } );
+		expect( pn.valid ).toBe( false );
+		expect( pn.possible ).toBe( false );
+		expect( pn.shortValid ).toBe( true );
+		expect( pn.shortPossible ).toBe( true );
 	} );
 } );
 

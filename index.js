@@ -49,3 +49,4 @@ module.exports.getSupportedRegionCodes = module.exports.getSupportedRegionCodes;
 module.exports.getExample = module.exports.getExample;
 module.exports.getAsYouType = module.exports.getAsYouType;
 module.exports.getNumberFrom = module.exports.getNumberFrom;
+module.exports.findNumbers = module.exports.findNumbers;

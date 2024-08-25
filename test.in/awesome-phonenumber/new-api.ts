@@ -7,6 +7,7 @@ import PhoneNumberClass, {
 	getSupportedRegionCodes,
 	getSupportedCallingCodes,
 	getNumberFrom,
+	findNumbers,
 } from 'awesome-phonenumber';
 
 
@@ -376,6 +377,90 @@ describe( 'short numbers', ( ) =>
 		expect( pn.possible ).toBe( false );
 		expect( pn.shortValid ).toBe( true );
 		expect( pn.shortPossible ).toBe( true );
+	} );
+} );
+
+describe( 'find numbers', ( ) =>
+{
+	it( 'should not find in empty text', ( ) =>
+	{
+		const res = findNumbers( '' );
+		expect( res.length ).toBe( 0 );
+	} );
+
+	it( 'should not find in text without phone numbers', ( ) =>
+	{
+		const res = findNumbers( 'no numbers here 123, not even that' );
+		expect( res.length ).toBe( 0 );
+	} );
+
+	const textWithNumbers =
+		'the number is +46 707 123 456 fyi and 0707 555 555 also +11111111111.';
+
+	it( 'should find e164 numbers (default valid numbers)', ( ) =>
+	{
+		const res = findNumbers( textWithNumbers );
+		expect( res.length ).toBe( 1 );
+		expect( res[ 0 ].phoneNumber.number?.e164 ).toBe( '+46707123456' );
+		expect( res[ 0 ].start ).toBeGreaterThan( 0 );
+		expect( res[ 0 ].end ).toBeGreaterThan( res[ 0 ].start );
+	} );
+
+	it( 'should find e164 numbers (also possible numbers)', ( ) =>
+	{
+		const res = findNumbers( textWithNumbers, { leniency: 'possible' } );
+		expect( res.length ).toBe( 2 );
+		expect( res[ 0 ].phoneNumber.number?.e164 ).toBe( '+46707123456' );
+		expect( res[ 0 ].start ).toBeGreaterThan( 0 );
+		expect( res[ 0 ].end ).toBeGreaterThan( res[ 0 ].start );
+		expect( res[ 1 ].phoneNumber.number?.e164 ).toBe( '+11111111111' );
+		expect( res[ 1 ].start ).toBeGreaterThan( 0 );
+		expect( res[ 1 ].end ).toBeGreaterThan( res[ 1 ].start );
+	} );
+
+	it( 'should find e164 numbers', ( ) =>
+	{
+		const res = findNumbers( textWithNumbers, { defaultRegionCode: 'SE' } );
+		expect( res.length ).toBe( 2 );
+		expect( res[ 0 ].phoneNumber.number?.e164 ).toBe( '+46707123456' );
+		expect( res[ 0 ].start ).toBeGreaterThan( 0 );
+		expect( res[ 0 ].end ).toBeGreaterThan( res[ 0 ].start );
+		expect( res[ 1 ].phoneNumber.number?.e164 ).toBe( '+46707555555' );
+		expect( res[ 1 ].start ).toBeGreaterThan( 0 );
+		expect( res[ 1 ].end ).toBeGreaterThan( res[ 1 ].start );
+	} );
+
+	it( 'should find e164 numbers (and possible)', ( ) =>
+	{
+		const res = findNumbers(
+			textWithNumbers,
+			{ defaultRegionCode: 'SE', leniency: 'possible' },
+		);
+		expect( res.length ).toBe( 3 );
+		expect( res[ 0 ].phoneNumber.number?.e164 ).toBe( '+46707123456' );
+		expect( res[ 0 ].start ).toBeGreaterThan( 0 );
+		expect( res[ 0 ].end ).toBeGreaterThan( res[ 0 ].start );
+		expect( res[ 1 ].phoneNumber.number?.e164 ).toBe( '+46707555555' );
+		expect( res[ 1 ].start ).toBeGreaterThan( 0 );
+		expect( res[ 1 ].end ).toBeGreaterThan( res[ 1 ].start );
+		expect( res[ 2 ].phoneNumber.number?.e164 ).toBe( '+11111111111' );
+		expect( res[ 2 ].start ).toBeGreaterThan( 0 );
+		expect( res[ 2 ].end ).toBeGreaterThan( res[ 2 ].start );
+	} );
+
+	it( 'should find e164 numbers (and possible), max numbers', ( ) =>
+	{
+		const res = findNumbers(
+			textWithNumbers,
+			{ defaultRegionCode: 'SE', leniency: 'possible', maxTries: 2 },
+		);
+		expect( res.length ).toBe( 2 );
+		expect( res[ 0 ].phoneNumber.number?.e164 ).toBe( '+46707123456' );
+		expect( res[ 0 ].start ).toBeGreaterThan( 0 );
+		expect( res[ 0 ].end ).toBeGreaterThan( res[ 0 ].start );
+		expect( res[ 1 ].phoneNumber.number?.e164 ).toBe( '+46707555555' );
+		expect( res[ 1 ].start ).toBeGreaterThan( 0 );
+		expect( res[ 1 ].end ).toBeGreaterThan( res[ 1 ].start );
 	} );
 } );
 

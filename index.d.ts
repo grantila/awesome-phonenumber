@@ -107,6 +107,60 @@ export function getRegionCodeForCountryCode( countryCode: number ): string;
 export function getSupportedCallingCodes( ): string[ ];
 export function getSupportedRegionCodes( ): string[ ];
 
+export type FindNumbersLeniency =
+	/**
+	 * Phone numbers accepted are possible, but not necessarily valid.
+	 */
+	| 'possible'
+	/**
+	 * Phone numbers accepted are possible and valid.
+	 */
+	| 'valid';
+
+export interface FindNumbersOptions
+{
+	/**
+	 * A default region code, to find local (non-e164) formatted phone numbers
+	 */
+	defaultRegionCode?: string;
+
+	/** Leniency options */
+	leniency?: FindNumbersLeniency;
+
+	/**
+	 * The maximum number of invalid numbers to try before giving up on the text
+	 */
+	maxTries?: number;
+}
+
+export interface PhoneNumberMatch
+{
+	/** The raw string found */
+	text: string;
+
+	/** The parsed phone number object */
+	phoneNumber: ParsedPhoneNumber;
+
+	/** Start offset of the found number */
+	start: number;
+
+	/** End offset of the found number */
+	end: number;
+}
+
+/**
+ * Find phone numbers in text.
+ *
+ * If the text is expected to have phone numbers for a certain region code,
+ * the option `defaultRegionCode` can be set. Phone numbers without the
+ * international prefix `+` will then be found too.
+ *
+ * Leniency can be specified using the `leniency` option, in which case
+ * `maxTries` needs to be set too.
+ */
+export function findNumbers( text: string, options?: FindNumbersOptions )
+	: PhoneNumberMatch[ ];
+
 /**
  * Get an example phone number, given a region code and a phone number
  * {@link PhoneNumberTypes type}.

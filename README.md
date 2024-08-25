@@ -9,6 +9,8 @@
 
 This library is a pre-compiled version of Google's `libphonenumber`, with a slightly simpler interface. It has a minimal footprint - is by far the smallest libphonenumber-based library available on npmjs, and has no dependencies.
 
+Unlike libphonenumber, it includes a `findNumbers( )` function to find phone numbers in text.
+
 TypeScript typings are provided within the package.
 
 Uses libphonenumber v8.13.43
@@ -32,6 +34,9 @@ Uses libphonenumber v8.13.43
    - Dropped Node 12 support
  - v6:
    - Dropped Node 16 support
+ - v7:
+   - Added `findNumbers( )` feature, to find phone numbers in text
+   - Added support for _short_ numbers
 
 
 ## Comparison with other libraries
@@ -139,6 +144,7 @@ Note that an incorrect (invalid) phone number can still be a valid _short number
 ```ts
 import {
 	parsePhoneNumber,
+	findNumbers,
 	getNumberFrom,
 	getExample,
 	getCountryCodeForRegionCode,
@@ -155,6 +161,48 @@ import {
 `parsePhoneNumber( phoneNumber, { regionCode: string } )` parses a phone number as described above.
 
 The first argument is the phone number to parse, on either _national_ or _international_ (e164, i.e. prefixed with a `+`) form. If _national_ form, the second argument is required to contain a `regionCode` string property, e.g. 'SE' for Sweden, 'CH' for Switzerland, etc.
+
+
+### findNumbers
+
+
+To find (extract) phone numbers in text, use `findNumbers( )`:
+
+```ts
+import { findNumbers } from 'awesome-phonenumber'
+
+const text = 'My number is +46 707 123 456, otherwise call +33777777777.';
+const numbers = findNumbers( text );
+```
+
+The returned list of numbers is of the type `PhoneNumberMatch` such as:
+
+```ts
+interface PhoneNumberMatch
+{
+	text: string; // The raw string found
+	phoneNumber: object; // Same as the result of parsePhoneNumber()
+	start: number; // Start offset in the text
+	end: number; // End offset in the text
+}
+```
+
+A second options argument to `findNumbers( text, options )` can be provided on the form:
+
+```ts
+interface FindNumbersOptions
+{
+	defaultRegionCode?: string;
+	leniency?: FindNumbersLeniency;
+	maxTries?: number;
+}
+```
+
+where `FindNumbersLeniency` is an enum of `'valid'` or `'possible'`. The default is `'valid'` meaning that only valid phone numbers are found. If this is set to `'possible'` also possible (but invalid) phone numbers are found.
+
+`defaultRegionCode` can be set (e.g. to `'SE'` for Sweden), in which case phone numbers on _national_ form (i.e. without `+` prefix) will be found, as long as they are from that region.
+
+For really large texts, `maxTries` will set the maximum number of phone numbers to _try_ to find (not necessary actually find).
 
 
 ### getNumberFrom

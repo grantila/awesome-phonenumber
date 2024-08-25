@@ -312,6 +312,43 @@ PhoneNumber.getRegionCodeForCountryCode = function( countryCode )
 	return regionCode;
 }
 
+/** @export */
+PhoneNumber.findNumbers = function( text, options )
+{
+	const defaultRegionCode = options?.[ 'defaultRegionCode' ];
+	const leniency = options?.[ 'leniency' ] ?? 'valid';
+	const maxTries = options?.[ 'maxTries' ] ?? Number.MAX_SAFE_INTEGER;
+
+	const re = /([0-9]+(?: [0-9]+)*)/g;
+	const res = [ ];
+	let m;
+	for ( let i = 0; i < maxTries; ++i )
+	{
+		m = re.exec( text );
+		if ( !m )
+			break;
+
+		let start = m.index;
+		const end = m.index + m[ 1 ].length;
+		if ( start > 0 && text.charAt( start - 1 ) === '+' )
+			--start;
+
+		const slice = text.slice( start, end );
+
+		const pn = new PhoneNumber( slice, { 'regionCode': defaultRegionCode } );
+
+		if ( pn.isValid( ) || ( leniency === 'possible' && pn.isPossible( ) ) )
+			res.push( {
+				'text': slice,
+				'phoneNumber': pn.toJSON( ),
+				'start': start,
+				'end': end,
+			} );
+	}
+
+	return res;
+}
+
 function uniq( arr )
 {
 	const lookup = { };

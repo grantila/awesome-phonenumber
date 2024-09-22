@@ -17,11 +17,11 @@
   "devDependencies": {
     "@babel/preset-env": "^7.25.4",
     "@babel/preset-typescript": "^7.24.7",
-    "@types/jest": "^29.5.12",
+    "@types/jest": "^29.5.13",
     "awesome-phonenumber": "workspace:^",
     "jest": "^29.7.0",
     "ts-jest-resolver": "^2.0.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.5.4"
+    "typescript": "^5.6.2"
   }
 }

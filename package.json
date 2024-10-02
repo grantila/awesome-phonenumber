@@ -65,11 +65,11 @@
   "devDependencies": {
     "@babel/preset-env": "^7.25.4",
     "@babel/preset-typescript": "^7.24.7",
-    "@rollup/plugin-commonjs": "^26.0.1",
+    "@rollup/plugin-commonjs": "^28.0.0",
     "@types/jest": "^29.5.13",
     "@types/mkdirp": "^2.0.0",
-    "@types/node": "^22.5.5",
-    "commitizen": "^4.3.0",
+    "@types/node": "^22.7.4",
+    "commitizen": "^4.3.1",
     "cz-conventional-changelog": "^3.3.0",
     "google-closure-compiler": "^20240317.0.0",
     "google-closure-library": "^20230802.0.0",
@@ -79,7 +79,7 @@
     "pre-commit": "^1.2.2",
     "replace": "^1.2.2",
     "rmfr": "^2.0.0",
-    "rollup": "4.22.4",
+    "rollup": "4.23.0",
     "ts-jest-resolver": "^2.0.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.6.2"

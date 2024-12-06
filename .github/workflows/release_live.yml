@@ -15,10 +15,10 @@ jobs:
         with:
           node-version: 18
           registry-url: 'https://npm.pkg.github.com'
-      - run: npm ci --ignore-scripts
+      - run: yarn ci --ignore-scripts
         env:
           NODE_AUTH_TOKEN: ${{secrets.GH_PACKAGE_ACCESS_TOKEN}}
-      - run: npm test
+      - run: yarn test
 
   audit:
     if: github.event.pull_request.merged == true
@@ -30,10 +30,10 @@ jobs:
         with:
           node-version: 16
           registry-url: 'https://npm.pkg.github.com'
-      - run: npm ci --ignore-scripts
+      - run: yarn ci --ignore-scripts
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GH_PACKAGE_ACCESS_TOKEN }}
-      - run: npm audit --omit=dev
+      - run: yarn audit --omit=dev
 
   create_release:
     if: github.event.pull_request.merged == true
@@ -59,11 +59,11 @@ jobs:
         with:
           node-version: 16
           registry-url: 'https://npm.pkg.github.com'
-      - run: npm ci --ignore-scripts
+      - run: yarn ci --ignore-scripts
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GH_PACKAGE_ACCESS_TOKEN }}
-      - run: npm run build
-      - run: cd dist && npm publish
+      - run: yarn run build
+      - run: cd dist && yarn publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

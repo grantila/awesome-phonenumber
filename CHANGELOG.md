@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/respond-io/awesome-phonenumber/compare/v1.0.0...v1.0.1) (2024-12-06)
+
+
+### Bug Fixes
+
+* set the correct dist directory ([41cc369](https://github.com/respond-io/awesome-phonenumber/commit/41cc3697435e28d2dc45f46eed39df9e8b107496))
+
 ## 1.0.0 (2024-12-06)
 
 

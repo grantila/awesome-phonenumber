@@ -31,9 +31,10 @@ jobs:
           node-version: 20
           registry-url: 'https://npm.pkg.github.com'
       - run: yarn install --frozen-lockfile
+      - run: yarn --version
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GH_PACKAGE_ACCESS_TOKEN }}
-      - run: yarn audit --groups dependencies
+      - run: yarn npm audit --environment production
 
   create_release:
     if: github.event.pull_request.merged == true

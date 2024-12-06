@@ -1,0 +1,89 @@
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - 'master'
+
+name: Release Live
+jobs:
+  test:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          registry-url: 'https://npm.pkg.github.com'
+      - run: npm ci --ignore-scripts
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GH_PACKAGE_ACCESS_TOKEN}}
+      - run: npm test
+
+  audit:
+    if: github.event.pull_request.merged == true
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          registry-url: 'https://npm.pkg.github.com'
+      - run: npm ci --ignore-scripts
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GH_PACKAGE_ACCESS_TOKEN }}
+      - run: npm audit --omit=dev
+
+  create_release:
+    if: github.event.pull_request.merged == true
+    needs: audit
+    runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+    steps:
+      - uses: google-github-actions/release-please-action@v3
+        id: release
+        with:
+          release-type: node
+          default-branch: 'master'
+
+  publish_release:
+    if: github.event.pull_request.merged == true && needs.create_release.outputs.release_created == 'true'
+    runs-on: ubuntu-latest
+    needs: create_release
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          registry-url: 'https://npm.pkg.github.com'
+      - run: npm ci --ignore-scripts
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GH_PACKAGE_ACCESS_TOKEN }}
+      - run: npm run build
+      - run: cd dist && npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  notify_slack:
+    needs: publish_release
+    if: success()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Extract package name
+        id: package_info
+        run: |
+          echo PACKAGE_NAME="$(jq -r .name package.json)" >> $GITHUB_OUTPUT
+      - name: Extract package version
+        id: package_version
+        run: |
+          echo PACKAGE_VERSION="$(jq -r .version package.json)" >> $GITHUB_OUTPUT
+      - name: Slack Notification
+        run: |
+          curl -L \
+            -X POST \
+            ${{ secrets.SLACK_PACKAGE_RELEASE_WORKFLOW_URL }} \
+            -d "{\"package_name\":\"${{ steps.package_info.outputs.PACKAGE_NAME }}-v${{ steps.package_version.outputs.PACKAGE_VERSION }}\"}"

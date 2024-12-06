@@ -15,7 +15,7 @@ jobs:
         with:
           node-version: 18
           registry-url: 'https://npm.pkg.github.com'
-      - run: yarn ci --ignore-scripts
+      - run: yarn install --frozen-lockfile
         env:
           NODE_AUTH_TOKEN: ${{secrets.GH_PACKAGE_ACCESS_TOKEN}}
       - run: yarn test
@@ -30,10 +30,10 @@ jobs:
         with:
           node-version: 16
           registry-url: 'https://npm.pkg.github.com'
-      - run: yarn ci --ignore-scripts
+      - run: yarn install --frozen-lockfile
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GH_PACKAGE_ACCESS_TOKEN }}
-      - run: yarn audit --omit=dev
+      - run: yarn audit --groups dependencies
 
   create_release:
     if: github.event.pull_request.merged == true
@@ -59,10 +59,10 @@ jobs:
         with:
           node-version: 16
           registry-url: 'https://npm.pkg.github.com'
-      - run: yarn ci --ignore-scripts
+      - run: yarn install --frozen-lockfile
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GH_PACKAGE_ACCESS_TOKEN }}
-      - run: yarn run build
+      - run: yarn build
       - run: cd dist && yarn publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

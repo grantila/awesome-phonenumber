@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.5](https://github.com/respond-io/awesome-phonenumber/compare/v1.0.4...v1.0.5) (2024-12-09)
+
+
+### Bug Fixes
+
+* Fix package.json ([71c3c95](https://github.com/respond-io/awesome-phonenumber/commit/71c3c95e1597a5aeeab754ac275ed53128576b97))
+
 ## [1.0.4](https://github.com/respond-io/awesome-phonenumber/compare/v1.0.3...v1.0.4) (2024-12-09)
 
 

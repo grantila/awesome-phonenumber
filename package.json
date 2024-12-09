@@ -1,5 +1,5 @@
 {
-  "name": "awesome-phonenumber",
+  "name": "@respond-io/awesome-phonenumber",
   "description": "Google's libphonenumber pre-compiled with the closure compiler",
   "license": "MIT",
   "version": "0.0.0",
@@ -42,9 +42,9 @@
     "test"
   ],
   "workspaces": [
-    "webpack",
-    "cjs-test",
-    "esm-test"
+    "@respond-io/webpack",
+    "@respond-io/cjs-test",
+    "@respond-io/esm-test"
   ],
   "files": [
     "lib",
@@ -63,6 +63,9 @@
     "browserify",
     "awesome"
   ],
+  "publishConfig": {
+    "@respond-io:registry": "https://npm.pkg.github.com"
+  },
   "devDependencies": {
     "@babel/preset-env": "^7.25.4",
     "@babel/preset-typescript": "^7.24.7",

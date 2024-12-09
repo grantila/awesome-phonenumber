@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.9](https://github.com/respond-io/awesome-phonenumber/compare/v1.0.8...v1.0.9) (2024-12-09)
+
+
+### Bug Fixes
+
+* publish the correct folder ([39c5b8b](https://github.com/respond-io/awesome-phonenumber/commit/39c5b8bb299f062839835e2e681f25fcb1ec70b7))
+
 ## [1.0.8](https://github.com/respond-io/awesome-phonenumber/compare/v1.0.7...v1.0.8) (2024-12-09)
 
 

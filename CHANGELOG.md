@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.4](https://github.com/respond-io/awesome-phonenumber/compare/v1.0.3...v1.0.4) (2024-12-09)
+
+
+### Bug Fixes
+
+* Added explicit postbuild ([a4c3ae1](https://github.com/respond-io/awesome-phonenumber/commit/a4c3ae1e6d4d07e11778a6e9cac796db83b373b0))
+
 ## [1.0.3](https://github.com/respond-io/awesome-phonenumber/compare/v1.0.2...v1.0.3) (2024-12-09)
 
 

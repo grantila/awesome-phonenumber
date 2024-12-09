@@ -4,6 +4,12 @@
 SOURCE_DIR="./build"
 DEST_DIR="./dist"
 
+# Check if the dist folder exists and remove it
+if [ -d "$DEST_DIR" ]; then
+    echo "Removing existing dist folder..."
+    rm -rf "$DEST_DIR"
+fi
+
 # Copy required files to the build folder
 cp package.json "$SOURCE_DIR/package.json"
 cp CHANGELOG.md "$SOURCE_DIR/CHANGELOG.md"

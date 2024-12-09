@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.6](https://github.com/respond-io/awesome-phonenumber/compare/v1.0.5...v1.0.6) (2024-12-09)
+
+
+### Bug Fixes
+
+* Added missing publish config ([7b2e7c4](https://github.com/respond-io/awesome-phonenumber/commit/7b2e7c4ec4072d4d70521db4d4d59ee6a9f0b132))
+
 ## [1.0.5](https://github.com/respond-io/awesome-phonenumber/compare/v1.0.4...v1.0.5) (2024-12-09)
 
 

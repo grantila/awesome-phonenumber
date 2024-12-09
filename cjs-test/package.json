@@ -1,5 +1,5 @@
 {
-  "name": "awesome-phonenumber-cjs-test",
+  "name": "@respond-io/awesome-phonenumber-cjs-test",
   "license": "MIT",
   "author": "Gustaf Räntilä <g.rantila@gmail.com>",
   "engines": {

@@ -1,5 +1,5 @@
 {
-  "name": "awesome-phonenumber-esm-test",
+  "name": "@respond-io/awesome-phonenumber-esm-test",
   "license": "MIT",
   "author": "Gustaf Räntilä <g.rantila@gmail.com>",
   "engines": {

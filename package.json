@@ -28,6 +28,7 @@
     "build:esm:rewrite": "ts-node scripts/rewrite-esm.ts",
     "build:esm": "yarn build:esm:build && yarn build:esm:rewrite",
     "build": "yarn build:libphonenumber && yarn build:rewrite && yarn build:esm",
+    "postbuild": "sh -c \"./.postbuild.sh\"",
     "test:compile": "scripts/test.sh",
     "test": "yarn test:compile && NODE_OPTIONS=--experimental-vm-modules jest",
     "test-dist-webpack": "cd webpack && yarn build && yarn test",

@@ -31,7 +31,6 @@ jobs:
           node-version: 20
           registry-url: 'https://npm.pkg.github.com'
       - run: yarn install --frozen-lockfile
-      - run: yarn --version
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GH_PACKAGE_ACCESS_TOKEN }}
       - run: yarn npm audit --environment production
@@ -68,23 +67,23 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  notify_slack:
-    needs: publish_release
-    if: success()
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Extract package name
-        id: package_info
-        run: |
-          echo PACKAGE_NAME="$(jq -r .name package.json)" >> $GITHUB_OUTPUT
-      - name: Extract package version
-        id: package_version
-        run: |
-          echo PACKAGE_VERSION="$(jq -r .version package.json)" >> $GITHUB_OUTPUT
-      - name: Slack Notification
-        run: |
-          curl -L \
-            -X POST \
-            ${{ secrets.SLACK_PACKAGE_RELEASE_WORKFLOW_URL }} \
-            -d "{\"package_name\":\"${{ steps.package_info.outputs.PACKAGE_NAME }}-v${{ steps.package_version.outputs.PACKAGE_VERSION }}\"}"
+  # notify_slack:
+  #   needs: publish_release
+  #   if: success()
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v3
+  #     - name: Extract package name
+  #       id: package_info
+  #       run: |
+  #         echo PACKAGE_NAME="$(jq -r .name package.json)" >> $GITHUB_OUTPUT
+  #     - name: Extract package version
+  #       id: package_version
+  #       run: |
+  #         echo PACKAGE_VERSION="$(jq -r .version package.json)" >> $GITHUB_OUTPUT
+  #     - name: Slack Notification
+  #       run: |
+  #         curl -L \
+  #           -X POST \
+  #           ${{ secrets.SLACK_PACKAGE_RELEASE_WORKFLOW_URL }} \
+  #           -d "{\"package_name\":\"${{ steps.package_info.outputs.PACKAGE_NAME }}-v${{ steps.package_version.outputs.PACKAGE_VERSION }}\"}"

@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.3](https://github.com/respond-io/awesome-phonenumber/compare/v1.0.2...v1.0.3) (2024-12-09)
+
+
+### Bug Fixes
+
+* Added post build script, also commented out slack notification action ([66148fd](https://github.com/respond-io/awesome-phonenumber/commit/66148fd64d87d060eab572e5a88ab4c58ad6aaca))
+
 ## [1.0.2](https://github.com/respond-io/awesome-phonenumber/compare/v1.0.1...v1.0.2) (2024-12-06)
 
 

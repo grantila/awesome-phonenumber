@@ -33,6 +33,7 @@ jobs:
         CI: true
     - run: yarn build
       working-directory: ./webpack
+    - run: 'echo 0 | sudo tee /proc/sys/kernel/apparmor_restrict_unprivileged_userns'
     - run: yarn test
       working-directory: ./webpack
     - run: yarn build

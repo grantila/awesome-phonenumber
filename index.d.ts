@@ -40,7 +40,7 @@ export type PhoneNumberPossibility =
  * The options object is on the form:
  *   ```ts
  *   {
- *     regionCode?: string;
+ *     regionCode?: Alpha2CountryCode;
  *   }
  *   ```
  *
@@ -60,7 +60,7 @@ export interface PhoneNumberParseOptions
 	 * If the phone number is on national form, this region code specifies the
 	 * region of the phone number, e.g. "SE" for Sweden.
 	 */
-	regionCode?: string;
+	regionCode?: Alpha2CountryCode;
 }
 
 export interface ParsedPhoneNumberFull
@@ -74,7 +74,7 @@ export interface ParsedPhoneNumberFull
 		significant: string;
 	};
 	possibility: PhoneNumberPossibility;
-	regionCode: string;
+	regionCode: Alpha2CountryCode;
 	valid: boolean;
 	possible: boolean;
 	shortValid: boolean;
@@ -103,10 +103,10 @@ export type ParsedPhoneNumber =
 	| ParsedPhoneNumberValid
 	| ParsedPhoneNumberInvalid;
 
-export function getCountryCodeForRegionCode( regionCode: string ): number;
-export function getRegionCodeForCountryCode( countryCode: number ): string;
+export function getCountryCodeForRegionCode( regionCode: Alpha2CountryCode ): number;
+export function getRegionCodeForCountryCode( countryCode: number ): Alpha2CountryCode;
 export function getSupportedCallingCodes( ): string[ ];
-export function getSupportedRegionCodes( ): string[ ];
+export function getSupportedRegionCodes( ): Alpha2CountryCode[ ];
 
 export type FindNumbersLeniency =
 	/**
@@ -166,11 +166,11 @@ export function findNumbers( text: string, options?: FindNumbersOptions )
  * Get an example phone number, given a region code and a phone number
  * {@link PhoneNumberTypes type}.
  *
- * @param regionCode Region code
+ * @param regionCode Region code {@link Alpha2CountryCode type}
  * @param type Phone number {@link PhoneNumberTypes type}
  */
 export function getExample(
-	regionCode: string,
+	regionCode: Alpha2CountryCode,
 	type?: PhoneNumberTypes
 ): ParsedPhoneNumber;
 
@@ -179,11 +179,11 @@ export function getExample(
  * Get a phonenumber string as it would be called from another country.
  *
  * @param parsedPhoneNumber A phone number object as returned from {@link parsePhoneNumber `parsePhoneNumber()`}
- * @param regionCode Region code of the country to call from
+ * @param regionCode Region code of the country to call from {@link Alpha2CountryCode type}
  */
 export function getNumberFrom(
 	parsedPhoneNumber: ParsedPhoneNumberValid,
-	regionCode?: string
+	regionCode?: Alpha2CountryCode
 ): PhoneNumberFrom;
 
 export type PhoneNumberFrom =
@@ -207,9 +207,9 @@ export interface PhoneNumberFromInvalid
 /**
  * Get an instance of the AsYouType class, based on a region code.
  *
- * @param regionCode The region code to get an AsYouType instance for.
+ * @param regionCode The region code to get an AsYouType instance for.  {@link Alpha2CountryCode type}
  */
-export function getAsYouType( regionCode: string ): AsYouType;
+export function getAsYouType( regionCode: Alpha2CountryCode ): AsYouType;
 
 
 export class AsYouType
@@ -225,3 +225,258 @@ export class AsYouType
 
 // /** @deprecated use `parsePhoneNumber()` instead */
 // export default PhoneNumber;
+
+/**
+ * ISO 3166-1 alpha-2 region codes. Find the corresponding region {@link https://www.iso.org/obp/ui/#search/code/ here}.
+ */
+export type Alpha2CountryCode =
+  | "AD"
+  | "AE"
+  | "AF"
+  | "AG"
+  | "AI"
+  | "AL"
+  | "AM"
+  | "AO"
+  | "AQ"
+  | "AR"
+  | "AS"
+  | "AT"
+  | "AU"
+  | "AW"
+  | "AX"
+  | "AZ"
+  | "BA"
+  | "BB"
+  | "BD"
+  | "BE"
+  | "BF"
+  | "BG"
+  | "BH"
+  | "BI"
+  | "BJ"
+  | "BL"
+  | "BM"
+  | "BN"
+  | "BO"
+  | "BQ"
+  | "BR"
+  | "BS"
+  | "BT"
+  | "BV"
+  | "BW"
+  | "BY"
+  | "BZ"
+  | "CA"
+  | "CC"
+  | "CD"
+  | "CF"
+  | "CG"
+  | "CH"
+  | "CI"
+  | "CK"
+  | "CL"
+  | "CM"
+  | "CN"
+  | "CO"
+  | "CR"
+  | "CU"
+  | "CV"
+  | "CW"
+  | "CX"
+  | "CY"
+  | "CZ"
+  | "DE"
+  | "DJ"
+  | "DK"
+  | "DM"
+  | "DO"
+  | "DZ"
+  | "EC"
+  | "EE"
+  | "EG"
+  | "EH"
+  | "ER"
+  | "ES"
+  | "ET"
+  | "FI"
+  | "FJ"
+  | "FK"
+  | "FM"
+  | "FO"
+  | "FR"
+  | "GA"
+  | "GB"
+  | "GD"
+  | "GE"
+  | "GF"
+  | "GG"
+  | "GH"
+  | "GI"
+  | "GL"
+  | "GM"
+  | "GN"
+  | "GP"
+  | "GQ"
+  | "GR"
+  | "GS"
+  | "GT"
+  | "GU"
+  | "GW"
+  | "GY"
+  | "HK"
+  | "HM"
+  | "HN"
+  | "HR"
+  | "HT"
+  | "HU"
+  | "ID"
+  | "IE"
+  | "IL"
+  | "IM"
+  | "IN"
+  | "IO"
+  | "IQ"
+  | "IR"
+  | "IS"
+  | "IT"
+  | "JE"
+  | "JM"
+  | "JO"
+  | "JP"
+  | "KE"
+  | "KG"
+  | "KH"
+  | "KI"
+  | "KM"
+  | "KN"
+  | "KP"
+  | "KR"
+  | "KW"
+  | "KY"
+  | "KZ"
+  | "LA"
+  | "LB"
+  | "LC"
+  | "LI"
+  | "LK"
+  | "LR"
+  | "LS"
+  | "LT"
+  | "LU"
+  | "LV"
+  | "LY"
+  | "MA"
+  | "MC"
+  | "MD"
+  | "ME"
+  | "MF"
+  | "MG"
+  | "MH"
+  | "MK"
+  | "ML"
+  | "MM"
+  | "MN"
+  | "MO"
+  | "MP"
+  | "MQ"
+  | "MR"
+  | "MS"
+  | "MT"
+  | "MU"
+  | "MV"
+  | "MW"
+  | "MX"
+  | "MY"
+  | "MZ"
+  | "NA"
+  | "NC"
+  | "NE"
+  | "NF"
+  | "NG"
+  | "NI"
+  | "NL"
+  | "NO"
+  | "NP"
+  | "NR"
+  | "NU"
+  | "NZ"
+  | "OM"
+  | "PA"
+  | "PE"
+  | "PF"
+  | "PG"
+  | "PH"
+  | "PK"
+  | "PL"
+  | "PM"
+  | "PN"
+  | "PR"
+  | "PS"
+  | "PT"
+  | "PW"
+  | "PY"
+  | "QA"
+  | "RE"
+  | "RO"
+  | "RS"
+  | "RU"
+  | "RW"
+  | "SA"
+  | "SB"
+  | "SC"
+  | "SD"
+  | "SE"
+  | "SG"
+  | "SH"
+  | "SI"
+  | "SJ"
+  | "SK"
+  | "SL"
+  | "SM"
+  | "SN"
+  | "SO"
+  | "SR"
+  | "SS"
+  | "ST"
+  | "SV"
+  | "SX"
+  | "SY"
+  | "SZ"
+  | "TC"
+  | "TD"
+  | "TF"
+  | "TG"
+  | "TH"
+  | "TJ"
+  | "TK"
+  | "TL"
+  | "TM"
+  | "TN"
+  | "TO"
+  | "TR"
+  | "TT"
+  | "TV"
+  | "TW"
+  | "TZ"
+  | "UA"
+  | "UG"
+  | "UM"
+  | "US"
+  | "UY"
+  | "UZ"
+  | "VA"
+  | "VC"
+  | "VE"
+  | "VG"
+  | "VI"
+  | "VN"
+  | "VU"
+  | "WF"
+  | "WS"
+  | "XK"
+  | "YE"
+  | "YT"
+  | "ZA"
+  | "ZM"
+  | "ZW";

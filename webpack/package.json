@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "build": "webpack",
+    "setup-github-actions": "echo 0 | sudo tee /proc/sys/kernel/apparmor_restrict_unprivileged_userns",
     "test": "node test/browser.js",
     "build-test": "yarn build && yarn test"
   },

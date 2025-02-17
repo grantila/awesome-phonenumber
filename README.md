@@ -49,15 +49,18 @@ A library should be quick to load (`require()`), quick to parse first time and a
 
 The following is the result of a test program which loads the library, then parses a phone number, and then once again. It's called 100 times for each library and the mean values are shown here. Parsing a phone number first time might be slower because of initially compiling/optimizing regular expressions and whatnot. Parsing a phone number a second time will show the speed of likely all future parsing within that process.
 
-Action                    | awesome-phonenumber<br/>2.56.0<br/>(lib 8.12.29) | google-libphonenumber<br/>3.2.22<br/>(lib 8.12.27) | libphonenumber-js<br/>1.9.23<br/>(lib -)
+Action                    | awesome-phonenumber<br/>7.2.0<br/>(lib 8.13.47) | google-libphonenumber<br/>3.2.38<br/>(lib 8.13.42) | libphonenumber-js<br/>1.11.9<br/>(lib -)
 ------------------------- | ------------------- | --------------------- | ----------------
-Load library first time         | 11.0 ms ✅          | 29.67 ms              | 32.87 ms
-Parse first phone number        | 4.3 ms              | 4.01 ms               | 3.43 ms ✅
-**⇒ Load + parse first number** | 15.3 ms ✅          | 33.68 ms              | 36.3 ms
-Parse second phone number       | 0.78 ms ✅          | 0.97 ms               | 0.92 ms
-Increased memory usage          | 5.12 M ✅           | 9.99 M                | 5.86 M
-node_modules size               | 296 K ✅            | 600 K                 | 7.6 M
-node_modules files              | 8                   | 7 ✅                  | 653
+Load library first time         | 7.82 ms ✅          | 14.28 ms              | 14.53 ms
+Parse first phone number        | 2.00 ms             | 1.86 ms               | 1.65 ms ✅
+**⇒ Load + parse first number** | 9.82 ms ✅          | 16.14 ms              | 16.18 ms
+Format again                    | 0.09 ms ✅          | 0.22 ms               | 0.13 ms
+Parse again                     | 0.39 ms ✅          | 0.51 ms               | 0.43 ms
+Increased memory usage          | 9.77 M ✅           | 12.71 M               | 11.25 M
+node_modules size               | 720 K               | * 604 K ✅            | 9.9 M
+node_modules files              | 9                   | * 7 ✅                | 787
+
+\* NOTE: google-libphonenumber only ships CJS, while awesome-phonenumber and libphonenumber-js ships _both_ CJS and ESM
 
 
 ## Basic usage

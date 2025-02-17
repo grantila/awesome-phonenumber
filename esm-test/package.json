@@ -12,7 +12,8 @@
     "install-tests": "cp ../test/awesome-phonenumber/*.ts test",
     "build:compile": "tsc -p .",
     "build": "yarn install-tests && yarn build:compile",
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest"
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "build-test": "yarn build && yarn test"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.25.4",

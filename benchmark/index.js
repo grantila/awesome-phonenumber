@@ -53,7 +53,7 @@ function install_all( )
 	return runCommand( 'npm', [ 'install' ] );
 }
 
-var iterations = 100;
+var iterations = 200;
 
 function run_tests( lib )
 {
@@ -74,6 +74,7 @@ function run_tests( lib )
 				results[ 1 ] += result[ 1 ];
 				results[ 2 ] += result[ 2 ];
 				results[ 3 ] += result[ 3 ];
+				results[ 4 ] += result[ 4 ];
 			}
 		} )
 		.then( _ => {
@@ -135,13 +136,14 @@ function run_tests( lib )
 	.then( install_test )
 	.then( data => {
 		console.log( {
-			load   : results[ 0 ] / iterations,
-			parse  : results[ 1 ] / iterations,
-			parse2 : results[ 2 ] / iterations,
-			mem    : results[ 3 ] / iterations,
-			time   : data.time,
-			files  : data.files,
-			size   : data.size
+			load       : results[ 0 ] / iterations,
+			parse      : results[ 1 ] / iterations,
+			parse_same : results[ 2 ] / iterations,
+			parse_next : results[ 3 ] / iterations,
+			mem        : results[ 4 ] / iterations,
+			time       : data.time,
+			files      : data.files,
+			size       : data.size
 		} );
 	} );
 }

@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "build": "webpack",
-    "test": "node test/browser.js"
+    "test": "node test/browser.js",
+    "build-test": "yarn build && yarn test"
   },
   "devDependencies": {
     "awesome-phonenumber": "workspace:^",

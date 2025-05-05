@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/respond-io/awesome-phonenumber/compare/v1.0.10...v1.1.0) (2025-04-30)
+
+
+### Features
+
+* remove unnecessary 'Force release' note from README ([5c613e5](https://github.com/respond-io/awesome-phonenumber/commit/5c613e529090619a0cdaa8a8f6208e2ca3fc4160))
+
 ## [1.0.10](https://github.com/respond-io/awesome-phonenumber/compare/v1.0.9...v1.0.10) (2024-12-09)
 
 

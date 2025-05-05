@@ -16,13 +16,13 @@
     "build-test": "yarn build && yarn test"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.26.9",
-    "@babel/preset-typescript": "^7.26.0",
+    "@babel/preset-env": "^7.27.1",
+    "@babel/preset-typescript": "^7.27.1",
     "@types/jest": "^29.5.14",
     "awesome-phonenumber": "workspace:^",
     "jest": "^29.7.0",
     "ts-jest-resolver": "^2.0.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.7.3"
+    "typescript": "^5.8.3"
   }
 }

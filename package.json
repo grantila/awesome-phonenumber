@@ -31,10 +31,10 @@
     "build:package": "scripts/postbuild.sh",
     "test:compile": "scripts/test.sh",
     "test": "yarn test:compile && NODE_OPTIONS=--experimental-vm-modules jest",
-    "test-dist-webpack": "cd webpack && yarn build && yarn test",
-    "test-dist-esm-test": "cd esm-test && yarn build && yarn test",
-    "test-dist-cjs-test": "cd cjs-test && yarn build && yarn test",
-    "test-dist": "yarn test-dist-webpack && yarn test-dist-esm-test && yarn test-dist-cjs-test",
+    "test-dist-webpack": "yarn --cwd webpack build-test",
+    "test-dist-esm": "yarn --cwd esm-test build-test",
+    "test-dist-cjs": "yarn --cwd cjs-test build-test",
+    "test-dist": "yarn test-dist-webpack && yarn test-dist-esm && yarn test-dist-cjs",
     "cz": "git-cz",
     "semantic-release": "semantic-release"
   },
@@ -67,12 +67,12 @@
     "@respond-io:registry": "https://npm.pkg.github.com"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.25.4",
-    "@babel/preset-typescript": "^7.24.7",
-    "@rollup/plugin-commonjs": "^28.0.0",
-    "@types/jest": "^29.5.13",
+    "@babel/preset-env": "^7.27.1",
+    "@babel/preset-typescript": "^7.27.1",
+    "@rollup/plugin-commonjs": "^28.0.3",
+    "@types/jest": "^29.5.14",
     "@types/mkdirp": "^2.0.0",
-    "@types/node": "^22.7.4",
+    "@types/node": "^22.15.3",
     "commitizen": "^4.3.1",
     "cz-conventional-changelog": "^3.3.0",
     "google-closure-compiler": "^20240317.0.0",
@@ -83,15 +83,15 @@
     "pre-commit": "^1.2.2",
     "replace": "^1.2.2",
     "rmfr": "^2.0.0",
-    "rollup": "4.23.0",
+    "rollup": "4.40.1",
     "ts-jest-resolver": "^2.0.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.6.2"
+    "typescript": "^5.8.3"
   },
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
-  "packageManager": "yarn@3.2.4"
+  "packageManager": "yarn@4.5.0"
 }

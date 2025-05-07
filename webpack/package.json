@@ -5,13 +5,15 @@
   "license": "MIT",
   "scripts": {
     "build": "webpack",
-    "test": "node test/browser.js"
+    "setup-github-actions": "echo 0 | sudo tee /proc/sys/kernel/apparmor_restrict_unprivileged_userns",
+    "test": "node test/browser.js",
+    "build-test": "yarn build && yarn test"
   },
   "devDependencies": {
     "awesome-phonenumber": "workspace:^",
-    "html-webpack-plugin": "^5.6.0",
-    "puppeteer": "^23.4.1",
-    "webpack": "^5.95.0",
-    "webpack-cli": "^5.1.4"
+    "html-webpack-plugin": "^5.6.3",
+    "puppeteer": "^24.8.0",
+    "webpack": "^5.99.7",
+    "webpack-cli": "^6.0.1"
   }
 }

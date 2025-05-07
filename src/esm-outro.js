@@ -1,6 +1,5 @@
 
 const {
-	PhoneNumber,
 	AsYouType,
 	getCountryCodeForRegionCode,
 	getRegionCodeForCountryCode,
@@ -10,35 +9,11 @@ const {
 	getExample,
 	getAsYouType,
 	getNumberFrom,
+	parsePhoneNumber,
 } = index;
-
-const parsePhoneNumber = ( ...args ) =>
-{
-	try
-	{
-		const ret = index( ...args ).toJSON( );
-		if ( !ret.valid && !ret.possible )
-		{
-			ret.possible = false;
-			if ( !ret.possibility )
-				ret.possibility = 'invalid';
-		}
-		return ret;
-	}
-	catch ( error )
-	{
-		return {
-			valid: false,
-			possible: false,
-			possibility: 'invalid',
-			error,
-		};
-	}
-};
 
 export {
 	AsYouType,
-	parsePhoneNumber,
 	getCountryCodeForRegionCode,
 	getRegionCodeForCountryCode,
 	getSupportedCallingCodes,
@@ -47,4 +22,6 @@ export {
 	getExample,
 	getAsYouType,
 	getNumberFrom,
+	parsePhoneNumber,
+	parsePhoneNumber as default,
 }

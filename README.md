@@ -393,5 +393,3 @@ ayt.addChar("7"); // -> '070 712 34 57'
 [bundlephobia-image]: https://badgen.net/bundlephobia/minzip/awesome-phonenumber
 [bundlephobia-url]: https://bundlephobia.com/package/awesome-phonenumber
 [depcount-image]: https://badgen.net/bundlephobia/dependency-count/awesome-phonenumber
-
-Force Release

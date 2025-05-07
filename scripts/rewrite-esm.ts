@@ -19,7 +19,13 @@ async function rewrite( )
 	console.log(
 		`Lines: ${file1.split('\n').length} ${file2.split('\n').length}`
 	);
-	const data = file1 + file2;
+
+	const file1WithoutDefaultExport = file1
+		.split( '\n' )
+		.filter( line => line !== 'export { index as default };' )
+		.join( '\n' );
+
+	const data = file1WithoutDefaultExport + file2;
 
 	await overwriteFile( resultFile, data );
 }

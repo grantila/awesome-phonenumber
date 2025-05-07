@@ -22,14 +22,7 @@ module.exports.parsePhoneNumber = ( ...args ) =>
 {
 	try
 	{
-		const ret = module.exports( ...args ).toJSON( );
-		if ( !ret.valid && !ret.possible )
-		{
-			ret.possible = false;
-			if ( !ret.possibility )
-				ret.possibility = 'invalid';
-		}
-		return ret;
+		return module.exports.parse( ...args );
 	}
 	catch ( error )
 	{

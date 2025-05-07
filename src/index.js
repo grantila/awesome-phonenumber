@@ -141,21 +141,39 @@ function getWeakInstance( parsedPhoneNumber )
 		}
 	}
 
-	return new PhoneNumber( parsedPhoneNumber?.['number']?.['e164'], { } );
+	return parsePhoneNumber( parsedPhoneNumber?.['number']?.['international'] ).pn;
 }
 
 /**
  * The PhoneNumber class.
  *
- * @param options object
  * @constructor
  * @export
  */
-export function PhoneNumber( phoneNumber, options )
+export function PhoneNumber( )
 {
-	if ( !( this instanceof PhoneNumber ) )
-		return new PhoneNumber( phoneNumber, options );
+	throw new Error( 'Internal error' );
+}
 
+
+function isMobile( type )
+{
+	return type === 'mobile' || type === 'fixed-line-or-mobile';
+}
+
+function isFixedLine( type )
+{
+	return type === 'fixed-line' || type === 'fixed-line-or-mobile';
+}
+
+const failureSentry = Object.freeze( {
+	'valid': false,
+	'possible': false,
+	'possibility': 'invalid-country-code',
+} );
+
+function parsePhoneNumber( phoneNumber, options )
+{
 	var regionCode = options?.['regionCode'];
 
 	var isInternal =
@@ -174,8 +192,6 @@ export function PhoneNumber( phoneNumber, options )
 			}
 		}( );
 
-	let parsed;
-
 	if ( !isInternal && typeof phoneNumber !== 'string' )
 		throw new Error( "Invalid phone number, expected a string" );
 	if (
@@ -193,6 +209,8 @@ export function PhoneNumber( phoneNumber, options )
 			`${typeof regionCode} ${regionCode}`
 		);
 
+	let pn = null;
+
 	if ( !isInternal )
 	{
 		phoneNumber = phoneNumber.trim( );
@@ -203,100 +221,176 @@ export function PhoneNumber( phoneNumber, options )
 			regionCode = null;
 
 		if ( !regionCode || isInternational( phoneNumber ) )
+		{
+			let parsed;
 			// Guess region code
 			(
 				{ regionCode = null, parsed } =
 					extractRegionCode( phoneNumber, regionCode )
 			);
-	}
-
-	this._json = {
-		'number'        : { },
-		'regionCode'    : regionCode,
-		'valid'         : false,
-		'possible'      : false,
-		'shortPossible' : false,
-		'shortValid'    : false,
-	};
-
-	if ( weakMap )
-	{
-		weakMap.set( this._json, this );
-	}
-
-	if ( isInternal )
-	{
-		this._number = phoneNumber;
+			pn = parsed;
+		}
 	}
 	else
 	{
-		this._number = null;
-		this._json[ 'number' ][ 'input' ] = phoneNumber;
+		pn = phoneNumber;
+		regionCode = phoneUtil.getRegionCodeForNumber( pn );
+		phoneNumber = phoneUtil.format( pn, PhoneNumberFormat.NATIONAL );
+	}
 
+	var cc;
+	if ( !isInternal )
+	{
 		if ( !regionCode )
 		{
-			this._json[ 'possibility' ] = 'invalid-country-code';
-			return;
+			return failureSentry;
 		}
 		else
 		{
-			var cc = PhoneNumber.getCountryCodeForRegionCode( regionCode );
+			cc = PhoneNumber.getCountryCodeForRegionCode( regionCode );
 			if ( cc === 0 )
 			{
-				this._json[ 'possibility' ] = 'invalid-country-code';
-				return;
+				return {
+					...failureSentry,
+					...( regionCode ? { 'regionCode': regionCode } : { } ),
+				};
 			}
 		}
 
 		try
 		{
-			if ( parsed )
-				this._number = parsed;
-			else
-				this._number = phoneUtil.parse( phoneNumber, regionCode );
+			if ( !pn )
+				pn = phoneUtil.parse( phoneNumber, regionCode );
 		}
 		catch ( e )
 		{
-			this._json[ 'possibility' ] = getValidationResult( phoneNumber );
-			return;
+			return {
+				...failureSentry,
+				...( regionCode ? { 'regionCode': regionCode } : { } ),
+				'error': e,
+			};
 		}
 	}
 
-	this._json[ 'number' ][ 'international' ] =
-		phoneUtil.format( this._number, PhoneNumberFormat.INTERNATIONAL );
-	this._json[ 'number' ][ 'national' ] =
-		phoneUtil.format( this._number, PhoneNumberFormat.NATIONAL );
-	this._json[ 'number' ][ 'e164' ] =
-		phoneUtil.format( this._number, PhoneNumberFormat.E164 );
-	this._json[ 'number' ][ 'rfc3966' ] =
-		phoneUtil.format( this._number, PhoneNumberFormat.RFC3966 );
-	this._json[ 'number' ][ 'significant' ] =
-		phoneUtil.getNationalSignificantNumber( this._number );
+	return { pn, cc, phoneNumber, regionCode };
+}
 
-	this._json[ 'canBeInternationallyDialled' ] =
-		phoneUtil.canBeInternationallyDialled( this._number );
+function memo( fn )
+{
+	return function( )
+	{
+		let res;
 
-	this._json[ 'valid' ] = phoneUtil.isValidNumber( this._number );
-	this._json[ 'possible' ] = phoneUtil.isPossibleNumber( this._number );
-	this._json[ 'possibility' ] = getValidationResult( this._number );
+		if ( !res )
+			res = fn( );
 
-	// if ( !this._json[ 'valid' ] && this._json[ 'possible' ] )
-	// {
-	// 	// Sometimes libphonenumber says a number is possible but invalid...
-	// 	this._json[ 'possibility' ] = 'invalid';
-	// 	this._json[ 'possible' ] = false;
-	// }
+		return res;
+	}
+}
 
-	this._json[ 'shortValid' ] = shortInfo.isValidShortNumber( this._number );
-	this._json[ 'shortPossible' ] =
-		shortInfo.isPossibleShortNumber( this._number );
+/** @export */
+PhoneNumber.parse = function( phoneNumber, options )
+{
+	const parsed = parsePhoneNumber( phoneNumber, options );
 
-	this._json[ 'type' ] = getNumberType( this._number );
+	if ( !parsed.pn )
+		return parsed;
 
-	this._json[ 'typeIsMobile' ] = this.isMobile( );
-	this._json[ 'typeIsFixedLine' ] = this.isFixedLine( );
-	this._json[ 'countryCode' ] =
-		phoneUtil.getCountryCodeForRegion( regionCode );
+	let regionCode, pn, cc;
+	( { pn, cc, phoneNumber, regionCode } = parsed );
+
+	const number = Object.defineProperties( Object.create( null ), {
+		'input': {
+			configurable: false, enumerable: true,
+			value: phoneNumber,
+		},
+		'international': {
+			configurable: false, enumerable: true,
+			get: memo( ( ) => phoneUtil.format( pn, PhoneNumberFormat.INTERNATIONAL ) ),
+		},
+		'national': {
+			configurable: false, enumerable: true,
+			get: memo( ( ) => phoneUtil.format( pn, PhoneNumberFormat.NATIONAL ) ),
+		},
+		'e164': {
+			configurable: false, enumerable: true,
+			get: memo( ( ) => phoneUtil.format( pn, PhoneNumberFormat.E164 ) ),
+		},
+		'rfc3966': {
+			configurable: false, enumerable: true,
+			get: memo( ( ) => phoneUtil.format( pn, PhoneNumberFormat.RFC3966 ) ),
+		},
+		'significant': {
+			configurable: false, enumerable: true,
+			get: memo( ( ) => phoneUtil.getNationalSignificantNumber( pn ) ),
+		},
+	} );
+
+	const type = getNumberType( pn );
+	const valid = phoneUtil.isValidNumber( pn );
+	let possible = phoneUtil.isPossibleNumber( pn );
+	if ( !valid && !possible )
+	{
+		possible = false;
+	}
+
+	const ret = Object.defineProperties( Object.create( null ), {
+		'number': {
+			configurable: false, enumerable: true,
+			value: number,
+		},
+		'regionCode': {
+			configurable: false, enumerable: true,
+			value: regionCode,
+		},
+		'valid': {
+			configurable: false, enumerable: true,
+			value: valid,
+		},
+		'possible': {
+			configurable: true, enumerable: true,
+			value: possible,
+		},
+		'possibility': {
+			configurable: true, enumerable: true,
+			get: memo( ( ) => getValidationResult( pn ) ),
+		},
+		'shortValid': {
+			configurable: false, enumerable: true,
+			get: memo( ( ) => shortInfo.isValidShortNumber( pn ) ),
+		},
+		'shortPossible': {
+			configurable: false, enumerable: true,
+			get: memo( ( ) => shortInfo.isPossibleShortNumber( pn ) ),
+		},
+		'type': {
+			configurable: false, enumerable: true,
+			value: type
+		},
+		'typeIsMobile': {
+			configurable: false, enumerable: true,
+			value: isMobile( type )
+		},
+		'typeIsFixedLine': {
+			configurable: false, enumerable: true,
+			value: isFixedLine( type )
+		},
+		'canBeInternationallyDialled': {
+			configurable: false, enumerable: true,
+			get: memo( ( ) => phoneUtil.canBeInternationallyDialled( pn ) ),
+		},
+		'countryCode': {
+			configurable: false, enumerable: true,
+			get: memo( ( ) => cc ?? phoneUtil.getCountryCodeForRegion( regionCode ) ),
+		},
+	} );
+
+	if ( weakMap )
+	{
+		weakMap.set( ret, pn );
+	}
+
+	return ret;
 }
 
 /** @export */
@@ -335,12 +429,15 @@ PhoneNumber.findNumbers = function( text, options )
 
 		const slice = text.slice( start, end );
 
-		const pn = new PhoneNumber( slice, { 'regionCode': defaultRegionCode } );
+		const pn = PhoneNumber.parse(
+			slice,
+			{ 'regionCode': defaultRegionCode }
+		);
 
-		if ( pn.isValid( ) || ( leniency === 'possible' && pn.isPossible( ) ) )
+		if ( pn[ 'valid' ] || ( leniency === 'possible' && pn[ 'possible' ] ) )
 			res.push( {
 				'text': slice,
-				'phoneNumber': pn.toJSON( ),
+				'phoneNumber': pn,
 				'start': start,
 				'end': end,
 			} );
@@ -383,7 +480,7 @@ PhoneNumber.getExample = function( regionCode, type /* = null */ )
 		example = phoneUtil.getExampleNumberForType(
 			regionCode, toNumberType( type ) );
 
-	return new PhoneNumber( example, regionCode ).toJSON( );
+	return PhoneNumber.parse( example, regionCode );
 }
 
 /** @export */
@@ -399,7 +496,7 @@ PhoneNumber.getNumberFrom = function( parsedPhoneNumber, regionCode )
 	{
 		const instance = getWeakInstance( parsedPhoneNumber );
 		const number = phoneUtil.formatOutOfCountryCallingNumber(
-			instance._number,
+			instance,
 			regionCode
 		);
 		return {
@@ -536,8 +633,8 @@ AsYouType.prototype.reset = function( number /* = '' */ )
 /** @export */
 AsYouType.prototype.getPhoneNumber = function( )
 {
-	return new PhoneNumber(
+	return PhoneNumber.parse(
 		this._number,
-		{ ['regionCode']: this._regionCode }
-	).toJSON( );
+		{ [ 'regionCode' ]: this._regionCode }
+	);
 }

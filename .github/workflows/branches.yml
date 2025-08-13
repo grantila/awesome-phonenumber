@@ -33,8 +33,6 @@ jobs:
         CI: true
     - run: yarn build
       working-directory: ./webpack
-    - run: yarn setup-github-actions
-      working-directory: ./webpack
     - run: yarn test
       working-directory: ./webpack
     - run: yarn build

@@ -4,26 +4,20 @@ var libs = {
 		var mem1 = process.memoryUsage( );
 		var time1 = Date.now( );
 
-		var { parsePhoneNumber } = require( 'awesome-phonenumber' );
+		var PhoneNumber = require( 'awesome-phonenumber' );
 
 		var time2 = Date.now( );
 
-		const pn1 = parsePhoneNumber( '0707123456', { regionCode: 'SE' } );
-		pn1.number.international;
+		PhoneNumber( '0707123456', 'SE' ).getNumber( );
 
 		var time3 = Date.now( );
 
-		pn1.number.international;
+		PhoneNumber( '0707123457', 'SE' ).getNumber( );
 
 		var time4 = Date.now( );
-
-		const pn2 = parsePhoneNumber( '0707123456', { regionCode: 'SE' } );
-		pn2.number.international;
-
-		var time5 = Date.now( );
 		var mem2 = process.memoryUsage( );
 
-		return [ time2 - time1, time3 - time2, time4 - time3, time5 - time4, mem2.rss - mem1.rss ];
+		return [ time2 - time1, time3 - time2, time4 - time3, mem2.rss - mem1.rss ];
 	},
 	'google-libphonenumber': function( ) {
 		var mem1 = process.memoryUsage( );
@@ -39,17 +33,13 @@ var libs = {
 
 		var time3 = Date.now( );
 
+		var phoneNumber = phoneUtil.parse('0707123457', 'SE');
 		phoneUtil.format(phoneNumber, PNF.INTERNATIONAL);
 
 		var time4 = Date.now( );
-
-		var phoneNumber = phoneUtil.parse('0707123456', 'SE');
-		phoneUtil.format(phoneNumber, PNF.INTERNATIONAL);
-
-		var time5 = Date.now( );
 		var mem2 = process.memoryUsage( );
 
-		return [ time2 - time1, time3 - time2, time4 - time3, time5 - time4, mem2.rss - mem1.rss ];
+		return [ time2 - time1, time3 - time2, time4 - time3, mem2.rss - mem1.rss ];
 	},
 	'libphonenumber-js': function( ) {
 		var mem1 = process.memoryUsage( );
@@ -64,17 +54,13 @@ var libs = {
 
 		var time3 = Date.now( );
 
+		var phoneNumber = parsePhoneNumber('0707123457', 'SE');
 		phoneNumber.formatInternational();
 
 		var time4 = Date.now( );
-
-		var phoneNumber = parsePhoneNumber('0707123456', 'SE');
-		phoneNumber.formatInternational();
-
-		var time5 = Date.now( );
 		var mem2 = process.memoryUsage( );
 
-		return [ time2 - time1, time3 - time2, time4 - time3, time5 - time4, mem2.rss - mem1.rss ];
+		return [ time2 - time1, time3 - time2, time4 - time3, mem2.rss - mem1.rss ];
 	}
 };
 

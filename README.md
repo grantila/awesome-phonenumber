@@ -12,7 +12,7 @@ Unlike libphonenumber, it includes a `findNumbers( )` function to find phone num
 
 TypeScript typings are provided within the package.
 
-Uses libphonenumber v9.0.4
+Uses libphonenumber v8.13.51
 
 ### Versions
 
@@ -46,47 +46,44 @@ A library should be quick to load (`require()`), quick to parse first time and a
 
 The following is the result of a test program which loads the library, then parses a phone number, and then once again. It's called 100 times for each library and the mean values are shown here. Parsing a phone number first time might be slower because of initially compiling/optimizing regular expressions and whatnot. Parsing a phone number a second time will show the speed of likely all future parsing within that process.
 
-| Action                          | awesome-phonenumber<br/>7.2.0<br/>(lib 8.13.47) | google-libphonenumber<br/>3.2.38<br/>(lib 8.13.42) | libphonenumber-js<br/>1.11.9<br/>(lib -) |
-| ------------------------------- | ----------------------------------------------- | -------------------------------------------------- | ---------------------------------------- |
-| Load library first time         | 7.82 ms ✅                                      | 14.28 ms                                           | 14.53 ms                                 |
-| Parse first phone number        | 2.00 ms                                         | 1.86 ms                                            | 1.65 ms ✅                               |
-| **⇒ Load + parse first number** | 9.82 ms ✅                                      | 16.14 ms                                           | 16.18 ms                                 |
-| Format again                    | 0.09 ms ✅                                      | 0.22 ms                                            | 0.13 ms                                  |
-| Parse again                     | 0.39 ms ✅                                      | 0.51 ms                                            | 0.43 ms                                  |
-| Increased memory usage          | 9.77 M ✅                                       | 12.71 M                                            | 11.25 M                                  |
-| node_modules size               | 720 K                                           | \* 604 K ✅                                        | 9.9 M                                    |
-| node_modules files              | 9                                               | \* 7 ✅                                            | 787                                      |
-
-\* NOTE: google-libphonenumber only ships CJS, while awesome-phonenumber and libphonenumber-js ships _both_ CJS and ESM
+| Action                          | awesome-phonenumber<br/>2.56.0<br/>(lib 8.12.29) | google-libphonenumber<br/>3.2.22<br/>(lib 8.12.27) | libphonenumber-js<br/>1.9.23<br/>(lib -) |
+| ------------------------------- | ------------------------------------------------ | -------------------------------------------------- | ---------------------------------------- |
+| Load library first time         | 11.0 ms ✅                                       | 29.67 ms                                           | 32.87 ms                                 |
+| Parse first phone number        | 4.3 ms                                           | 4.01 ms                                            | 3.43 ms ✅                               |
+| **⇒ Load + parse first number** | 15.3 ms ✅                                       | 33.68 ms                                           | 36.3 ms                                  |
+| Parse second phone number       | 0.78 ms ✅                                       | 0.97 ms                                            | 0.92 ms                                  |
+| Increased memory usage          | 5.12 M ✅                                        | 9.99 M                                             | 5.86 M                                   |
+| node_modules size               | 296 K ✅                                         | 600 K                                              | 7.6 M                                    |
+| node_modules files              | 8                                                | 7 ✅                                               | 653                                      |
 
 ## Basic usage
 
 ```ts
-import { parsePhoneNumber } from "awesome-phonenumber";
+import { parsePhoneNumber } from 'awesome-phonenumber';
 
-const pn = parsePhoneNumber("0707123456", { regionCode: "SE" });
+const pn = parsePhoneNumber('0707123456', { regionCode: 'SE' });
 // or on e164 format:
-const pn = parsePhoneNumber("+46707123456");
+const pn = parsePhoneNumber('+46707123456');
 
 // pn is now the same as:
 const pn = {
   valid: true,
 
   number: {
-    input: "0707123456",
-    e164: "+46707123456",
-    international: "+46 70 712 34 56",
-    national: "070-712 34 56",
-    rfc3966: "tel:+46-70-712-34-56",
-    significant: "707123456",
+    input: '0707123456',
+    e164: '+46707123456',
+    international: '+46 70 712 34 56',
+    national: '070-712 34 56',
+    rfc3966: 'tel:+46-70-712-34-56',
+    significant: '707123456',
   },
-  possibility: "is-possible",
-  regionCode: "SE",
+  possibility: 'is-possible',
+  regionCode: 'SE',
   possible: true,
   shortPossible: false,
   shortValid: false,
   canBeInternationallyDialled: true,
-  type: "mobile",
+  type: 'mobile',
   countryCode: 46,
   typeIsMobile: true,
   typeIsFixedLine: false,
@@ -129,7 +126,7 @@ interface ParsedPhoneNumberInvalid {
   valid: false;
 
   possible: false;
-  possibility: "invalid";
+  possibility: 'invalid';
   shortPossible: boolean;
   shortValid: boolean;
   error?: unknown;
@@ -151,7 +148,7 @@ import {
   getSupportedCallingCodes,
   getSupportedRegionCodes,
   getAsYouType,
-} from "awesome-phonenumber";
+} from 'awesome-phonenumber';
 ```
 
 ### parsePhoneNumber
@@ -165,9 +162,9 @@ The first argument is the phone number to parse, on either _national_ or _intern
 To find (extract) phone numbers in text, use `findNumbers( )`:
 
 ```ts
-import { findNumbers } from "awesome-phonenumber";
+import { findNumbers } from 'awesome-phonenumber';
 
-const text = "My number is +46 707 123 456, otherwise call +33777777777.";
+const text = 'My number is +46 707 123 456, otherwise call +33777777777.';
 const numbers = findNumbers(text);
 ```
 
@@ -201,13 +198,13 @@ For really large texts, `maxTries` will set the maximum number of phone numbers 
 ### getNumberFrom
 
 ```ts
-import { parsePhoneNumber, getNumberFrom } from "awesome-phonenumber";
+import { parsePhoneNumber, getNumberFrom } from 'awesome-phonenumber';
 
-const pn = parsePhoneNumber("0707654321", { regionCode: "SE" });
+const pn = parsePhoneNumber('0707654321', { regionCode: 'SE' });
 if (pn.valid) {
-  const fromJp = getNumberFrom(pn, "JP");
+  const fromJp = getNumberFrom(pn, 'JP');
   // fromJp is the number to call from Japan:
-  fromJp.number === "010 46 70 765 43 21";
+  fromJp.number === '010 46 70 765 43 21';
 }
 ```
 
@@ -246,11 +243,11 @@ The `phoneNumberType` is any of the [types defined above](#phone-number-types).
 ### Example
 
 ```ts
-import { getExample } from "awesome-phonenumber";
+import { getExample } from 'awesome-phonenumber';
 
 // Get an example Swedish phone number
-const example = getExample("SE"); // A ParsedPhoneNumberValid
-const exampleMobile = getExample("SE", "mobile"); // A ParsedPhoneNumberValid
+const example = getExample('SE'); // A ParsedPhoneNumberValid
+const exampleMobile = getExample('SE', 'mobile'); // A ParsedPhoneNumberValid
 
 example.number.e164; // e.g. '+468123456'
 exampleMobile.number.e164; // e.g. '+46701234567'
@@ -267,7 +264,7 @@ import {
   getRegionCodeForCountryCode,
   getSupportedCallingCodes,
   getSupportedRegionCodes,
-} from "awesome-phonenumber";
+} from 'awesome-phonenumber';
 
 getCountryCodeForRegionCode(regionCode); // -> countryCode
 getRegionCodeForCountryCode(countryCode); // -> regionCode
@@ -276,7 +273,7 @@ getRegionCodeForCountryCode(countryCode); // -> regionCode
 ### Example
 
 ```ts
-getCountryCodeForRegionCode("SE"); // -> 46
+getCountryCodeForRegionCode('SE'); // -> 46
 getRegionCodeForCountryCode(46); // -> 'SE'
 ```
 
@@ -300,38 +297,38 @@ The API consists of the `PhoneNumber` class which sometimes uses _enums_. These 
 
 ```ts
 type PhoneNumberTypes =
-  | "fixed-line"
-  | "fixed-line-or-mobile"
-  | "mobile"
-  | "pager"
-  | "personal-number"
-  | "premium-rate"
-  | "shared-cost"
-  | "toll-free"
-  | "uan"
-  | "voip"
-  | "unknown";
+  | 'fixed-line'
+  | 'fixed-line-or-mobile'
+  | 'mobile'
+  | 'pager'
+  | 'personal-number'
+  | 'premium-rate'
+  | 'shared-cost'
+  | 'toll-free'
+  | 'uan'
+  | 'voip'
+  | 'unknown';
 ```
 
 ### Phone number possibilities
 
 ```ts
 type PhoneNumberPossibility =
-  | "is-possible"
-  | "invalid-country-code"
-  | "too-long"
-  | "too-short"
-  | "unknown";
+  | 'is-possible'
+  | 'invalid-country-code'
+  | 'too-long'
+  | 'too-short'
+  | 'unknown';
 ```
 
 ### Phone number formats
 
 ```ts
-"international";
-"national";
-"e164";
-"rfc3966";
-"significant";
+'international';
+'national';
+'e164';
+'rfc3966';
+'significant';
 ```
 
 ## As-you-type formatting
@@ -339,9 +336,9 @@ type PhoneNumberPossibility =
 You can create an `AsYouType` class with `getAsYouType()` to format a phone number as it is being typed.
 
 ```ts
-import { getAsYouType } from "awesome-phonenumber";
+import { getAsYouType } from 'awesome-phonenumber';
 
-const ayt = getAsYouType("SE");
+const ayt = getAsYouType('SE');
 ```
 
 The returned class instance has the following methods
@@ -368,21 +365,21 @@ All the functions above except `getPhoneNumber( )` return the current formatted 
 #### Example
 
 ```ts
-import { getAsYouType } from "awesome-phonenumber";
+import { getAsYouType } from 'awesome-phonenumber';
 
-const ayt = getAsYouType("SE");
-ayt.addChar("0"); // -> '0'
-ayt.addChar("7"); // -> '07'
-ayt.addChar("0"); // -> '070'
-ayt.addChar("7"); // -> '070 7'
-ayt.addChar("1"); // -> '070 71'
-ayt.addChar("2"); // -> '070 712'
-ayt.addChar("3"); // -> '070 712 3'
-ayt.addChar("4"); // -> '070 712 34'
-ayt.addChar("5"); // -> '070 712 34 5'
-ayt.addChar("6"); // -> '070 712 34 56'
+const ayt = getAsYouType('SE');
+ayt.addChar('0'); // -> '0'
+ayt.addChar('7'); // -> '07'
+ayt.addChar('0'); // -> '070'
+ayt.addChar('7'); // -> '070 7'
+ayt.addChar('1'); // -> '070 71'
+ayt.addChar('2'); // -> '070 712'
+ayt.addChar('3'); // -> '070 712 3'
+ayt.addChar('4'); // -> '070 712 34'
+ayt.addChar('5'); // -> '070 712 34 5'
+ayt.addChar('6'); // -> '070 712 34 56'
 ayt.removeChar(); // -> '070 712 34 5'
-ayt.addChar("7"); // -> '070 712 34 57'
+ayt.addChar('7'); // -> '070 712 34 57'
 ```
 
 [npm-image]: https://img.shields.io/npm/v/awesome-phonenumber.svg
@@ -393,3 +390,5 @@ ayt.addChar("7"); // -> '070 712 34 57'
 [bundlephobia-image]: https://badgen.net/bundlephobia/minzip/awesome-phonenumber
 [bundlephobia-url]: https://bundlephobia.com/package/awesome-phonenumber
 [depcount-image]: https://badgen.net/bundlephobia/dependency-count/awesome-phonenumber
+
+Force release

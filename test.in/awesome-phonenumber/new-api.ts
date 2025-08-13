@@ -1,4 +1,4 @@
-import {
+import PhoneNumberClass, {
 	parsePhoneNumber,
 	getAsYouType,
 	getExample,
@@ -119,7 +119,7 @@ describe( 'general', ( ) =>
 	{
 		const pn = parsePhoneNumber( '0049040398272', { regionCode: 'US' } );
 		expect( pn.valid ).toBe( false );
-		expect( pn.regionCode ).toBe( undefined );
+		expect( pn.regionCode ).toBe( null );
 	} );
 
 	it( 'should extract region by prefix as early as possible', ( ) =>
@@ -179,7 +179,6 @@ describe( 'as-you-type', ( ) =>
 		var pn2 = ayt.getPhoneNumber( );
 		expect( pn2.valid ).toBe( true );
 		expect( pn2.possible ).toBe( true );
-		expect( pn2.regionCode ).toBe( 'SE' );
 	} );
 
 	it( 'should be able to format as-you-type with removeChar', ( ) =>

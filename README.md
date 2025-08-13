@@ -4,6 +4,14 @@
 [![minzipped size][bundlephobia-image]][bundlephobia-url]
 [![Dependency count][depcount-image]][npm-url]
 
+# How to upgrade the version
+
+Find the latest release from [here](https://github.com/google/libphonenumber) on google's libphonenumber repo
+Copy the release number for example `v9.0.11` into `libphonenumber.version` file in the repo
+Run the build command from `package.json`, add any tests in `test.in/awesome-phonenumber/` requiring the version bump
+Run the test command from `package.json`, validate that the tests are running as expected
+Open a PR to master, with the changes
+
 # Awesome phonenumber parser
 
 This library is a pre-compiled version of Google's `libphonenumber`, with a slightly simpler interface. It has a minimal footprint - is by far the smallest libphonenumber-based library available on npmjs, and has no dependencies.

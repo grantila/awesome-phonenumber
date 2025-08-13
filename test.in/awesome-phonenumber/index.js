@@ -82,4 +82,9 @@ describe('general', () => {
     const { valid } = parsePhoneNumber('+6589569999', { regionCode: 'SG' });
     expect(valid).toBe(true);
   });
+
+  it('should parse the chile number correctly', () => {
+    const { valid } = parsePhoneNumber('+56910128000', { regionCode: 'CL' });
+    expect(valid).toBe(true);
+  });
 });

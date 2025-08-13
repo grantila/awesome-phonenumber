@@ -12,7 +12,7 @@ Unlike libphonenumber, it includes a `findNumbers( )` function to find phone num
 
 TypeScript typings are provided within the package.
 
-Uses libphonenumber v8.13.51
+Uses libphonenumber v9.0.11
 
 ### Versions
 
@@ -390,5 +390,3 @@ ayt.addChar('7'); // -> '070 712 34 57'
 [bundlephobia-image]: https://badgen.net/bundlephobia/minzip/awesome-phonenumber
 [bundlephobia-url]: https://bundlephobia.com/package/awesome-phonenumber
 [depcount-image]: https://badgen.net/bundlephobia/dependency-count/awesome-phonenumber
-
-Force release

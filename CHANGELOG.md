@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/respond-io/awesome-phonenumber/compare/v1.2.0...v1.3.0) (2025-08-13)
+
+
+### Features
+
+* update libphonenumber to v9.0.11 and add test for Chile phone number parsing ([5df75a8](https://github.com/respond-io/awesome-phonenumber/commit/5df75a87fbd2edb403677e53894e1e91247cf67b))
+
 ## [1.0.10](https://github.com/respond-io/awesome-phonenumber/compare/v1.0.9...v1.0.10) (2024-12-09)
 
 

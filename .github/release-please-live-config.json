@@ -1,0 +1,10 @@
+{
+    "release-type": "node",
+    "include-component-in-tag": false,
+    "bootstrap-sha": "60714ad77c07e14f5a7e082f973f696014c41f98",
+    "packages": {
+        "." : {
+            "component": ""
+        }
+    }
+  }

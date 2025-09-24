@@ -170,6 +170,8 @@ const failureSentry = Object.freeze( {
 	'valid': false,
 	'possible': false,
 	'possibility': 'invalid-country-code',
+	'shortPossible': false,
+	'shortValid': false,
 } );
 
 function parsePhoneNumber( phoneNumber, options )
@@ -243,7 +245,12 @@ function parsePhoneNumber( phoneNumber, options )
 	{
 		if ( !regionCode )
 		{
-			return failureSentry;
+			return {
+			  ...failureSentry,
+				'number': {
+					'input': phoneNumber
+				},
+			};
 		}
 		else
 		{
@@ -253,6 +260,9 @@ function parsePhoneNumber( phoneNumber, options )
 				return {
 					...failureSentry,
 					...( regionCode ? { 'regionCode': regionCode } : { } ),
+					'number': {
+						'input': phoneNumber
+					},
 				};
 			}
 		}
@@ -268,6 +278,10 @@ function parsePhoneNumber( phoneNumber, options )
 				...failureSentry,
 				...( regionCode ? { 'regionCode': regionCode } : { } ),
 				'error': e,
+				'possibility': getValidationResult(phoneNumber),
+				'number': {
+					'input': phoneNumber
+				},
 			};
 		}
 	}

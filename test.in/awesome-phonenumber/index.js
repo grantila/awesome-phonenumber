@@ -83,6 +83,11 @@ describe('general', () => {
     expect(valid).toBe(true);
   });
 
+  it('should parse the singapore number +6589844661 correctly', () => {
+    const { valid } = parsePhoneNumber('+6589844661', { regionCode: 'SG' });
+    expect(valid).toBe(true);
+  });
+
   it('should parse the chile number correctly', () => {
     const { valid } = parsePhoneNumber('+56910128000', { regionCode: 'CL' });
     expect(valid).toBe(true);

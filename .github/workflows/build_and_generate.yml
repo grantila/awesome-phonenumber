@@ -1,0 +1,64 @@
+name: Build and Generate Based on number
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_number:
+        description: 'Version number to build and generate for'
+        required: true
+        type: string
+
+jobs:
+  build-and-generate:
+    if: (github.event_name == 'workflow_dispatch' && inputs.version_number != 'undefined')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: 'https://npm.pkg.github.com'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Update libphonenumber.version file
+        run: |
+          echo "v${{ inputs.version_number }}" > libphonenumber.version
+          echo "Updated libphonenumber.version to: v${{ inputs.version_number }}"
+
+      - name: Build and Generate
+        run: npm run build
+
+      - name: Configure Git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+      - name: Create commit
+        run: |
+          git add libphonenumber.version
+          git add dist/
+          git commit -m "Update libphonenumber to v${{ inputs.version_number }} and rebuild dist files"
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: 'Update libphonenumber to v${{ inputs.version_number }} and rebuild dist files'
+          title: 'Update libphonenumber to v${{ inputs.version_number }}'
+          body: |
+            This PR updates libphonenumber to version ${{ inputs.version_number }} and rebuilds all distribution files.
+
+            Changes:
+            - Updated `libphonenumber.version` to `v${{ inputs.version_number }}`
+            - Rebuilt all distribution files with the new version
+          branch: update-libphonenumber-v${{ inputs.version_number }}
+          delete-branch: true
+          base: master

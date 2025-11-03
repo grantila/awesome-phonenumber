@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       version_number:
-        description: 'Version number to build and generate for'
+        description: 'Version number to build and generate for, e.g v1.3.0'
         required: true
         type: string
 
@@ -12,6 +12,8 @@ jobs:
   build-and-generate:
     if: (github.event_name == 'workflow_dispatch' && inputs.version_number != 'undefined')
     runs-on: ubuntu-latest
+    outputs:
+      pull_request_url: ${{ steps.set-pr-url.outputs.pull_request_url }}
     steps:
       - name: Checkout
         id: checkout
@@ -30,8 +32,8 @@ jobs:
 
       - name: Update libphonenumber.version file
         run: |
-          echo "v${{ inputs.version_number }}" > libphonenumber.version
-          echo "Updated libphonenumber.version to: v${{ inputs.version_number }}"
+          echo "${{ inputs.version_number }}" > libphonenumber.version
+          echo "Updated libphonenumber.version to: ${{ inputs.version_number }}"
 
       - name: Build and Generate
         run: npm run build
@@ -45,20 +47,27 @@ jobs:
         run: |
           git add libphonenumber.version
           git add dist/
-          git commit -m "Update libphonenumber to v${{ inputs.version_number }} and rebuild dist files"
+          git commit -m "Update libphonenumber to ${{ inputs.version_number }} and rebuild dist files"
 
       - name: Create Pull Request
+        id: create-pr
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: 'Update libphonenumber to v${{ inputs.version_number }} and rebuild dist files'
-          title: 'Update libphonenumber to v${{ inputs.version_number }}'
+          commit-message: 'Update libphonenumber to ${{ inputs.version_number }} and rebuild dist files'
+          title: 'Update libphonenumber to ${{ inputs.version_number }}'
           body: |
             This PR updates libphonenumber to version ${{ inputs.version_number }} and rebuilds all distribution files.
 
             Changes:
-            - Updated `libphonenumber.version` to `v${{ inputs.version_number }}`
+            - Updated `libphonenumber.version` to `${{ inputs.version_number }}`
             - Rebuilt all distribution files with the new version
-          branch: update-libphonenumber-v${{ inputs.version_number }}
+          branch: update-libphonenumber-${{ inputs.version_number }}
           delete-branch: true
           base: master
+      - name: Set PR URL output & Slack notification
+        id: set-pr-url
+        if: steps.create-pr.outputs.pull-request-number != ''
+        run: |
+          echo "pull_request_url=https://github.com/${{ github.repository }}/pull/${{ steps.create-pr.outputs.pull-request-number }}" >> $GITHUB_OUTPUT
+          gh workflow run slack_notification --ref master --input message="New PR created: ${pull_request_url}"

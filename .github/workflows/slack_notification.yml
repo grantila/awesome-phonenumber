@@ -1,0 +1,23 @@
+name: Slack Notification
+
+on:
+  workflow_dispatch:
+    inputs:
+      message:
+        description: 'Message to send to Slack'
+        required: true
+        type: string
+
+jobs:
+  slack_notification:
+    if: ${{ false }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: slackapi/slack-github-action@v2.1.1
+        with:
+          token: ${{ vars.VERCEL_SLACK_WEBHOOK_URL }}
+          payload: |
+            {
+                "channel": "C05HJS1F64Q",
+                "text": "${{ inputs.message }}"
+            }

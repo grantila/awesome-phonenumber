@@ -48,9 +48,8 @@ jobs:
             echo "Current version: ${CURRENT_VERSION}"
             # Dispatch build_and_generate workflow
             gh workflow run build_and_generate --ref master --input version_number=${LATEST_TAG}
-            # Dispatch slack_notification workflow
-            gh workflow run slack_notification --ref master --input message="Versions differ! Latest available: ${LATEST_TAG} - Current version: ${CURRENT_VERSION}"
             exit 1
           else
             echo "✅ Versions match!"
+            exit 0
           fi

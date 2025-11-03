@@ -70,4 +70,4 @@ jobs:
         if: steps.create-pr.outputs.pull-request-number != ''
         run: |
           echo "pull_request_url=https://github.com/${{ github.repository }}/pull/${{ steps.create-pr.outputs.pull-request-number }}" >> $GITHUB_OUTPUT
-          gh workflow run slack_notification --ref master --input message="New PR created: ${pull_request_url}"
+          gh workflow run slack_notification --ref master --input message="New PR created: ${{ steps.create-pr.outputs.pull-request-url }}"

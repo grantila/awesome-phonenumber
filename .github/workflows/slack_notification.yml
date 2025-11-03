@@ -14,10 +14,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: slackapi/slack-github-action@v2.1.1
+        env:
+          SLACK_WEBHOOK_URL: ${{ vars.SLACK_WEBHOOK_URL }}
         with:
-          token: ${{ vars.VERCEL_SLACK_WEBHOOK_URL }}
           payload: |
             {
-                "channel": "C05HJS1F64Q",
-                "text": "${{ inputs.message }}"
+                "TEXT": "${{ inputs.message }}"
             }

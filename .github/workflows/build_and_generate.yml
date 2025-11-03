@@ -39,22 +39,16 @@ jobs:
         run: npm run build
 
       - name: Configure Git
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-
-      - name: Create commit
-        run: |
-          git add libphonenumber.version
-          git add dist/
-          git commit -m "Update libphonenumber to ${{ inputs.version_number }} and rebuild dist files"
-
+        uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          commit_message: 'Update libphonenumber to ${{ inputs.version_number }} and rebuild dist files'
+          file_pattern: 'libphonenumber.version,dist/**'
+          branch: update-libphonenumber-${{ inputs.version_number }}
       - name: Create Pull Request
         id: create-pr
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: 'Update libphonenumber to ${{ inputs.version_number }} and rebuild dist files'
           title: 'Update libphonenumber to ${{ inputs.version_number }}'
           body: |
             This PR updates libphonenumber to version ${{ inputs.version_number }} and rebuilds all distribution files.
@@ -67,7 +61,8 @@ jobs:
           base: master
       - name: Set PR URL output & Slack notification
         id: set-pr-url
+        uses: ./.github/workflows/composite/slack_notification
         if: steps.create-pr.outputs.pull-request-number != ''
-        run: |
-          echo "pull_request_url=https://github.com/${{ github.repository }}/pull/${{ steps.create-pr.outputs.pull-request-number }}" >> $GITHUB_OUTPUT
-          gh workflow run slack_notification --ref master --input message="New PR created: ${{ steps.create-pr.outputs.pull-request-url }}"
+        with:
+          message: 'New PR created: ${{ steps.create-pr.outputs.pull-request-url }}'
+          webhook_url: ${{ vars.SLACK_WEBHOOK_URL }}

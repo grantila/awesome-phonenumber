@@ -1,0 +1,23 @@
+name: Slack Notification
+
+inputs:
+  message:
+    description: 'Message to send to Slack'
+    required: true
+    type: string
+  webhook_url:
+    description: 'Webhook URL to send the message to'
+    required: true
+    type: string
+
+runs:
+  using: 'composite'
+  steps:
+    - uses: slackapi/slack-github-action@v2.1.1
+      env:
+        SLACK_WEBHOOK_URL: ${{ inputs.webhook_url }}
+      with:
+        payload: |
+          {
+            "TEXT": "${{ inputs.message }}"
+          }

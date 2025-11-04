@@ -17,6 +17,7 @@ runs:
       env:
         SLACK_WEBHOOK_URL: ${{ inputs.webhook_url }}
       with:
+        webhook-type: incoming-webhook
         payload: |
           {
             "TEXT": "${{ inputs.message }}"

@@ -28,7 +28,7 @@ jobs:
           registry-url: 'https://npm.pkg.github.com'
 
       - name: Install dependencies
-        run: npm install
+        run: yarn install --frozen-lockfile
 
       - name: Update libphonenumber.version file
         run: |
@@ -36,7 +36,7 @@ jobs:
           echo "Updated libphonenumber.version to: ${{ inputs.version_number }}"
 
       - name: Build and Generate
-        run: npm run build
+        run: yarn build
 
       - name: Configure Git
         uses: stefanzweifel/git-auto-commit-action@v7

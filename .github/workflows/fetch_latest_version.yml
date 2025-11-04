@@ -50,7 +50,7 @@ jobs:
             echo "Current version: ${CURRENT_VERSION}"
             # Dispatch build_and_generate workflow
             gh workflow run build_and_generate.yml --ref master -f version_number=${LATEST_TAG}
-            exit 1
+            echo "Build and generate workflow dispatched"
           else
             echo "✅ Versions match!"
             exit 0

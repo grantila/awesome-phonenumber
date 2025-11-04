@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/respond-io/awesome-phonenumber/compare/v1.4.0...v1.5.0) (2025-11-04)
+
+
+### Features
+
+* enhance build_and_generate workflow to include previous version input and update Slack notification with version details ([0500b9e](https://github.com/respond-io/awesome-phonenumber/commit/0500b9e50aa4e7a24902e0b7ebb3cc9786599b6b))
+
 ## [1.4.0](https://github.com/respond-io/awesome-phonenumber/compare/v1.3.0...v1.4.0) (2025-11-04)
 
 

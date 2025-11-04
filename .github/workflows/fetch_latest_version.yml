@@ -34,6 +34,8 @@ jobs:
           echo "Current version in libphonenumber.version: ${CURRENT_VERSION}"
 
       - name: Compare versions
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           LATEST_TAG="${{ steps.fetch-latest-tag.outputs.latest_tag }}"
           CURRENT_VERSION="v${{ steps.read-current-version.outputs.current_version }}"

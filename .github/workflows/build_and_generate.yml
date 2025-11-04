@@ -8,6 +8,11 @@ on:
         required: true
         type: string
 
+      previous_version:
+        description: 'Previous version to send to Slack'
+        required: true
+        type: string
+
 jobs:
   build-and-generate:
     if: (github.event_name == 'workflow_dispatch' && inputs.version_number != 'undefined')
@@ -37,18 +42,12 @@ jobs:
 
       - name: Build and Generate
         run: yarn build
-
-      - name: Configure Git
-        uses: stefanzweifel/git-auto-commit-action@v7
-        with:
-          commit_message: 'Update libphonenumber to ${{ inputs.version_number }} and rebuild dist files'
-          file_pattern: 'libphonenumber.version,dist/**'
-          branch: update-libphonenumber-${{ inputs.version_number }}
       - name: Create Pull Request
         id: create-pr
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: 'feat: update libphonenumber to ${{ inputs.version_number }} and rebuild dist files'
           title: 'Update libphonenumber to ${{ inputs.version_number }}'
           body: |
             This PR updates libphonenumber to version ${{ inputs.version_number }} and rebuilds all distribution files.
@@ -56,7 +55,7 @@ jobs:
             Changes:
             - Updated `libphonenumber.version` to `${{ inputs.version_number }}`
             - Rebuilt all distribution files with the new version
-          branch: update-libphonenumber-${{ inputs.version_number }}
+          branch: feature/update-libphonenumber-${{ inputs.version_number }}
           delete-branch: true
           base: master
       - name: Set PR URL output & Slack notification
@@ -64,5 +63,7 @@ jobs:
         uses: ./.github/workflows/composite/slack_notification
         if: steps.create-pr.outputs.pull-request-number != ''
         with:
-          message: 'New PR created: ${{ steps.create-pr.outputs.pull-request-url }}'
+          pr_link: '${{ steps.create-pr.outputs.pull-request-url }}'
+          previous_version: '${{ inputs.previous_version }}'
+          new_version: '${{ inputs.version_number }}'
           webhook_url: ${{ vars.SLACK_WEBHOOK_URL }}

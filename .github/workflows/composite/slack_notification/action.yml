@@ -1,12 +1,21 @@
 name: Slack Notification
 
 inputs:
-  message:
-    description: 'Message to send to Slack'
+  pr_link:
+    description: 'Pull request link to send to Slack'
     required: true
     type: string
   webhook_url:
     description: 'Webhook URL to send the message to'
+    required: true
+    type: string
+
+  previous_version:
+    description: 'Previous version to send to Slack'
+    required: true
+    type: string
+  new_version:
+    description: 'New version to send to Slack'
     required: true
     type: string
 
@@ -20,5 +29,7 @@ runs:
         webhook-type: incoming-webhook
         payload: |
           {
-            "TEXT": "${{ inputs.message }}"
+            "pr_link": "${{ inputs.pr_link }}",
+            "previous_version": "${{ inputs.previous_version }}",
+            "new_version": "${{ inputs.new_version }}"
           }

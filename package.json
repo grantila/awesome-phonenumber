@@ -63,26 +63,26 @@
     "awesome"
   ],
   "devDependencies": {
-    "@babel/preset-env": "^7.27.1",
-    "@babel/preset-typescript": "^7.27.1",
-    "@rollup/plugin-commonjs": "^28.0.3",
-    "@types/jest": "^29.5.14",
+    "@babel/preset-env": "^7.28.5",
+    "@babel/preset-typescript": "^7.28.5",
+    "@rollup/plugin-commonjs": "^29.0.0",
+    "@types/jest": "^30.0.0",
     "@types/mkdirp": "^2.0.0",
     "@types/node": "^22.15.3",
     "commitizen": "^4.3.1",
     "cz-conventional-changelog": "^3.3.0",
-    "google-closure-compiler": "^20240317.0.0",
+    "google-closure-compiler": "^20251104.0.0",
     "google-closure-library": "^20230802.0.0",
-    "gulp": "^5.0.0",
-    "jest": "^29.7.0",
+    "gulp": "^5.0.1",
+    "jest": "^30.2.0",
     "mkdirp": "^3.0.1",
     "pre-commit": "^1.2.2",
     "replace": "^1.2.2",
     "rmfr": "^2.0.0",
-    "rollup": "4.40.1",
+    "rollup": "4.53.2",
     "ts-jest-resolver": "^2.0.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.8.3"
+    "typescript": "^5.9.3"
   },
   "config": {
     "commitizen": {

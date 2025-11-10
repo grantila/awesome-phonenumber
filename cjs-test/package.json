@@ -16,14 +16,14 @@
     "build-test": "yarn build && yarn test"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.27.1",
-    "@babel/preset-typescript": "^7.27.1",
-    "@types/jest": "^29.5.14",
+    "@babel/preset-env": "^7.28.5",
+    "@babel/preset-typescript": "^7.28.5",
+    "@types/jest": "^30.0.0",
     "awesome-phonenumber": "workspace:^",
-    "jest": "^29.7.0",
-    "ts-jest": "^29.3.2",
+    "jest": "^30.2.0",
+    "ts-jest": "^29.4.5",
     "ts-jest-resolver": "^2.0.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.8.3"
+    "typescript": "^5.9.3"
   }
 }

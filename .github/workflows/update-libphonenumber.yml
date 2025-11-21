@@ -1,0 +1,79 @@
+name: Update libphonenumber
+
+on:
+  schedule:
+    - cron: '0 9 * * 1'
+  workflow_dispatch:
+
+jobs:
+  get-versions:
+    runs-on: ubuntu-latest
+    outputs:
+      current: ${{ steps.current.outputs.version }}
+      latest: ${{ steps.latest.outputs.version }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Get current libphonenumber version
+        id: current
+        run: |
+          CURRENT_VERSION=$(tr -d '\n' < libphonenumber.version)
+          echo "version=$CURRENT_VERSION" >> $GITHUB_OUTPUT
+          echo "Current version: $CURRENT_VERSION"
+
+      - name: Get latest libphonenumber release
+        id: latest
+        run: |
+          LATEST_VERSION=$(curl -s https://api.github.com/repos/google/libphonenumber/releases/latest | jq -r '.tag_name')
+          echo "version=$LATEST_VERSION" >> $GITHUB_OUTPUT
+          echo "Latest version: $LATEST_VERSION"
+
+  update-libphonenumber:
+    runs-on: ubuntu-latest
+    needs: get-versions
+    if: needs.get-versions.outputs.current != needs.get-versions.outputs.latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Update libphonenumber version
+        run: |
+          echo "${{ needs.get-versions.outputs.latest }}" > libphonenumber.version
+          echo "Updated libphonenumber.version to ${{ needs.get-versions.outputs.latest }}"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+
+      - run: yarn
+
+      - run: yarn build
+
+      - run: yarn test
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          commit-message: "build(deps): bump libphonenumber to ${{ needs.get-versions.outputs.latest }}"
+          title: "build(deps): bump libphonenumber to ${{ needs.get-versions.outputs.latest }}"
+          body: |
+            ## Update libphonenumber
+
+            This automated PR updates libphonenumber from `${{ needs.get-versions.outputs.current }}` to `${{ needs.get-versions.outputs.latest }}`.
+
+            ### Changes
+            - Updated `libphonenumber.version` to `${{ needs.get-versions.outputs.latest }}`
+            - Rebuilt library with new version
+            - Updated README.md with new version
+
+            ### Release Notes
+            See the [libphonenumber release notes](https://github.com/google/libphonenumber/releases/tag/${{ needs.get-versions.outputs.latest }}) for details on what changed.
+
+            This PR was created automatically by the update-libphonenumber workflow.
+          branch: build/update-libphonenumber
+          delete-branch: true

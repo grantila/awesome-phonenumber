@@ -34,6 +34,8 @@
     "test-dist-webpack": "cd webpack && yarn build && yarn test",
     "test-dist-esm-test": "cd esm-test && yarn build && yarn test",
     "test-dist-cjs-test": "cd cjs-test && yarn build && yarn test",
+    "release:dev": "yarn build && npm publish --tag next || (echo 'Release failed' && exit 1)",
+    "release:live": "yarn build && npm publish || (echo 'Release failed' && exit 1)",
     "test-dist": "yarn test-dist-webpack && yarn test-dist-esm-test && yarn test-dist-cjs-test",
     "cz": "git-cz",
     "semantic-release": "semantic-release"

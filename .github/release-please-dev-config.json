@@ -1,0 +1,13 @@
+{
+    "release-type": "node",
+    "prerelease": true,
+    "include-component-in-tag": false,
+    "packages": {
+      ".": {
+        "package-name": "awesome-phonenumber",
+        "bump-minor-pre-major": true,
+        "changelog-path": "PRE_RELEASE_NOTES.md",
+        "changelog-notes-type": "simple"
+      }
+    }
+  }

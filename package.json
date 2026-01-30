@@ -63,12 +63,12 @@
     "awesome"
   ],
   "devDependencies": {
-    "@babel/preset-env": "^7.28.5",
+    "@babel/preset-env": "^7.28.6",
     "@babel/preset-typescript": "^7.28.5",
     "@rollup/plugin-commonjs": "^29.0.0",
     "@types/jest": "^30.0.0",
     "@types/mkdirp": "^2.0.0",
-    "@types/node": "^22.15.3",
+    "@types/node": "^22.19.7",
     "commitizen": "^4.3.1",
     "cz-conventional-changelog": "^3.3.0",
     "google-closure-compiler": "^20251104.0.0",
@@ -79,7 +79,7 @@
     "pre-commit": "^1.2.2",
     "replace": "^1.2.2",
     "rmfr": "^2.0.0",
-    "rollup": "4.53.2",
+    "rollup": "4.57.1",
     "ts-jest-resolver": "^2.0.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3"

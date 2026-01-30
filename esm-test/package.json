@@ -16,7 +16,7 @@
     "build-test": "yarn build && yarn test"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.28.5",
+    "@babel/preset-env": "^7.28.6",
     "@babel/preset-typescript": "^7.28.5",
     "@types/jest": "^30.0.0",
     "awesome-phonenumber": "workspace:^",

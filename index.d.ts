@@ -105,7 +105,7 @@ export type ParsedPhoneNumber =
 
 export function getCountryCodeForRegionCode( regionCode: string ): number;
 export function getRegionCodeForCountryCode( countryCode: number ): string;
-export function getSupportedCallingCodes( ): string[ ];
+export function getSupportedCallingCodes( ): number[ ];
 export function getSupportedRegionCodes( ): string[ ];
 
 export type FindNumbersLeniency =
